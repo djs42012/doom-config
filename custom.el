@@ -6,7 +6,9 @@
  '(ansi-color-names-vector
    ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
  '(custom-safe-themes
-   '("cf922a7a5c514fad79c483048257c5d8f242b21987af0db813d3f0b138dfaf53" "3349924a2c0b8914651cbe282616cc547dcebcbcb046f38b3e44938528d8a4d7" "234dbb732ef054b109a9e5ee5b499632c63cc24f7c2383a849815dacc1727cb6" default))
+   '("ccffc03793245e4da64d55ab500f265d3a29abcb88cb617937b966bb9d13e5d7" "028c226411a386abc7f7a0fba1a2ebfae5fe69e2a816f54898df41a6a3412bb5" "266ecb1511fa3513ed7992e6cd461756a895dcc5fef2d378f165fed1c894a78c" "49bf660675c6f722fa0d9e545e9338632677608d6f437720ffb33e47c00c579c" "cf922a7a5c514fad79c483048257c5d8f242b21987af0db813d3f0b138dfaf53" "3349924a2c0b8914651cbe282616cc547dcebcbcb046f38b3e44938528d8a4d7" "234dbb732ef054b109a9e5ee5b499632c63cc24f7c2383a849815dacc1727cb6" default))
+ '(doom-big-font-mode nil)
+ '(evil-goggles-mode t nil (evil-goggles))
  '(exwm-floating-border-color "#242530")
  '(fci-rule-color "#6272a4")
  '(highlight-tail-colors

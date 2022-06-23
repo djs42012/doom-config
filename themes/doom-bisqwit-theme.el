@@ -76,8 +76,8 @@ Can be an integer to determine the exact padding."
    (blue-alt   '("#87d7ff" "#87d7ff" "brightblue"   ))
    (dark-blue  '("#2257A0" "#2257A0" "blue"         ))
    (magenta    '("#c586c0" "#d787af" "magenta"      ))
-   ;;violet changed to light blue - fix theme family?
-   (violet     '("#9cdcfe" "#87d7ff" "brightcyan"   ))
+   (light-cyan '("#9cdcfe" "#87d7ff" "brightcyan"   ))
+   (violet     '("#a9a1e1" "#a9a1e1" "brightmagenta"))
    (cyan       '("#569cd6" "#5fafd7" "brightcyan"   ))
    (med-cyan   '("#3d90b6" "#5f87af" "brightcyan"   ))
    ;;(dark-cyan  '("#005fff" "#005fff" "cyan"         ))
@@ -135,6 +135,7 @@ Can be an integer to determine the exact padding."
    ;;((rainbow-delimiters-depth-4-face &override) :foreground green)
    ((paren-face-match &override) :foreground base0 :background red)
    ((js2-object-property-access &override) :foreground fg)
+   ((js2-object-property &override) :foreground light-cyan)
 
    (mode-line
     :background modeline-bg :foreground modeline-fg
