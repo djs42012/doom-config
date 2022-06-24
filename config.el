@@ -161,3 +161,5 @@
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-language-id-configuration
     '(web-mode . "scss")))
+;;set visual line mode globally
+(global-visual-line-mode)
