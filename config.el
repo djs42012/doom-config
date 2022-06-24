@@ -146,11 +146,11 @@
   (consult-buffer))
 
 ;;reduce delay time on which-key popups
-(setq which-key-idle-delay 0.5)
+(setq which-key-idle-delay 0)
 
 ;;configure company
 (after! company
-  (setq company-idle-delay 0.5
+  (setq company-idle-delay 0.2
         company-minimum-prefix-length 2)
   (setq company-show-numbers t))
 ;;choose extensions to open in web-mode
