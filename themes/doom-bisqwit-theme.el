@@ -81,7 +81,7 @@ Can be an integer to determine the exact padding."
    (cyan       '("#569cd6" "#5fafd7" "brightcyan"   ))
    (med-cyan   '("#3d90b6" "#5f87af" "brightcyan"   ))
    ;;(dark-cyan  '("#005fff" "#005fff" "cyan"         ))
-   (dark-cyan  '("#3462e5" "#005fff" "cyan"   a      ))
+   (dark-cyan  '("#3462e5" "#005fff" "cyan"         ))
    (blue-mgnta '("#915bff" "#875fff" "purple"       ))
    (dark-green '("#006000" "#005f00" "green"        ))
    (yellow-grn '("#dcdcaa" "#d7d7af" "yellow"       ))

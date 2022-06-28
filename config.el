@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "DJS"
+      user-mail-address "code@djs.gg")
 ;; Start in Fullscreen Mode
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -35,7 +35,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-bisqwit
-      doom-font (font-spec :family "Consolas" :size 16 :weight 'medium))
+      doom-font (font-spec :family "Consolas" :size 16 :weight 'medium)
+      doom-variable-pitch-font (font-spec :family "Quicksand Medium" :size 16 :weight 'medium))
 ;;(setq doom-font (font-spec :family "More Perfect DOS VGA" :size 16 :weight 'medium))
 ;;(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
 ;;(doom-themes-treemacs-config)
@@ -47,6 +48,7 @@
          mode
          '(("[;:,.#]" . 'heavy-punctuation-face))))
       '(emacs-lisp-mode c-mode rjsx-mode typescript-mode))
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -118,6 +120,7 @@
    (overlay-put hl-line-overlay 'face hl-line-face)
    (treemacs--setup-icon-background-colors)))
 (setq treemacs-window-background-color '("black"))
+(setq +treemacs-git-mode 'extended)
 ;;set treemacs follow mode
 ;;(treemacs-follow-mode 'toggle)
 ;;permanently display workspace
@@ -143,16 +146,16 @@
 
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
-  (consult-buffer))
+  (ibuffer))
 
 ;;reduce delay time on which-key popups
 (setq which-key-idle-delay 0)
 
 ;;configure company
 (after! company
-  (setq company-idle-delay 0.2
+  (setq company-idle-delay 0.5
         company-minimum-prefix-length 2)
-  (setq company-show-numbers t))
+  (setq company-show-quick-access t))
 ;;choose extensions to open in web-mode
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
@@ -163,3 +166,18 @@
     '(web-mode . "scss")))
 ;;set visual line mode globally
 (global-visual-line-mode)
+(after! evil
+        (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+        (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+;;
+;;tell which-key to behave
+(setq which-key-use-C-h-commands t
+      prefix-help-command #'which-key-C-h-dispatch)
+
+(defadvice! fix-which-key-dispatcher-a (fn &rest args)
+  :around #'which-key-C-h-dispatch
+  (let ((keys (this-command-keys-vector)))
+    (if (equal (elt keys (1- (length keys))) ?\?)
+        (let ((keys (which-key--this-command-keys)))
+          (embark-bindings (seq-take keys (1- (length keys)))))
+      (apply fn args))))
