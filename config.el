@@ -104,7 +104,8 @@
   (lsp-ensure-server 'eslint)
   (lsp-ensure-server 'css-ls)
   (lsp-ensure-server 'vimls)
-  (lsp-ensure-server 'clangd))
+  (lsp-ensure-server 'clangd)
+  (lsp-ensure-server 'mspyls))
 ;;disable lsp formatting
 (setq +format-with-lsp nil)
 ;;disable doom treemacs themes
@@ -149,7 +150,7 @@
   (ibuffer))
 
 ;;reduce delay time on which-key popups
-(setq which-key-idle-delay 0)
+(setq which-key-idle-delay .5)
 
 ;;configure company
 (after! company
