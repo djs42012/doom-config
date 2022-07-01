@@ -94,18 +94,18 @@ determine the exact padding."
    (modeline-bg-l light-black)
    (modeline-bg-inactive light-black)
    (modeline-bg-inactive-l light-black))
-   ;;(modeline-bg
-   ;;  (if -modeline-bright
-   ;;      (doom-darken base2 0.05)
-   ;;    base1))
-   ;; (modeline-bg-l
-   ;;  (if -modeline-bright
-   ;;      (doom-darken base2 0.1)
-   ;;    base2))
-   ;; (modeline-bg-inactive (doom-darken bg 0.1))
-   ;; (modeline-bg-inactive-l `(,(doom-darken (car bg-alt) 0.05) ,@(cdr base1))))
 
-  ;; ;
+  ;;(modeline-bg
+  ;;  (if -modeline-bright
+  ;;      (doom-darken base2 0.05)
+  ;;    base1))
+  ;; (modeline-bg-l
+  ;;  (if -modeline-bright
+  ;;      (doom-darken base2 0.1)
+  ;;    base2))
+  ;; (modeline-bg-inactive (doom-darken bg 0.1))
+  ;; (modeline-bg-inactive-l `(,(doom-darken (car bg-alt) 0.05) ,@(cdr base1))))
+
 ;;; Base theme face overrides
   (((hl-line &override) :background dark-grey)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
