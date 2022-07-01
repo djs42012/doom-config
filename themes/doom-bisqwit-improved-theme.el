@@ -129,7 +129,7 @@ determine the exact padding."
    ((font-lock-preprocessor-face &override) :inherit 'bold :foreground magenta)
    ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw)
    ((rainbow-delimiters-depth-3-face &override) :foreground turquoise)
-   ((minibuffer-prompt &override) :foreground green)
+   ((minibuffer-prompt &override) :foreground blue)
    (orderless-match-face-0 :foreground  green :weight 'bold)
    (orderless-match-face-1 :foreground  yellow :weight 'bold)
    (orderless-match-face-2 :foreground  magenta :weight 'bold )
