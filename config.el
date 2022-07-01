@@ -106,7 +106,7 @@
   (lsp-ensure-server 'vimls)
   (lsp-ensure-server 'clangd)
   (lsp-ensure-server 'mspyls))
-;;disable lsp formatting
+;;disable lsp auto formatting
 (setq +format-with-lsp nil)
 ;;disable doom treemacs themes
 (after! doom-themes
@@ -121,6 +121,7 @@
    (overlay-put hl-line-overlay 'face hl-line-face)
    (treemacs--setup-icon-background-colors)))
 (setq treemacs-window-background-color '("black"))
+;;change treemacs git mode to extended
 (setq +treemacs-git-mode 'extended)
 ;;set treemacs follow mode
 ;;(treemacs-follow-mode 'toggle)
@@ -147,7 +148,7 @@
 
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
-  (ibuffer))
+  (consult-buffer))
 
 ;;reduce delay time on which-key popups
 (setq which-key-idle-delay .5)
@@ -162,14 +163,14 @@
 (add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
 ;;fix lsp in web-mode for scss
-(with-eval-after-load 'lsp-mode
+(after! lsp-mode
   (add-to-list 'lsp-language-id-configuration
-    '(web-mode . "scss")))
+               '(web-mode . "scss")))
 ;;set visual line mode globally
 (global-visual-line-mode)
 (after! evil
-        (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-        (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 ;;
 ;;tell which-key to behave
 (setq which-key-use-C-h-commands t
@@ -182,3 +183,16 @@
         (let ((keys (which-key--this-command-keys)))
           (embark-bindings (seq-take keys (1- (length keys)))))
       (apply fn args))))
+;;turn off words in rainbow mode
+
+(add-hook 'rainbow-mode-hook
+          (defun rainbow-turn-off-words ()
+            "Turn off word colours in rainbow-mode."
+            (interactive)
+            (font-lock-remove-keywords
+             nil
+             `(,@rainbow-x-colors-font-lock-keywords
+               ,@rainbow-latex-rgb-colors-font-lock-keywords
+               ,@rainbow-r-colors-font-lock-keywords
+               ,@rainbow-html-colors-font-lock-keywords
+               ,@rainbow-html-rgb-colors-font-lock-keywords))))
