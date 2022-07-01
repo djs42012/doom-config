@@ -90,10 +90,10 @@ determine the exact padding."
    (modeline-fg     nil)
    (modeline-fg-alt (doom-blend violet base4 (if -modeline-bright 0.5 0.2)))
 
-   (modeline-bg light-black)
-   (modeline-bg-l light-black)
-   (modeline-bg-inactive light-black)
-   (modeline-bg-inactive-l light-black))
+   (modeline-bg bg)
+   (modeline-bg-l bg)
+   (modeline-bg-inactive bg)
+   (modeline-bg-inactive-l bg))
 
   ;;(modeline-bg
   ;;  (if -modeline-bright

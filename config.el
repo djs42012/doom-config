@@ -109,18 +109,19 @@
 ;;disable lsp auto formatting
 (setq +format-with-lsp nil)
 ;;disable doom treemacs themes
-(after! doom-themes
-  (remove-hook 'doom-load-theme-hook #'doom-themes-treemacs-config))
+;; (after! doom-themes
+;;   (remove-hook 'doom-load-theme-hook #'doom-themes-treemacs-config))
 ;;treemacs custom color schemes
+(setq doom-themes-treemacs-theme 'doom-colors)
 ;;change default treemacs color schemes
-(defface custom-line-highlight '((t (:background "#121212" :foreground "#d4d4d4" :extend t))) "")
-(add-hook
- 'treemacs-mode-hook
- (defun channge-hl-line-mode ()
-   (setq-local hl-line-face 'custom-line-highlight)
-   (overlay-put hl-line-overlay 'face hl-line-face)
-   (treemacs--setup-icon-background-colors)))
-(setq treemacs-window-background-color '("black"))
+;; (defface custom-line-highlight '((t (:background "#121212" :foreground "#d4d4d4" :extend t))) "")
+;; (add-hook
+;;  'treemacs-mode-hook
+;;  (defun change-hl-line-mode ()
+;;    (setq-local hl-line-face 'custom-line-highlight)
+;;    (overlay-put hl-line-overlay 'face hl-line-face)
+;;    (treemacs--setup-icon-background-colors)))
+;;(setq treemacs-window-background-color '("black"))
 ;;change treemacs git mode to extended
 (setq +treemacs-git-mode 'extended)
 ;;set treemacs follow mode
@@ -130,6 +131,7 @@
   (defun display-workspaces-in-minibuffer ()
     (with-current-buffer " *Minibuf-0*"
       (erase-buffer)
+      (face-remap-add-relative '+workspace-tab-selected-face '(:background "#b95959" :foreground "#d4d4d4"))
       (insert (+workspace--tabline))))
   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
   (+workspace/display))
