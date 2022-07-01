@@ -20,7 +20,7 @@ determine the exact padding."
   :type '(choice integer boolean))
 
 ;;
-(def-doom-theme homage-black
+(def-doom-theme doom-bisqwit-improved
   "A light theme inspired by Atom One"
 
   ;; name        default   256       16
@@ -58,7 +58,6 @@ determine the exact padding."
    (dark-cyan  '("#005fff" "#005fff" "cyan"         ))
    (light-cyan '("#9cdcfe" "#87d7ff" "brightcyan"   ))
    (turquoise  '("#00d7ff" "#00d7ff" "brightblue"   ))
-
    ;; face categories -- required for all themes
    (highlight      blue)
    (vertical-bar   (doom-darken base2 0.1))
@@ -91,30 +90,32 @@ determine the exact padding."
    (modeline-fg     nil)
    (modeline-fg-alt (doom-blend violet base4 (if -modeline-bright 0.5 0.2)))
 
-   ;; (modeline-bg light-black)
-   ;; (modeline-bg-l light-black)
-   ;; (modeline-bg-inactive light-black)
-   ;; (modeline-bg-inactive-l light-black))
-   (modeline-bg
-    (if -modeline-bright
-        (doom-darken base2 0.05)
-      base1))
-   (modeline-bg-l
-    (if -modeline-bright
-        (doom-darken base2 0.1)
-      base2))
-   (modeline-bg-inactive (doom-darken bg 0.1))
-   (modeline-bg-inactive-l `(,(doom-darken (car bg-alt) 0.05) ,@(cdr base1))))
-  ;;;; Base theme face overrides
+   (modeline-bg light-black)
+   (modeline-bg-l light-black)
+   (modeline-bg-inactive light-black)
+   (modeline-bg-inactive-l light-black))
+   ;;(modeline-bg
+   ;;  (if -modeline-bright
+   ;;      (doom-darken base2 0.05)
+   ;;    base1))
+   ;; (modeline-bg-l
+   ;;  (if -modeline-bright
+   ;;      (doom-darken base2 0.1)
+   ;;    base2))
+   ;; (modeline-bg-inactive (doom-darken bg 0.1))
+   ;; (modeline-bg-inactive-l `(,(doom-darken (car bg-alt) 0.05) ,@(cdr base1))))
+
+  ;; ;
+;;; Base theme face overrides
   (((hl-line &override) :background dark-grey)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((line-number-current-line &override) :foreground base8)
    (mode-line
     :background modeline-bg :foreground modeline-fg
-    :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg)))
+    :box `(:line-width -1 :color base5))
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
-    :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive)))
+    :box `(:line-width -1 :color base5))
    (mode-line-emphasis :foreground (if -modeline-bright base8 highlight))
    (tooltip :background bg :foreground fg )
    ;;((company-tooltip &override) :box `(:line-width 1 :color ,red))

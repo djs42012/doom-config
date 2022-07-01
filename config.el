@@ -34,7 +34,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-bisqwit
+(setq doom-theme 'doom-bisqwit-improved
       doom-font (font-spec :family "Consolas" :size 16 :weight 'medium)
       doom-variable-pitch-font (font-spec :family "Quicksand Medium" :size 16 :weight 'medium))
 ;;(setq doom-font (font-spec :family "More Perfect DOS VGA" :size 16 :weight 'medium))
