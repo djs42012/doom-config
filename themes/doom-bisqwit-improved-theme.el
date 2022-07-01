@@ -121,6 +121,7 @@ determine the exact padding."
    ;;((company-tooltip &override) :box `(:line-width 1 :color ,red))
    ((company-tooltip-common &override) :foreground green :weight 'bold)
    ((company-tooltip-selection &override) :background light-grey :weight 'bold)
+   ((company-scrollbar-fg &override)   :background red)
    ((secondary-selection &override) :background base0)
    ;;additional override
    ((paren-face-match &override) :foreground base0 :background red)
