@@ -152,11 +152,10 @@
 
 ;;reduce delay time on which-key popups
 (setq which-key-idle-delay .5)
-
 ;;configure company
 (after! company
-  (setq company-idle-delay 0.5
-        company-minimum-prefix-length 2)
+  (setq company-idle-delay 1
+        company-minimum-prefix-length 0)
   (setq company-show-quick-access t))
 ;;choose extensions to open in web-mode
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
