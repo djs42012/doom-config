@@ -40,7 +40,6 @@ determine the exact padding."
 
    (grey       base5)
    (dark-grey  '("#121212" "black"   "black"        ))
-   (light-black  '("#020202" "black"   "black"        ))
    (light-grey '("#4d4d4d" "#4e4e4e"   "brightwhite"))
    (red        '("#b95959" "#d75f5f" "red"          ))
    (orange     '("#E9C062" "#E9C062" "brightred"    ))
@@ -124,7 +123,9 @@ determine the exact padding."
    ((company-scrollbar-fg &override)   :background red)
    ((secondary-selection &override) :background base0)
    ;;additional override
-   ((paren-face-match &override) :foreground base0 :background red)
+   ;;((paren-face-match &override) :foreground base0 :background violet)
+   ;;((show-paren-match &override) :foreground base0 :background violet)
+   ;;((sp-show-pair-match-face &override):foreground base0 :background violet)
    (font-lock-add-keywords 'emacs-lisp-mode '(("[#:,.;]" . font-lock-constant-face)))
    ((line-number-current-line &override) :foreground bright-ylw :weight 'bold)
    ((font-lock-preprocessor-face &override) :inherit 'bold :foreground magenta)
@@ -140,6 +141,8 @@ determine the exact padding."
    ((diredfl-dir-name &override) :foreground green)
    ((js2-object-property-access &override) :foreground fg)
    ((js2-object-property &override) :foreground light-cyan)
+   ((Man-overstrike &override) :inherit 'bold :foreground violet)
+
    ;;;; centaur-tabs
    (centaur-tabs-unselected :background bg-alt :foreground base4)
    ;;;; css-mode <built-in> / scss-mode

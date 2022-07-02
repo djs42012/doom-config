@@ -131,7 +131,7 @@
   (defun display-workspaces-in-minibuffer ()
     (with-current-buffer " *Minibuf-0*"
       (erase-buffer)
-      (face-remap-add-relative '+workspace-tab-selected-face '(:background "#b95959" :foreground "#d4d4d4"))
+      (face-remap-add-relative '+workspace-tab-selected-face '(:background "#000000"  :foreground "#a9a1e1"))
       (insert (+workspace--tabline))))
   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
   (+workspace/display))
