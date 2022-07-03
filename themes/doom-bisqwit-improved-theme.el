@@ -58,7 +58,7 @@ determine the exact padding."
    (light-cyan '("#9cdcfe" "#87d7ff" "brightcyan"   ))
    (turquoise  '("#00d7ff" "#00d7ff" "brightblue"   ))
    ;; face categories -- required for all themes
-   (highlight      blue)
+   (highlight      violet)
    (vertical-bar   (doom-darken base2 0.1))
    (selection      blue)
    (builtin        yellow-grn)
