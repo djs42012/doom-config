@@ -35,8 +35,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-bisqwit-improved
-      doom-font (font-spec :family "JetBrainsMono" :size 14 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 14))
+      doom-font (font-spec :family "JetBrainsMono" :size 16 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 16))
 ;;(setq doom-font (font-spec :family "More Perfect DOS VGA" :size 16 :weight 'medium))
 ;;(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
 ;;(doom-themes-treemacs-config)

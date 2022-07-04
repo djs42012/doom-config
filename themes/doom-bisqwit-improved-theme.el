@@ -184,15 +184,15 @@ determine the exact padding."
    (lsp-face-highlight-textual :inherit 'lsp-face-highlight-read)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
    ;;;; outline <built-in>
-   ((outline-1 &override) :foreground fg)
-   ((outline-2 &override) :foreground fg)
-   ((outline-3 &override) :foreground fg)
-   ((outline-4 &override) :foreground fg)
-   ((outline-5 &override) :foreground fg)
-   ((outline-6 &override) :foreground fg)
-   ((outline-7 &override) :foreground fg)
-   ((outline-8 &override) :foreground fg)
-   ;;;; org <built-in>
+    ((outline-1  &override) :foreground violet                        :weight 'bold :extend t)
+    ((outline-2  &override) :foreground blue                          :weight 'bold :extend t)
+    ((outline-3  &override) :foreground yellow                        :weight 'bold :extend t)
+    ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
+    ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
+    ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold :extend t)
+    ((outline-7  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
+    ((outline-8  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
+    ;;; org <built-in>
    ;; make unfinished cookie & todo keywords bright to grab attention
    ((org-todo &override) :foreground red)
    ;; make tags and dates to have pretty box around them
