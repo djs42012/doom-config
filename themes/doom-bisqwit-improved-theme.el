@@ -125,7 +125,7 @@ determine the exact padding."
    ((secondary-selection &override) :background base0)
    ((company-tooltip-annotation &override) :foreground dark-magenta :distant-foreground bg)
    ;;additional override
-    ((highlight-quoted-symbol &override) :foreground orange)
+    ((highlight-quoted-symbol &override) :foreground yellow)
    ;;((paren-face-match &override) :foreground base0 :background violet)
    ;;((show-paren-match &override) :foreground base0 :background violet)
    ;;((sp-show-pair-match-face &override):foreground base0 :background violet)

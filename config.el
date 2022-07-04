@@ -150,7 +150,9 @@
 
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
-  (dired-jump))
+  ;;(dired-jump)
+  ;;(find-file '\.')
+  (consult-buffer))
 ;;reduce delay time on which-key popups
 (setq which-key-idle-delay .5)
 ;;configure company
