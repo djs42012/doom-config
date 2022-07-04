@@ -41,7 +41,7 @@
 ;;(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
 ;;(doom-themes-treemacs-config)
 (setq rainbow-delimiters-max-face-count 3)
-(defface heavy-punctuation-face '((t (:foreground "#006000")))
+(defface heavy-punctuation-face '((t (:foreground "#008000")))
   "Used for extra emphasis on customizable symbols.")
 (mapc (lambda (mode)
         (font-lock-add-keywords
