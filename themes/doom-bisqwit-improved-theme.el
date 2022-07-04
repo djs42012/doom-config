@@ -18,7 +18,6 @@
 determine the exact padding."
   :group 'doom-homage-black-theme
   :type '(choice integer boolean))
-
 ;;
 (def-doom-theme doom-bisqwit-improved
   "A light theme inspired by Atom One"
@@ -37,7 +36,6 @@ determine the exact padding."
    (base8      '("#DFDFDF" "#dfdfdf" "white"        ))
    (fg         '("#ffffff" "#d0d0d0" "brightwhite"  ))
    (fg-alt     '("#bbc2cf" "#bfbfbf" "brightwhite"  ))
-
    (grey       base5)
    (dark-grey  '("#121212" "black"   "black"        ))
    (light-grey '("#4d4d4d" "#4e4e4e"   "brightwhite"))
@@ -45,8 +43,8 @@ determine the exact padding."
    (orange     '("#E9C062" "#E9C062" "brightred"    ))
    (green      '("#008000" "#87d787" "brightgreen"  ))
    (teal       '("#4db5bd" "#44b9b1" "brightgreen"  ))
-   ;;(yellow     '("#FFFFB6" "#FFFFB6" "yellow"       ))
-   (yellow     '("#fdb900" "#FFFFB6" "yellow"       ))
+   (yellow     '("#FFFFB6" "#FFFFB6" "yellow"       ))
+   ;;(yellow     '("#fdb900" "#FFFFB6" "yellow"       ))
    (yellow-grn '("#dcdcaa" "#d7d7af" "yellow"       ))
    (bright-ylw '("#d7d700" "#d7d700" "brightyellow" ))
    (blue       '("#96CBFE" "#96CBFE" "brightblue"   ))
@@ -62,7 +60,7 @@ determine the exact padding."
    (highlight      blue)
    (vertical-bar   (doom-darken base2 0.1))
    (selection      blue)
-   (builtin        yellow-grn)
+   (builtin        yellow)
    (comments       red)
    (doc-comments   (doom-darken comments 0.15))
    (constants      cyan)
@@ -107,7 +105,7 @@ determine the exact padding."
   ;; (modeline-bg-inactive-l `(,(doom-darken (car bg-alt) 0.05) ,@(cdr base1))))
 
 ;;; Base theme face overrides
-  (((hl-line &override) :background dark-grey)
+  (((hl-line &override) :background base2)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((line-number-current-line &override) :foreground base8)
    (mode-line
@@ -120,9 +118,10 @@ determine the exact padding."
    (tooltip :background bg :foreground fg )
    ;;((company-tooltip &override) :box `(:line-width 1 :color ,red))
    ((company-tooltip-common &override) :foreground green :weight 'bold)
-   ((company-tooltip-selection &override) :background light-grey :weight 'bold)
+   ((company-tooltip-selection &override) :background base2 )
    ((company-scrollbar-fg &override)   :background red)
    ((secondary-selection &override) :background base0)
+   ((company-tooltip-annotation &override) :foreground dark-magenta :distant-foreground bg)
    ;;additional override
    ;;((paren-face-match &override) :foreground base0 :background violet)
    ;;((show-paren-match &override) :foreground base0 :background violet)
@@ -130,9 +129,9 @@ determine the exact padding."
    (font-lock-add-keywords 'emacs-lisp-mode '(("[#:,.;]" . font-lock-constant-face)))
    ((line-number-current-line &override) :foreground bright-ylw :weight 'bold)
    ((font-lock-preprocessor-face &override) :inherit 'bold :foreground magenta)
-   ((rainbow-delimiters-depth-1-face &override) :foreground yellow)
+   ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw)
    ((rainbow-delimiters-depth-2-face &override) :foreground magenta)
-   ((rainbow-delimiters-depth-3-face &override) :foreground cyan)
+   ((rainbow-delimiters-depth-3-face &override) :foreground turquoise)
    ((minibuffer-prompt &override) :foreground blue)
    (orderless-match-face-0 :foreground  green :weight 'bold)
    (orderless-match-face-1 :foreground  yellow :weight 'bold)
