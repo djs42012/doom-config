@@ -205,10 +205,9 @@ determine the exact padding."
    ;; make unfinished cookie & todo keywords bright to grab attention
    ((org-todo &override) :foreground red)
    ;; make tags and dates to have pretty box around them
-   ((org-tag &override)   :foreground fg :background base1
-    :box `(:line-width -1 :color ,base5 :style 'released-button))
-   ((org-date &override)  :foreground fg :background base1
-    :box `(:line-width -1 :color ,base5  :style 'released-button))
+   ((org-tag &override)   :foreground green :background nil
+    :box `(:line-width -1 :color ,green :style 'released-button))
+   ((org-date &override)  :foreground msft-yellow :background nil)
    ;; Make drawers and special keywords (like scheduled) to be very bleak
    ((org-special-keyword &override)  :foreground fg-alt)
    ((org-drawer          &override)  :foreground grey)
