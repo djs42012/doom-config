@@ -34,8 +34,10 @@ determine the exact padding."
    (base6      '("#73797e" "#6b6b6b" "brightblack"  ))
    (base7      '("#8f8f8e" "#979797" "brightblack"  ))
    (base8      '("#DFDFDF" "#dfdfdf" "white"        ))
-   ;;(fg         '("#d4d4d4" "#d0d0d0" "brightwhite"  ))
-   (fg         '("#ffffff" "#d0d0d0" "brightwhite"  ))
+   ;;(fg         '("#ffffff" "#d0d0d0" "brightwhite"  ))
+   (fg         '("#d4d4d4" "#d0d0d0" "brightwhite"  ))
+   ;;(fg         '("#ccc4ae" "#d0d0d0" "brightwhite"  ))
+   ;;(fg         '("#c0c0c0" "#d0d0d0" "brightwhite"  ))
    (fg-alt     '("#c0c0c0" "#bfbfbf" "brightwhite"  ))
    (grey       base5)
    (dark-grey  '("#121212" "black"   "black"        ))
@@ -76,7 +78,7 @@ determine the exact padding."
    (numbers        dark-magenta)
    (region         `(,(doom-lighten (car dark-grey) 0.15) ,@(doom-lighten (cdr base0) 0.35)))
    (error          red)
-   (warning        yellow)
+   (warning        msft-yellow)
    (success        green)
    (vc-modified    orange)
    (vc-added       green)
@@ -87,10 +89,10 @@ determine the exact padding."
     (when doom-homage-black-padded-modeline
       (if (integerp doom-homage-black-padded-modeline)
           doom-homage-black-padded-modeline 4)))
-   (modeline-fg     nil)
-   (modeline-fg-alt (doom-blend violet base4 (if -modeline-bright 0.5 0.2)))
+   (modeline-fg     fg)
+   (modeline-fg-alt violet)
 
-   (modeline-bg bg)
+   (modeline-bg "#000000")
    (modeline-bg-l bg)
    (modeline-bg-inactive bg)
    (modeline-bg-inactive-l bg))
@@ -112,14 +114,16 @@ determine the exact padding."
    ((line-number-current-line &override) :foreground base8)
    (mode-line
     :background modeline-bg :foreground modeline-fg
-    :box `(:line-width -1 :color base5))
+    ;;:box `(:line-width -1 :color fg)
+    )
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
-    :box `(:line-width -1 :color base5))
+    ;;:box `(:line-width -1 :color fg)
+    )
    (mode-line-emphasis :foreground (if -modeline-bright base8 highlight))
    (tooltip :background bg :foreground fg )
    ;;((company-tooltip &override) :box `(:line-width 1 :color ,red))
-   ((company-tooltip-common &override) :foreground green :weight 'bold)
+   ((company-tooltip-common &override) :foreground blue :weight 'bold)
    ((company-tooltip-selection &override) :background base2 )
    ((company-scrollbar-fg &override)   :background red)
    ((secondary-selection &override) :background base0)
@@ -136,9 +140,9 @@ determine the exact padding."
    ((rainbow-delimiters-depth-2-face &override) :foreground magenta)
    ((rainbow-delimiters-depth-3-face &override) :foreground turquoise)
    ((minibuffer-prompt &override) :foreground blue)
-   (orderless-match-face-0 :foreground  green :weight 'bold)
+   (orderless-match-face-0 :foreground  blue :weight 'bold)
    (orderless-match-face-1 :foreground  yellow :weight 'bold)
-   (orderless-match-face-2 :foreground  magenta :weight 'bold )
+   (orderless-match-face-2 :foreground  green :weight 'bold )
    (orderless-match-face-3 :foreground  blue :weight 'bold )
    ;;((rainbow-delimiters-depth-4-face &override) :foreground green)
    ;;dired
@@ -186,14 +190,14 @@ determine the exact padding."
    (lsp-face-highlight-textual :inherit 'lsp-face-highlight-read)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
    ;;;; outline <built-in>
-    ((outline-1  &override) :foreground violet                        :weight 'bold :extend t)
-    ((outline-2  &override) :foreground blue                          :weight 'bold :extend t)
-    ((outline-3  &override) :foreground yellow                        :weight 'bold :extend t)
-    ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
-    ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
-    ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold :extend t)
-    ((outline-7  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
-    ((outline-8  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
+    ((outline-1  &override) :foreground blue                        :weight 'bold :extend t)
+    ((outline-2  &override) :foreground magenta                          :weight 'bold :extend t)
+    ((outline-3  &override) :foreground green                       :weight 'bold :extend t)
+    ((outline-4  &override) :foreground (doom-lighten blue 0.25)    :weight 'bold :extend t)
+    ((outline-5  &override) :foreground (doom-lighten magenta 0.25)      :weight 'bold :extend t)
+    ((outline-6  &override) :foreground (doom-lighten green 0.25)    :weight 'bold :extend t)
+    ((outline-7  &override) :foreground (doom-lighten blue 0.25)    :weight 'bold :extend t)
+    ((outline-8  &override) :foreground (doom-lighten magenta 0.25)      :weight 'bold :extend t)
     ;;; org <built-in>
    ;; make unfinished cookie & todo keywords bright to grab attention
    ((org-todo &override) :foreground red)
@@ -203,7 +207,7 @@ determine the exact padding."
    ((org-date &override)  :foreground fg :background base1
     :box `(:line-width -1 :color ,base5  :style 'released-button))
    ;; Make drawers and special keywords (like scheduled) to be very bleak
-   ((org-special-keyword &override)  :foreground yellow)
+   ((org-special-keyword &override)  :foreground fg-alt)
    ((org-drawer          &override)  :foreground grey)
    ;; Make ellipsis as bleak as possible and reset underlines/boxing
    (org-ellipsis :underline nil :box nil :foreground fg :background bg)
@@ -219,6 +223,9 @@ determine the exact padding."
    (org-scheduled                 :foreground fg)
    (org-scheduled-today           :foreground fg)
    (org-scheduled-previously      :foreground base8)
+   ((org-agenda-date &override) :foreground blue)
+   ((org-agenda-date-today &override) :foreground green)
+   ((org-agenda-date-weekend &override) :foreground blue)
    ;;;; solaire-mode
    (solaire-mode-line-face
     :inherit 'mode-line

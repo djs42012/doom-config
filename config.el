@@ -126,15 +126,15 @@
 (setq +treemacs-git-mode 'extended)
 ;;set treemacs follow mode
 ;;(treemacs-follow-mode 'toggle)
-;;permanently display workspace
-(after! persp-mode
-  (defun display-workspaces-in-minibuffer ()
-    (with-current-buffer " *Minibuf-0*"
-      (erase-buffer)
-      (face-remap-add-relative '+workspace-tab-selected-face '(:background "#000000"  :foreground "#a9a1e1"))
-      (insert (+workspace--tabline))))
-  (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
-  (+workspace/display))
+;;permanently display workspace tab list
+;; (after! persp-mode
+;;   (defun display-workspaces-in-minibuffer ()
+;;     (with-current-buffer " *Minibuf-0*"
+;;       (erase-buffer)
+;;       (face-remap-add-relative '+workspace-tab-selected-face '(:background "#000000"  :foreground "#a9a1e1"))
+;;       (insert (+workspace--tabline))))
+;;   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
+;;   (+workspace/display))
 ;;(after! format
 ;;  (setq +format-on-save-enabled-modes
 ;;        '(not
