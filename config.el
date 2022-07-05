@@ -41,10 +41,10 @@
 ;;(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
 ;;Keybindings
 (map! :leader
-      :desc "Org Agenda"         "j"     #'org-agenda-list
+      :desc "Org Agenda"         "j"     #'org-agenda-list-zen
       :desc "Doom Splash"        "k"     #'+doom-dashboard/open
       :desc "Kill buffer"        "DEL"   #'kill-current-buffer
-      :desc "Close window"       "M-DEL" #'+workspace/close-window-or-workspace
+      :desc "Close window"       "\\" #'+workspace/close-window-or-workspace
       ;; <leader> t --- toggle
       (:prefix-map ("t" . "toggle")
        (:when (featurep! :completion company)
@@ -214,12 +214,16 @@
                ,@rainbow-r-colors-font-lock-keywords
                ,@rainbow-html-colors-font-lock-keywords
                ,@rainbow-html-rgb-colors-font-lock-keywords))))
+(defun org-agenda-list-zen ()
+  "Loads the Org agenda in zen mode"
+  (interactive)
+  (org-agenda-list)
+  (+zen/toggle))
 (setq +doom-dashboard-menu-sections
       '(("Open org-agenda" :icon
          (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
-         :when
-         (fboundp 'org-agenda-list)
-         :action org-agenda-list)
+         :when (fboundp 'org-agenda-list)
+         :action org-agenda-list-zen)
         ("Recently opened files" :icon
          (all-the-icons-octicon "file-text" :face 'doom-dashboard-menu-title)
          :action recentf-open-files)
