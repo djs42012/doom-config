@@ -112,6 +112,9 @@ determine the exact padding."
   (((hl-line &override) :background base2)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((line-number-current-line &override) :foreground base8)
+   ((doom-dashboard-menu-title &override) :foreground fg)
+   ((doom-dashboard-menu-desc &override) :foreground violet)
+   ((doom-dashboard-footer-icon &override) :foreground red)
    (mode-line
     :background modeline-bg :foreground modeline-fg
     ;;:box `(:line-width -1 :color fg)
@@ -141,8 +144,8 @@ determine the exact padding."
    ((rainbow-delimiters-depth-3-face &override) :foreground turquoise)
    ((minibuffer-prompt &override) :foreground blue)
    (orderless-match-face-0 :foreground  blue :weight 'bold)
-   (orderless-match-face-1 :foreground  yellow :weight 'bold)
-   (orderless-match-face-2 :foreground  green :weight 'bold )
+   (orderless-match-face-1 :foreground  green :weight 'bold)
+   (orderless-match-face-2 :foreground  yellow :weight 'bold )
    (orderless-match-face-3 :foreground  blue :weight 'bold )
    ;;((rainbow-delimiters-depth-4-face &override) :foreground green)
    ;;dired
@@ -150,7 +153,7 @@ determine the exact padding."
    ((js2-object-property-access &override) :foreground fg)
    ((js2-object-property &override) :foreground light-cyan)
    ((Man-overstrike &override) :inherit 'bold :foreground violet)
-
+   ((nav-flash-face &override) :foreground fg :background region :weight 'bold)
    ;;;; centaur-tabs
    (centaur-tabs-unselected :background bg-alt :foreground base4)
    ;;;; css-mode <built-in> / scss-mode
@@ -226,6 +229,11 @@ determine the exact padding."
    ((org-agenda-date &override) :foreground blue)
    ((org-agenda-date-today &override) :foreground green)
    ((org-agenda-date-weekend &override) :foreground blue)
+   ;;calendar
+   ((calendar-month-header &override) :foreground yellow :weight 'bold)
+   ((calendar-weekday-header &override) :foreground blue :weight 'bold)
+   ((calendar-weekend-header &override) :foreground red :weight 'bold)
+   ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
    ;;;; solaire-mode
    (solaire-mode-line-face
     :inherit 'mode-line
@@ -243,7 +251,6 @@ determine the exact padding."
    (web-mode-current-element-highlight-face :background dark-blue :foreground bg)
    ;;;; wgrep <built-in>
    (wgrep-face :background base1))
-
   ;;;; Base theme variable overrides-
   ())
 
