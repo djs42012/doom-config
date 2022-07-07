@@ -41,15 +41,15 @@
 ;;(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
 ;;Keybindings
 (map! :leader
-      :desc "Org Agenda"         "j"     #'org-agenda-list-zen
+      :desc "Org Agenda"         "j"     #'org-agenda-list
       :desc "Doom Splash"        "k"     #'+doom-dashboard/open
-      :desc "Kill buffer"        "DEL"   #'kill-current-buffer
-      :desc "Close window"       "\\" #'+workspace/close-window-or-workspace
+      :desc "Kill buffer"        "\\"   #'kill-current-buffer
+      :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
       ;; <leader> t --- toggle
       (:prefix-map ("t" . "toggle")
        (:when (featurep! :completion company)
         :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)))
-      ;; evil mode
+;; evil mode
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
@@ -223,13 +223,34 @@
       '(("Open org-agenda" :icon
          (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
          :when (fboundp 'org-agenda-list)
-         :action org-agenda-list-zen)
+         :action org-agenda-list)
         ("Recently opened files" :icon
          (all-the-icons-octicon "file-text" :face 'doom-dashboard-menu-title)
          :action recentf-open-files)
         ("Open project" :icon
          (all-the-icons-octicon "briefcase" :face 'doom-dashboard-menu-title)
          :action projectile-switch-project)
+        ("Open Mail" :icon
+         (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
+         :action =mu4e)
         ("Jump to bookmark" :icon
          (all-the-icons-octicon "bookmark" :face 'doom-dashboard-menu-title)
          :action bookmark-jump)))
+;; mu4e
+(set-email-account! "proton"
+                    '((mu4e-sent-folder       . "/proton/Sent")
+                      (mu4e-drafts-folder     . "/proton/Drafts")
+                      (mu4e-trash-folder      . "/proton/Trash")
+                      (mu4e-refile-folder     . "/proton/All Mail")
+                      (smtpmail-smtp-user     . "d.sharfi@protonmail.com")
+                      (smtpmail-auth-credentials . "~/.authinfo.gpg")
+                      (smtpmail-smtp-server   . "127.0.0.1")
+                      (smtpmail-smtp-service   . 1025)
+                      (smtpmail-stream-type   . starttls)
+                      (user-mail-address      . "d.sharfi@protonmail.com")    ;; only needed for mu < 1.4
+                      (mu4e-compose-signature . "---\nDavid")
+                      (+mu4e-personal-addresses . ("david@djs.gg"
+                                                   "catchall@djs.gg"
+                                                   "d.sharfi@protonmail.com")))
+                    t)
+;;(add-to-list 'gnutls-trustfiles (expand-file-name "~/.config/protonmail/bridge/cert.pem"))
