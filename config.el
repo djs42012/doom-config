@@ -59,7 +59,7 @@
         (font-lock-add-keywords
          mode
          '(("[;:,.#]" . 'heavy-punctuation-face))))
-      '(emacs-lisp-mode c-mode rjsx-mode typescript-mode))
+      '(emacs-lisp-mode c-mode rjsx-mode typescript-mode web-mode))
 
 ;;
 ;;; Keybinds
@@ -90,9 +90,8 @@
 
 ;;; :completion company
 (after! company
-  ;; Attempt to make company less invasive by adding a reasonable idle-delay
-  ;; I'd like to be able to disable autocompletion soon, but not quite yet.
-  (setq company-idle-delay 1
+  ;; Disable auto completion
+  (setq company-idle-delay nil
         company-minimum-prefix-length 2)
   (setq company-show-quick-access t))
 
