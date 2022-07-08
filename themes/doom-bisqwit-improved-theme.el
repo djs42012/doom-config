@@ -131,6 +131,7 @@ determine the exact padding."
    ((company-scrollbar-fg &override)   :background red)
    ((secondary-selection &override) :background base0)
    ((company-tooltip-annotation &override) :foreground dark-magenta :distant-foreground bg)
+   ((company-tooltip-scrollbar-thumb &override) :foreground red)
    ;;additional override
     ((highlight-quoted-symbol &override) :foreground yellow)
    ;;((paren-face-match &override) :foreground base0 :background violet)
@@ -252,5 +253,4 @@ determine the exact padding."
    (wgrep-face :background base1))
   ;;;; Base theme variable overrides-
   ())
-
 ;;; doom-homage-black-theme.el ends here
