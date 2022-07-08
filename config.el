@@ -1,196 +1,34 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
 (setq user-full-name "DJS"
-      user-mail-address "code@djs.gg")
-;; Start in Fullscreen Mode
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
+      user-mail-address "david@djs.gg")
 
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
+;;; UI/UX
 (setq doom-theme 'doom-bisqwit-improved
       doom-font (font-spec :family "JetBrainsMono" :size 16 :weight 'light)
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 16))
-;;(setq doom-font (font-spec :family "More Perfect DOS VGA" :size 16 :weight 'medium))
-;;(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
-;;Keybindings
-(map! :leader
-      :desc "Org Agenda"         "j"     #'org-agenda-list
-      :desc "Doom Splash"        "k"     #'+doom-dashboard/open
-      :desc "Kill buffer"        "\\"   #'kill-current-buffer
-      :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
-      ;; <leader> t --- toggle
-      (:prefix-map ("t" . "toggle")
-       (:when (featurep! :completion company)
-        :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)))
-;; evil mode
-(map! :n "[w" #'evil-window-prev
-      :n "]w" #'evil-window-next
-      :n "[ TAB" #'+workspace/switch-left
-      :n "] TAB" #'+workspace/switch-right)
-;;(doom-themes-treemacs-config)
-(setq rainbow-delimiters-max-face-count 3)
-(defface heavy-punctuation-face '((t (:foreground "#008000")))
-  "Used for extra emphasis on customizable symbols.")
-(mapc (lambda (mode)
-        (font-lock-add-keywords
-         mode
-         '(("[;:,.#]" . 'heavy-punctuation-face))))
-      '(emacs-lisp-mode c-mode rjsx-mode typescript-mode))
 
+;; Start in Fullscreen Mode
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Sync/Org/")
-(setq projectile-project-search-path '("~/Sync/Code/" "~/Code/" "~/Desktop/"))
-
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;;
-;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
-
-;; Install lsp servers
-(after! lsp-mode
-  (lsp-ensure-server 'ts-ls)
-  (lsp-ensure-server 'bash-ls)
-  (lsp-ensure-server 'emmet-ls)
-  (lsp-ensure-server 'html-ls)
-  (lsp-ensure-server 'dockerfile-ls)
-  (lsp-ensure-server 'svelte-ls)
-  (lsp-ensure-server 'yamlls)
-  (lsp-ensure-server 'json-ls)
-  (lsp-ensure-server 'eslint)
-  (lsp-ensure-server 'css-ls)
-  (lsp-ensure-server 'vimls)
-  (lsp-ensure-server 'clangd)
-  (lsp-ensure-server 'mspyls))
-;;disable lsp auto formatting
-(setq +format-with-lsp nil)
-;;disable doom treemacs themes
-;; (after! doom-themes
-;;   (remove-hook 'doom-load-theme-hook #'doom-themes-treemacs-config))
-;;treemacs custom color schemes
-(setq doom-themes-treemacs-theme 'doom-colors)
-;;change default treemacs color schemes
-;; (defface custom-line-highlight '((t (:background "#121212" :foreground "#d4d4d4" :extend t))) "")
-;; (add-hook
-;;  'treemacs-mode-hook
-;;  (defun change-hl-line-mode ()
-;;    (setq-local hl-line-face 'custom-line-highlight)
-;;    (overlay-put hl-line-overlay 'face hl-line-face)
-;;    (treemacs--setup-icon-background-colors)))
-;;(setq treemacs-window-background-color '("black"))
-;;change treemacs git mode to extended
-(setq +treemacs-git-mode 'extended)
-;;set treemacs follow mode
-;;(treemacs-follow-mode 'toggle)
-;;permanently display workspace tab list
-;; (after! persp-mode
-;;   (defun display-workspaces-in-minibuffer ()
-;;     (with-current-buffer " *Minibuf-0*"
-;;       (erase-buffer)
-;;       (face-remap-add-relative '+workspace-tab-selected-face '(:background "#000000"  :foreground "#a9a1e1"))
-;;       (insert (+workspace--tabline))))
-;;   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
-;;   (+workspace/display))
-;;(after! format
-;;  (setq +format-on-save-enabled-modes
-;;        '(not
-;;          ;;emacs-lisp-mode  ; elisp's mechanisms are good enough
-;;          sql-mode         ; sqlformat is currently broken
-;;          tex-mode         ; latexindent is broken
-;;          latex-mode
-;;          org-msg-edit-mode)))
-
-;;window management
-(setq evil-vsplit-window-right t
-      evil-split-window-below t)
-
+;; I prefer new windows to take me to my dashboard...for now
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
   ;;(dired-jump)
-  ;;(find-file '\.')
   ;;(consult-buffer))
   (+doom-dashboard/open (selected-frame)))
-;;reduce delay time on which-key popups
+
+;; Prefer relative line numbers.
+(setq display-line-numbers-type 'relative)
+
+;; More than three different color brackets and my eyes get lost
+(setq rainbow-delimiters-max-face-count 3)
+
+;; Reduce delay time on which-key popups - because I'm still a noob
 (setq which-key-idle-delay .5)
-;;configure company
-(after! company
-  (setq company-idle-delay 1
-        company-minimum-prefix-length 0)
-  (setq company-show-quick-access t))
-;;choose extensions to open in web-mode
-(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
-(add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
-;;fix lsp in web-mode for scss
-(after! lsp-mode
-  (add-to-list 'lsp-language-id-configuration
-               '(web-mode . "scss")))
-;;set visual line mode globally
-(global-visual-line-mode)
-(after! evil
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
-;;
-;;tell which-key to behave
+
+;; Stop embark from taking over which-key paging abilities
 (setq which-key-use-C-h-commands t
       prefix-help-command #'which-key-C-h-dispatch)
 
@@ -201,8 +39,111 @@
         (let ((keys (which-key--this-command-keys)))
           (embark-bindings (seq-take keys (1- (length keys)))))
       (apply fn args))))
-;;turn off words in rainbow mode
 
+;; Set visual line mode globally. I can't remember how I got here exactly but
+;; doom's word-wrap module wasn't wrapping in all the cases I'd expect it to
+;; particularly in org-mode. I also couldn't figure out why visual-line-mode
+;; wasn't causing editing commands to act on visual lines rather than logical
+;; lines like the docs say they should, so I changed the keys myself.
+(global-visual-line-mode)
+(after! evil
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
+;; I like a few punctuation symbols to stand out when coding
+;; I would like to move this into my custom theme somehow. In general
+;; This strikes me a something I should be doing differently.
+(defface heavy-punctuation-face '((t (:foreground "#008000")))
+  "Face for extra emphasis on a customizable list of symbols.")
+(mapc (lambda (mode)
+        (font-lock-add-keywords
+         mode
+         '(("[;:,.#]" . 'heavy-punctuation-face))))
+      '(emacs-lisp-mode c-mode rjsx-mode typescript-mode))
+
+;;
+;;; Keybinds
+(map! :leader
+      :desc "Org Agenda"         "j"     #'org-agenda-list
+      :desc "Doom Splash"        "k"     #'+doom-dashboard/open
+      :desc "Kill buffer"        "\\"   #'kill-current-buffer
+      :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
+      ;; <leader> t --- toggle
+      (:prefix-map ("t" . "toggle")
+       (:when (featurep! :completion company)
+        :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)))
+;; evil mode (I need to figure out how to get these in the previous call)
+(map! :n "[w" #'evil-window-prev
+      :n "]w" #'evil-window-next
+      :n "[ TAB" #'+workspace/switch-left
+      :n "] TAB" #'+workspace/switch-right)
+
+
+;;
+;;; Modules
+
+
+;;; :lang org
+(setq org-directory "~/Sync/projects/org/")
+(setq projectile-project-search-path '("~/Sync/projects"))
+
+
+;;; :completion company
+(after! company
+  ;; Attempt to make company less invasive by adding a reasonable idle-delay
+  ;; I'd like to be able to disable autocompletion soon, but not quite yet.
+  (setq company-idle-delay 1
+        company-minimum-prefix-length 2)
+  (setq company-show-quick-access t))
+
+
+;;; :editor evil
+;; Focus new windows after splitting
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+
+
+;;; :ui treemacs
+;; Treemacs theme of choice
+(setq doom-themes-treemacs-theme 'doom-colors)
+
+;; I think it's nice to see when directories contain files with changes
+(setq +treemacs-git-mode 'extended)
+
+
+;;; :tools lsp
+;; I want to make sure I won't have to manually add lsp serverse on new installs
+(after! lsp-mode
+  (lsp-ensure-server 'ts-ls)
+  (lsp-ensure-server 'bash-ls)
+  (lsp-ensure-server 'emmet-ls)
+  (lsp-ensure-server 'html-ls)
+  (lsp-ensure-server 'dockerfile-ls)
+  (lsp-ensure-server 'yamlls)
+  (lsp-ensure-server 'json-ls)
+  (lsp-ensure-server 'eslint)
+  (lsp-ensure-server 'css-ls)
+  (lsp-ensure-server 'vimls)
+  (lsp-ensure-server 'clangd))
+
+;; Disable lsp auto formatting to prevent interference with tools like prettier
+(setq +format-with-lsp nil)
+
+
+;;; :lang web
+;;choose extensions to open in web-mode
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
+
+;; Force lsp to to recognize scss files in web-mode
+(after! lsp-mode
+  (add-to-list 'lsp-language-id-configuration
+               '(web-mode . "scss")))
+
+
+;;; :tools rgb
+;; Prevent ordinay words from highlight in rainbow mode
 (add-hook 'rainbow-mode-hook
           (defun rainbow-turn-off-words ()
             "Turn off word colours in rainbow-mode."
@@ -214,11 +155,19 @@
                ,@rainbow-r-colors-font-lock-keywords
                ,@rainbow-html-colors-font-lock-keywords
                ,@rainbow-html-rgb-colors-font-lock-keywords))))
+
+
+;;; :ui doom-dashboard
+;; For a while I thought it would be nice to default my agenda to zen-mode
+;; Not the case anymore but I like leaving the function here
 (defun org-agenda-list-zen ()
   "Loads the Org agenda in zen mode"
   (interactive)
   (org-agenda-list)
   (+zen/toggle))
+
+;; My preferred dashboard functions. I think I should be doing this without setq
+;; as per the doom FAQ, but this works just fine for now
 (setq +doom-dashboard-menu-sections
       '(("Open org-agenda" :icon
          (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
@@ -230,13 +179,18 @@
         ("Open project" :icon
          (all-the-icons-octicon "briefcase" :face 'doom-dashboard-menu-title)
          :action projectile-switch-project)
-        ("Open Mail" :icon
+        ("Open mail" :icon
          (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
          :action =mu4e)
         ("Jump to bookmark" :icon
          (all-the-icons-octicon "bookmark" :face 'doom-dashboard-menu-title)
          :action bookmark-jump)))
-;; mu4e
+
+
+;;; :email mu4e
+;; I learned the hard way not to use custom domains setting up protonmail
+;; even though I'm pretty sure it was no issue when setitng up Thunderbird
+;; and the bridge app itself shows your custom domain as the username
 (set-email-account! "proton"
                     '((mu4e-sent-folder       . "/proton/Sent")
                       (mu4e-drafts-folder     . "/proton/Drafts")
@@ -253,4 +207,3 @@
                                                    "catchall@djs.gg"
                                                    "d.sharfi@protonmail.com")))
                     t)
-;;(add-to-list 'gnutls-trustfiles (expand-file-name "~/.config/protonmail/bridge/cert.pem"))
