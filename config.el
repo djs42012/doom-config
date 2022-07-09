@@ -6,7 +6,7 @@
 ;;
 ;;; UI/UX
 (setq doom-theme 'doom-bisqwit-improved
-      doom-font (font-spec :family "JetBrainsMono" :size 16 :weight 'light)
+      doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 16))
 
 ;; Start in Fullscreen Mode
@@ -26,7 +26,7 @@
 (setq rainbow-delimiters-max-face-count 3)
 
 ;; Reduce delay time on which-key popups - because I'm still a noob
-(setq which-key-idle-delay .5)
+(setq which-key-idle-delay 1)
 
 ;; Stop embark from taking over which-key paging abilities
 (setq which-key-use-C-h-commands t
@@ -135,6 +135,10 @@
   (setq org-journal-file-type 'daily
         org-journal-date-format "%A %B %d, %Y"))
 
+;; Start org-agenda at current date and show only 7 day outlook
+(after! org-agenda
+  (setq org-agenda-start-day "+0d"
+        org-agenda-span 7))
 
 ;;; :completion company
 (after! company
