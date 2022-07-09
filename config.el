@@ -41,7 +41,7 @@
       (apply fn args))))
 
 ;; Set visual line mode globally. I can't remember how I got here exactly but
-;; doom's word-wrap module wasn't wrapping in all the cases I'd expect it to
+;; doom's word-wrap module wasn't wrapping in all the cases I'd expect it to,
 ;; particularly in org-mode. I also couldn't figure out why visual-line-mode
 ;; wasn't causing editing commands to act on visual lines rather than logical
 ;; lines like the docs say they should, so I changed the keys myself.
@@ -68,6 +68,7 @@
       :desc "Doom Splash"        "k"     #'+doom-dashboard/open
       :desc "Kill buffer"        "\\"   #'kill-current-buffer
       :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
+      :desc "Auto complete at point" "-" #'+company/complete
       ;; <leader> t --- toggle
       (:prefix-map ("t" . "toggle")
        (:when (featurep! :completion company)
@@ -84,13 +85,51 @@
 
 
 ;;; :lang org
-(setq org-directory "~/Sync/projects/org/")
-(setq projectile-project-search-path '("~/Sync/projects"))
+(setq +org-roam-auto-backlinks-buffer t
+      org-directory "~/Sync/projects/org/"
+      org-roam-directory (concat org-directory "roam/")
+      org-roam-db-location (concat org-roam-directory ".org-roam.db")
+      org-roam-dailies-directory "journal/")
 
+(after! org
+  (setq org-startup-folded 'show2levels
+        org-ellipsis " [...] "
+        ;; My org/org-roam capture templates
+        ;; org-capture-templates
+        ;; '(("t" "todo" entry (file+headline "todo.org" "Unsorted")
+        ;;    "* [ ] %?\n%i\n%a"
+        ;;    :prepend t)
+        ;;   ("d" "deadline" entry (file+headline "todo.org" "Schedule")
+        ;;    "* [ ] %?\nDEADLINE: <%(org-read-date)>\n\n%i\n%a"
+        ;;    :prepend t)
+        ;;   ("s" "schedule" entry (file+headline "todo.org" "Schedule")
+        ;;    "* [ ] %?\nSCHEDULED: <%(org-read-date)>\n\n%i\n%a"
+        ;;    :prepend t))
+        ))
+
+(after! org-roam
+  (setq
+   ;; org-roam-capture-templates
+   ;; `(("n" "note" plain
+   ;;    ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+   ;;    :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
+   ;;    :unnarrowed t)
+   ;;   ("r" "thought" plain
+   ;;    ,(format "#+title: ${title}\n%%[%s/template/thought.org]" org-roam-directory)
+   ;;    :target (file "thought/%<%Y%m%d%H%M%S>-${slug}.org")
+   ;;    :unnarrowed t)
+   ;;   ("p" "project" plain
+   ;;    ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
+   ;;    :target (file "project/%<%Y%m%d>-${slug}.org")
+   ;;    :unnarrowed t))
+   ;; Use human readable dates for dailies titles
+   org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %?"
+      :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%B %d, %Y>\n\n")))))
 
 ;;; :completion company
 (after! company
-  ;; Disable auto completion
+  ;; Disable auto completion. We have keybinds to access/toggle completion when needed
   (setq company-idle-delay nil
         company-minimum-prefix-length 2)
   (setq company-show-quick-access t))
