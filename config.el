@@ -106,26 +106,35 @@
         ;;    "* [ ] %?\nSCHEDULED: <%(org-read-date)>\n\n%i\n%a"
         ;;    :prepend t))
         ))
-
 (after! org-roam
-  (setq
-   ;; org-roam-capture-templates
-   ;; `(("n" "note" plain
-   ;;    ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-   ;;    :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
-   ;;    :unnarrowed t)
-   ;;   ("r" "thought" plain
-   ;;    ,(format "#+title: ${title}\n%%[%s/template/thought.org]" org-roam-directory)
-   ;;    :target (file "thought/%<%Y%m%d%H%M%S>-${slug}.org")
-   ;;    :unnarrowed t)
-   ;;   ("p" "project" plain
-   ;;    ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
-   ;;    :target (file "project/%<%Y%m%d>-${slug}.org")
-   ;;    :unnarrowed t))
-   ;; Use human readable dates for dailies titles
-   org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %?"
-      :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%B %d, %Y>\n\n")))))
+  (setq org-roam-capture-templates
+        `(("n" "note" plain
+           ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
+           :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
+           :unnarrowed t))
+        ;;   ("r" "thought" plain
+        ;;    ,(format "#+title: ${title}\n%%[%s/template/thought.org]" org-roam-directory)
+        ;;    :target (file "thought/%<%Y%m%d%H%M%S>-${slug}.org")
+        ;;    :unnarrowed t)
+        ;;   ("p" "project" plain
+        ;;    ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
+        ;;    :target (file "project/%<%Y%m%d>-${slug}.org")
+        ;;    :unnarrowed t))
+        ;; Use human readable dates for dailies titles
+
+        org-roam-dailies-capture-templates
+        '(("d" "default" entry "* %?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n"))
+          ("a" "agenda" entry
+           ;; need to figure out how not to hard code this path...
+           (file "~/Sync/projects/org/roam/template/agenda.org")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")))))
+
+;; set org-journal type to monthly
+(after! org-journal
+  (setq org-journal-file-type 'daily
+        org-journal-date-format "%A %B %d, %Y"))
+
 
 ;;; :completion company
 (after! company
@@ -139,6 +148,14 @@
 ;; Focus new windows after splitting
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
+
+
+;;; :ui popup
+;; For when I want to keep certain windows around
+(set-popup-rules!
+  '(("^\\*help"         :ignore t)
+    ("^\\*info\\*"      :ignore t)
+    ("^\\*Man"          :ignore t)))
 
 
 ;;; :ui treemacs
