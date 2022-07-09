@@ -215,9 +215,9 @@ determine the exact padding."
    ;; Make ellipsis as bleak as possible and reset underlines/boxing
    (org-ellipsis :underline nil :box nil :foreground fg :background bg)
    ;; Make blocks have a slightly different background
-   ((org-block &override) :background base1)
+   ((org-block &override) :background bg)
    ((org-block-begin-line &override) :foreground fg :slant 'italic)
-   ((org-quote &override) :background base1)
+   ((org-quote &override) :background bg )
    ((org-table &override) :foreground fg)
    ;; org-agendamode: make "unimportant" things like distant deadlines and
    ;; things scheduled for today to be bleak.
