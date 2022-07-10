@@ -16,8 +16,8 @@
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
   ;;(dired-jump)
-  ;;(consult-buffer))
-  (+doom-dashboard/open (selected-frame)))
+  (consult-buffer))
+  ;;(+doom-dashboa:wrd/open (selected-frame)))
 
 ;; Prefer relative line numbers.
 (setq display-line-numbers-type 'relative)
