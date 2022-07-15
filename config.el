@@ -60,7 +60,11 @@
         (font-lock-add-keywords
          mode
          '(("[;:,.#]" . 'heavy-punctuation-face))))
-      '(emacs-lisp-mode c-mode rjsx-mode typescript-mode web-mode))
+      '(emacs-lisp-mode
+        c-mode lua-mode
+        rjsx-mode
+        typescript-mode
+        web-mode))
 
 ;;
 ;;; Keybinds
@@ -86,7 +90,7 @@
 
 
 ;;; :lang org
-(setq +org-roam-auto-backlinks-buffer t
+(setq ;; +org-roam-auto-backlinks-buffer t
       org-directory "~/Sync/projects/org/"
       org-roam-directory (concat org-directory "roam/")
       org-roam-db-location (concat org-roam-directory ".org-roam.db")
@@ -125,6 +129,7 @@
           ("to" "Office" entry (file+headline "todo.org" "Office") "* TODO %?")
           ("tm" "Misc." entry (file+headline "todo.org" "Inbox") "* TODO %?")
           ("te" "Emacs." entry (file+headline "emacs.org" "Emacs") "* [ ] %?")
+          ("te" "Awesome." entry (file+headline "emacs.org" "Awesome") "* [ ] %?")
           ("a" "Appointment" entry (file+headline "appointment.org" "Inbox") "* %?\n<%(org-read-date)>")
           ;; TODO Fix note capture templates
           ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , (org-create-link-to-file-snippet))
@@ -163,7 +168,7 @@
           ("t" "thought" entry "* Thought\n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")))))
 
-;; set org-journal type to monthly
+;; set org-journal type to daily
 (after! org-journal
   (setq org-journal-file-type 'daily
         org-journal-date-format "%A %B %d, %Y"))
