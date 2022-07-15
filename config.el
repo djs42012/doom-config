@@ -92,43 +92,75 @@
       org-roam-db-location (concat org-roam-directory ".org-roam.db")
       org-roam-dailies-directory "journal/")
 
+;; Have TODO's switch to done when all subentries are done
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "[ ]"))))
+
+(add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+
+;; Attempt to create a function that generates a capture template
+;; that produces a link to a snippet of a file using that file's name
+;; as the description
+;;
+;; (defun org-create-link-to-file-snippet ()
+;;   "Create a link to a snippet in a file"
+;;   (let* ((regexp "]]\\[")
+;;          (index (string-match regexp "%L[%F]]")))
+;;     (concat "* TEST\n"
+;;             (substring "%L[%F]]" 0 1)
+;;             )))
+
 (after! org
   (setq org-startup-folded 'show2levels
         org-ellipsis " [...] "
-        ;; My org/org-roam capture templates
-        ;; org-capture-templates
-        ;; '(("t" "todo" entry (file+headline "todo.org" "Unsorted")
-        ;;    "* [ ] %?\n%i\n%a"
-        ;;    :prepend t)
-        ;;   ("d" "deadline" entry (file+headline "todo.org" "Schedule")
-        ;;    "* [ ] %?\nDEADLINE: <%(org-read-date)>\n\n%i\n%a"
-        ;;    :prepend t)
-        ;;   ("s" "schedule" entry (file+headline "todo.org" "Schedule")
-        ;;    "* [ ] %?\nSCHEDULED: <%(org-read-date)>\n\n%i\n%a"
-        ;;    :prepend t))
-        ))
+        org-capture-templates
+        ;; Personal Todo Templates
+        `(("t" "Todo")
+          ("tp" "Personal" entry (file+headline "todo.org" "Personal") "* TODO %?")
+          ("ta" "Animals" entry (file+headline "todo.org" "Animals") "* TODO %?")
+          ("ts" "Shopping List" entry (file+headline "todo.org" "Shopping") "* [ ] %?")
+          ("th" "Home" entry (file+headline "todo.org" "Home") "* TODO %?")
+          ("to" "Office" entry (file+headline "todo.org" "Office") "* TODO %?")
+          ("tm" "Misc." entry (file+headline "todo.org" "Inbox") "* TODO %?")
+          ("te" "Emacs." entry (file+headline "emacs.org" "Emacs") "* [ ] %?")
+          ("a" "Appointment" entry (file+headline "appointment.org" "Inbox") "* %?\n<%(org-read-date)>")
+          ;; TODO Fix note capture templates
+          ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , (org-create-link-to-file-snippet))
+          ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , "* %T\n** %?\n%i\n** Link\n%a")
+
+          ("o" "Centralized Project Templates")
+          ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+          ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+          ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)
+          ;; Default local project templates
+          ("p" "Local Project Templates")
+          ("pt" "Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t)
+          ("pn" "Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t)
+          ("pc" "Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
+          ("d" "deadline" entry (file+headline "todo.org" "Schedule") "* [ ] %?\nDEADLINE: <%(org-read-date)>\n\n%i\n%a" :prepend t)
+          )))
+
 (after! org-roam
   (setq org-roam-capture-templates
         `(("n" "note" plain
            ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
            :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
+           :unnarrowed t)
+          ("r" "thought" plain
+           ,(format "#+title: ${title}\n%%[%s/template/thought.org]" org-roam-directory)
+           :target (file "thought/%<%Y%m%d%H%M%S>-${slug}.org")
            :unnarrowed t))
-        ;;   ("r" "thought" plain
-        ;;    ,(format "#+title: ${title}\n%%[%s/template/thought.org]" org-roam-directory)
-        ;;    :target (file "thought/%<%Y%m%d%H%M%S>-${slug}.org")
-        ;;    :unnarrowed t)
-        ;;   ("p" "project" plain
-        ;;    ,(format "#+title: ${title}\n%%[%s/template/project.org]" org-roam-directory)
-        ;;    :target (file "project/%<%Y%m%d>-${slug}.org")
-        ;;    :unnarrowed t))
         ;; Use human readable dates for dailies titles
-
         org-roam-dailies-capture-templates
-        '(("d" "default" entry "* %?"
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n"))
-          ("a" "agenda" entry
-           ;; need to figure out how not to hard code this path...
+        '(("a" "agenda" entry
+           ;; TODO figure out how not to hard code this path...
            (file "~/Sync/projects/org/roam/template/agenda.org")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n"))
+          ("d" "dream" entry "* Dream\n%?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n"))
+          ("t" "thought" entry "* Thought\n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")))))
 
 ;; set org-journal type to monthly
