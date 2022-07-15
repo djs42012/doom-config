@@ -217,14 +217,15 @@
   (lsp-ensure-server 'eslint)
   (lsp-ensure-server 'css-ls)
   (lsp-ensure-server 'vimls)
-  (lsp-ensure-server 'clangd))
+  (lsp-ensure-server 'clangd)
+  (lsp-ensure-server 'lua-language-server))
 
 ;; Disable lsp auto formatting to prevent interference with tools like prettier
 (setq +format-with-lsp nil)
 
 
 ;;; :lang web
-;;choose extensions to open in web-mode
+;; choose extensions to open in web-mode
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
@@ -233,6 +234,12 @@
 (after! lsp-mode
   (add-to-list 'lsp-language-id-configuration
                '(web-mode . "scss")))
+
+
+;;; :lang lua
+;; enable rainbow delimiters mode (not sure why this isn't default)
+(add-hook! lua-mode
+           #'rainbow-delimiters-mode-enable)
 
 
 ;;; :tools rgb
