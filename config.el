@@ -3,6 +3,7 @@
 (setq user-full-name "DJS"
       user-mail-address "david@djs.gg")
 
+
 ;;
 ;;; UI/UX
 (setq doom-theme 'doom-bisqwit-improved
@@ -10,14 +11,14 @@
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 16))
 
 ;; Start in Fullscreen Mode
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; I prefer new windows to take me to my dashboard...for now
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
   ;;(dired-jump)
   (consult-buffer))
-  ;;(+doom-dashboa:wrd/open (selected-frame)))
+;;(+doom-dashboawrd/open (selected-frame)))
 
 ;; Prefer relative line numbers.
 (setq display-line-numbers-type 'relative)
@@ -140,11 +141,12 @@
   (setq org-agenda-start-day "+0d"
         org-agenda-span 7))
 
+
 ;;; :completion company
 (after! company
   ;; Disable auto completion. We have keybinds to access/toggle completion when needed
   (setq company-idle-delay nil
-        company-minimum-prefix-length 2)
+        company-minimum-prefix-length 0)
   (setq company-show-quick-access t))
 
 
