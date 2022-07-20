@@ -69,7 +69,7 @@
 ;;
 ;;; Keybinds
 (map! :leader
-      :desc "Org Agenda"         "j"     #'org-agenda-list
+      :desc "Org Agenda"         "j"     #'org-launch-custom-agenda
       :desc "Doom Splash"        "k"     #'+doom-dashboard/open
       :desc "Kill buffer"        "\\"   #'kill-current-buffer
       :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
@@ -163,6 +163,62 @@
 (after! org-agenda
   (setq org-agenda-start-day "+0d"
         org-agenda-span 7))
+
+;; Create custom block-limited agenda filters
+(defun my/org-match-at-point-p (match)
+  "Return non-nil if headline at point matches MATCH.
+Here MATCH is a match string of the same format used by
+`org-tags-view'."
+  (funcall (cdr (org-make-tags-matcher match))
+           (org-get-todo-state)
+           (org-get-tags-at)
+           (org-reduced-level (org-current-level))))
+
+(defun my/org-agenda-skip-without-match (match)
+  "Skip current headline unless it matches MATCH.
+
+Return nil if headline containing point matches MATCH (which
+should be a match string of the same format used by
+`org-tags-view').  If headline does not match, return the
+position of the next headline in current buffer.
+
+Intended for use with `org-agenda-skip-function', where this will
+skip exactly those headlines that do not match."
+  (save-excursion
+    (unless (org-at-heading-p) (org-back-to-heading))
+    (let ((next-headline (save-excursion
+                           (or (outline-next-heading) (point-max)))))
+      (if (my/org-match-at-point-p match) nil next-headline))))
+
+;; First block shows today's agenda
+;; Second block shows 9 day outlook, hiding unwanted chore TODOs
+;; Third block shows full list of main TODOs
+(setq org-agenda-custom-commands
+      '(("j" "Main agenda and TODO list"
+         ((agenda "" ((org-agenda-span 1)))
+          (agenda "" ((org-agenda-span 9)
+                      (org-agenda-start-day "+1d")
+                      (org-agenda-skip-function
+                       '(my/org-agenda-skip-without-match "-hide"))))
+          (tags-todo "+main")))))
+
+;;; ;; Create function to launch custom agenda
+;; TODO allow for arguments when launching custom agenda
+(defun org-launch-custom-agenda ()
+  "Launch the org agenda using the custom command supplied "
+  (interactive)
+  (org-agenda nil "j"))
+
+;; Hide noisy tag labels in agenda
+(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide")
+
+;; Hide certain tags from main agenda
+;; No longer needed with custom blocks
+;; (defun org-my-auto-exclude-fn (tag)
+;;   (if (cond
+;;        ((string= tag "hide")))
+;;       (concat "-" tag)))
+;; (setq org-agenda-auto-exclude-function 'org-my-auto-exclude-fn)
 
 
 ;;; :completion company
