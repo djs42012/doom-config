@@ -128,6 +128,16 @@ determine the exact padding."
     :background modeline-bg-inactive :foreground modeline-fg-alt
     ;;:box `(:line-width -1 :color fg)
     )
+
+   ((info-xref &override) :inherit 'link :foreground blue)
+   ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground blue)
+   ((info-menu-star &override) :foreground fg)
+   ((info-menu-header &override) :inherit 'variable-pitch :weight 'bold :foreground blue)
+   ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground violet :height 1.3)
+   ((info-title-3 &override) :inherit 'info-title-4  :height 1.3)
+   ((info-title-2 &override) :inherit 'info-title-3  :height 1.3)
+   ((info-title-1 &override) :inherit 'info-title-2  :height 1.4)
+   ((Info-quoted &override) :inherit 'fixed-pitch-serif :background base0 )
    (mode-line-emphasis :foreground (if -modeline-bright base8 highlight))
    (tooltip :background bg :foreground fg )
    ;;((company-tooltip &override) :box `(:line-width 1 :color ,red))
@@ -158,7 +168,7 @@ determine the exact padding."
    ((diredfl-dir-name &override) :foreground green)
    ((js2-object-property-access &override) :foreground fg)
    ((js2-object-property &override) :foreground light-cyan)
-   ((Man-overstrike &override) :inherit 'bold :foreground violet)
+   ((Man-overstrike &override) :inherit 'bold  :height 1.05 :foreground violet)
    ((nav-flash-face &override) :foreground fg :background region :weight 'bold)
    ;;;; centaur-tabs
    (centaur-tabs-unselected :background bg-alt :foreground base4)
@@ -169,6 +179,8 @@ determine the exact padding."
    ;;;; doom-modeline
    (doom-modeline-bar :background (if -modeline-bright modeline-bg highlight))
    ;;;; ediff <built-in>
+   ;;;; embark
+   ((embark-keybinding &override) :foreground magenta)
    (ediff-current-diff-A        :foreground red   :background (doom-lighten red 0.8))
    (ediff-current-diff-B        :foreground green :background (doom-lighten green 0.8))
    (ediff-current-diff-C        :foreground blue  :background (doom-lighten blue 0.8))
@@ -199,14 +211,14 @@ determine the exact padding."
    (lsp-face-highlight-textual :inherit 'lsp-face-highlight-read)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
    ;;;; outline <built-in>
-   ((outline-1  &override) :foreground blue                        :weight 'bold :extend t)
-   ((outline-2  &override) :foreground magenta                          :weight 'bold :extend t)
-   ((outline-3  &override) :foreground green                       :weight 'bold :extend t)
-   ((outline-4  &override) :foreground (doom-lighten blue 0.25)    :weight 'bold :extend t)
-   ((outline-5  &override) :foreground (doom-lighten magenta 0.25)      :weight 'bold :extend t)
-   ((outline-6  &override) :foreground (doom-lighten green 0.25)    :weight 'bold :extend t)
-   ((outline-7  &override) :foreground (doom-lighten blue 0.25)    :weight 'bold :extend t)
-   ((outline-8  &override) :foreground (doom-lighten magenta 0.25)      :weight 'bold :extend t)
+   ((outline-1  &override) :foreground violet  :height 1.25                      :weight 'bold :extend t)
+   ((outline-2  &override) :foreground blue :height 1.1                          :weight 'bold :extend t)
+   ((outline-3  &override) :foreground yellow                       :weight 'bold :extend t)
+   ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
+   ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
+   ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold :extend t)
+   ((outline-7  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
+   ((outline-8  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
     ;;; org <built-in>
    ;; make unfinished cookie & todo keywords bright to grab attention
    ((org-todo &override) :foreground red)
