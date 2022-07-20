@@ -8,7 +8,7 @@
 ;;; UI/UX
 (setq doom-theme 'doom-bisqwit-improved
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 16))
+      doom-variable-pitch-font (font-spec :family "Quicksand" :weight 'medium :size 16))
 
 ;; Start in Fullscreen Mode
 ;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
