@@ -122,7 +122,7 @@
    `(("t" "✅ Todo")
      ("tp" "🙋 Personal" entry (file+headline "todo.org" "🙋 Personal") "* TODO %?")
      ("ta" "🐶 Animals" entry (file+headline "todo.org" "🐶 Animals") "* TODO %?")
-     ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "Shopping") "* [ ] %?")
+     ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "🛒 Shopping") "* [ ] %?")
      ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?")
      ("to" "🖥 Office" entry (file+headline "todo.org" "🖥 Office") "* TODO %?")
      ("tm" "⁉ Misc." entry (file+headline "todo.org" "⁉ Inbox") "* TODO %?")
