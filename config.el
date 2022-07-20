@@ -221,6 +221,11 @@ skip exactly those headlines that do not match."
 ;; (setq org-agenda-auto-exclude-function 'org-my-auto-exclude-fn)
 
 
+;;; info mode
+;; use variable-pitch font by default
+(add-hook! 'Info-mode-hook #'variable-pitch-mode)
+
+
 ;;; :completion company
 (after! company
   ;; Disable auto completion. We have keybinds to access/toggle completion when needed
