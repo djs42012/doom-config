@@ -116,32 +116,33 @@
 
 (after! org
   (setq ;;org-startup-folded 'show2levels
-        org-ellipsis " [...] "
-        org-capture-templates
-        ;; Personal Todo Templates
-        `(("t" "✅ Todo")
-          ("tp" "🙋 Personal" entry (file+headline "todo.org" "🙋 Personal") "* TODO %?")
-          ("ta" "🐶 Animals" entry (file+headline "todo.org" "🐶 Animals") "* TODO %?")
-          ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "Shopping") "* [ ] %?")
-          ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?")
-          ("to" "🖥 Office" entry (file+headline "todo.org" "🖥 Office") "* TODO %?")
-          ("tm" "⁉ Misc." entry (file+headline "todo.org" "⁉ Inbox") "* TODO %?")
-          ("c" "💻 Code")
-          ("ce" "🇪 Emacs" entry (file+headline "code.org" "Emacs") "* %?")
-          ("ca" "🇦 Awesome" entry (file+headline "code.org" "Awesome") "* %?")
-          ("cm" "⁉ Misc" entry (file+headline "code.org" "Inbox") "* %?")
-          ("a" "📅 Appointment" entry (file+headline "appt.org" "Inbox") "* %?\n<%(org-read-date)>")
-        ;; Default cenralized project templates
-          ("g" "🌏 Global Project Files")
-          ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-          ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-          ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)
-        ;; Default local project templates
-          ("l" "🔒 Local Project Files")
-          ("lt" "✅ Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t)
-          ("ln" "✏ Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t)
-          ("lc" "🏁 Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
-          )))
+   org-ellipsis " [...] "
+   org-capture-templates
+   ;; Personal Todo Templates
+   `(("t" "✅ Todo")
+     ("tp" "🙋 Personal" entry (file+headline "todo.org" "🙋 Personal") "* TODO %?")
+     ("ta" "🐶 Animals" entry (file+headline "todo.org" "🐶 Animals") "* TODO %?")
+     ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "Shopping") "* [ ] %?")
+     ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?")
+     ("to" "🖥 Office" entry (file+headline "todo.org" "🖥 Office") "* TODO %?")
+     ("tm" "⁉ Misc." entry (file+headline "todo.org" "⁉ Inbox") "* TODO %?")
+     ("c" "💻 Code")
+     ("ce" "🇪 Emacs" entry (file+headline "code.org" "Emacs") "* %?")
+     ("ca" "🇦 Awesome" entry (file+headline "code.org" "Awesome") "* %?")
+     ("cm" "⁉ Misc" entry (file+headline "code.org" "Inbox") "* %?")
+     ("a" "📅 Appointment" entry (file+headline "appt.org" "Inbox") "* %?\n<%(org-read-date)>")
+     ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , "* %T\n** %?\n%i\n** Link\n%a")
+     ;; Default cenralized project templates
+     ("g" "🌏 Global Project Files")
+     ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %i\n %?\n %a" :heading "Tasks" :prepend nil)
+     ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend nil)
+     ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)
+     ;; Default local project templates
+     ("l" "🔒 Local Project Files")
+     ("lt" "✅ Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %i\n %?\n %a" :prepend nil)
+     ("ln" "✏ Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend nil)
+     ("lc" "🏁 Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
+     )))
 
 (after! org-roam
   (setq org-roam-capture-templates
