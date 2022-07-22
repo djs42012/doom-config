@@ -117,7 +117,7 @@ determine the exact padding."
   (((hl-line &override) :background base0)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((line-number-current-line &override) :foreground base8)
-   ((doom-dashboard-menu-title &override) :foreground fg)
+   ((doom-dashboard-menu-title &override) :foreground fg :slant 'italic)
    ((doom-dashboard-menu-desc &override) :foreground violet)
    ((doom-dashboard-footer-icon &override) :foreground red)
    (mode-line
@@ -137,7 +137,7 @@ determine the exact padding."
    ((info-title-3 &override) :inherit 'info-title-4  :height 1.3)
    ((info-title-2 &override) :inherit 'info-title-3  :height 1.3)
    ((info-title-1 &override) :inherit 'info-title-2  :height 1.4)
-   ((Info-quoted &override) :inherit 'fixed-pitch-serif :background base0 )
+   ((Info-quoted &override) :inherit 'fixed-pitch-serif :foreground msft-yellow :background bg)
    (mode-line-emphasis :foreground (if -modeline-bright base8 highlight))
    (tooltip :background bg :foreground fg )
    ;;((company-tooltip &override) :box `(:line-width 1 :color ,red))
@@ -265,6 +265,8 @@ determine the exact padding."
    ((calendar-weekday-header &override) :foreground blue :weight 'bold)
    ((calendar-weekend-header &override) :foreground red :weight 'bold)
    ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
+   ;;; mu4e
+   ((mu4e-title-face &override) :inherit 'outline-1)
    ;;;; solaire-mode
    (solaire-mode-line-face
     :inherit 'mode-line
