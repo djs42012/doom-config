@@ -93,7 +93,8 @@
         :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)
         :desc "Command-logging"          "c"     #'command-log-mode)
       (:prefix-map ("o" . "open")
-        :desc "Command log"          "l"     #'clm/toggle-command-log-buffer))
+        :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
+        :desc "Calendar"          "c"            #'cfw:my-personal-calendar))
 ;; evil mode (I need to figure out how to get these in the previous call)
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
@@ -339,9 +340,13 @@ skip exactly those headlines that do not match."
 ;; as per the doom FAQ, but this works just fine for now
 (setq +doom-dashboard-menu-sections
       '(("Open Agenda" :icon
-         (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
+         (all-the-icons-octicon "checklist" :face 'doom-dashboard-menu-title)
          :when (fboundp 'org-launch-custom-agenda)
          :action org-launch-custom-agenda)
+        ("Open Calendar" :icon
+         (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
+         :when (fboundp 'cfw:my-personal-calendar)
+         :action cfw:my-personal-calendar)
         ("Open Terminal" :icon
          (all-the-icons-octicon "terminal" :face 'doom-dashboard-menu-title)
          :action +vterm/here)
@@ -370,3 +375,23 @@ skip exactly those headlines that do not match."
                                                    "catchall@djs.gg"
                                                    "d.sharfi@protonmail.com")))
                     t)
+
+
+;;; :app calendar
+;; Create custom set of calendar sources from org files
+;; TODO pull calendar colors from theme variables
+ (defun cfw:my-personal-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-file-source "Appts." "~/Sync/projects/org/appt.org" "#fdb900")
+    (cfw:org-create-file-source "TODO" "~/Sync/projects/org/todo.org" "#a9a1e1")
+    (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
+   )))
+
+;; Show only desired holidays
+(setq calendar-holidays
+      (append holiday-general-holidays
+              holiday-hebrew-holidays
+              holiday-solar-holidays))
