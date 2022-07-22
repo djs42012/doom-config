@@ -142,35 +142,49 @@
      ;; Default cenralized project templates
      ("g" "🌏 Global Project Files")
      ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %i %?\n%a" :heading "Tasks" :prepend nil)
-     ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend nil)
-     ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)
+     ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend nil)
+     ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t)
      ;; Default local project templates
      ("l" "🔒 Local Project Files")
-     ("lt" "✅ Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %i\n %?\n %a" :prepend nil)
+     ("lt" "✅ Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %i\n%?\n%a" :prepend nil)
      ("ln" "✏ Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend nil)
      ("lc" "🏁 Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
      )))
 
 (after! org-roam
   (setq org-roam-capture-templates
-        `(("n" "note" plain
-           ,(format "#+title: ${title}\n%%[%s/template/note.org]" org-roam-directory)
-           :target (file "note/%<%Y%m%d%H%M%S>-${slug}.org")
-           :unnarrowed t)
-          ("r" "thought" plain
-           ,(format "#+title: ${title}\n%%[%s/template/thought.org]" org-roam-directory)
-           :target (file "thought/%<%Y%m%d%H%M%S>-${slug}.org")
-           :unnarrowed t))
+        `(("f" "⏳ Fleeting" plain
+           ,(format "#+title: Fleeting - %s\n#+filetags: fleeting\n\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
+           :target (file "inbox/fleeting_%<%Y%m%d%H%M%S>.org")
+           :kill-buffer t)
+          ("z" "💭 Zettel" plain
+           ,(format "#+title: ${title}\n* ${title}\n%%[%s/template/zettel.org]" org-roam-directory)
+           :target (file "zettels/zettel_${slug}.org")
+           :kill-buffer t)
+          ("e" "💪 Exercise" plain
+           ,(format "#+title: ${title}\n#+filetags: exercise\n* ${title}\n%%[%s/template/exercise.org]" org-roam-directory)
+           :target (file "exercises/exercises_${slug}.org")
+           :kill-buffer t)
+          ("a" "🤸 Asana" plain
+           ,(format "#+title: ${title}\n#+filetags: yoga\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
+           :target (file "asanas/asana_${slug}.org")
+           :kill-buffer t))
         ;; Use human readable dates for dailies titles
         org-roam-dailies-capture-templates
-        '(("a" "agenda" entry
+        '(("a" "📅 Agenda" entry
            ;; TODO figure out how not to hard code this path...
            (file "~/Sync/projects/org/roam/template/agenda.org")
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n"))
-          ("d" "dream" entry "* Dream\n%?"
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n"))
-          ("t" "thought" entry "* Thought\n%?"
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")))))
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :kill-buffer t)
+          ("d" "💤 Dream" entry "* Dream\n%?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :kill-buffer t)
+          ("t" "💭 Thought" entry "* Thought\n%?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :kill-buffer t)
+          ("w" "💪 Workout" entry "* [ ] Workout [/]\n** [ ] %?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :kill-buffer t))))
 
 ;; set org-journal type to daily
 (after! org-journal
