@@ -359,6 +359,15 @@ skip exactly those headlines that do not match."
 ;; I learned the hard way not to use custom domains setting up protonmail
 ;; even though I'm pretty sure it was no issue when setitng up Thunderbird
 ;; and the bridge app itself shows your custom domain as the username
+
+;; Prefer variable pitch
+;; TODO Make mu4e hooks DRY
+(add-hook! 'mu4e-main-mode-hook #'variable-pitch-mode)
+(add-hook! 'mu4e-org-mode-hook #'variable-pitch-mode)
+(add-hook! 'mu4e-view-mode-hook #'variable-pitch-mode)
+(add-hook! 'mu4e-compose-mode-hook #'variable-pitch-mode)
+(add-hook! 'mu4e-headers-mode-hook #'variable-pitch-mode)
+
 (set-email-account! "proton"
                     '((mu4e-sent-folder       . "/proton/Sent")
                       (mu4e-drafts-folder     . "/proton/Drafts")
