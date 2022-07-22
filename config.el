@@ -332,22 +332,16 @@ skip exactly those headlines that do not match."
 ;; My preferred dashboard functions. I think I should be doing this without setq
 ;; as per the doom FAQ, but this works just fine for now
 (setq +doom-dashboard-menu-sections
-      '(("Open org-agenda" :icon
+      '(("Open Agenda" :icon
          (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
-         :when (fboundp 'org-agenda-list)
-         :action org-agenda-list)
-        ("Recently opened files" :icon
-         (all-the-icons-octicon "file-text" :face 'doom-dashboard-menu-title)
-         :action recentf-open-files)
-        ("Open project" :icon
-         (all-the-icons-octicon "briefcase" :face 'doom-dashboard-menu-title)
-         :action projectile-switch-project)
+         :when (fboundp 'org-launch-custom-agenda)
+         :action org-launch-custom-agenda)
+        ("Open Terminal" :icon
+         (all-the-icons-octicon "terminal" :face 'doom-dashboard-menu-title)
+         :action +vterm/here)
         ("Open mail" :icon
          (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
-         :action =mu4e)
-        ("Jump to bookmark" :icon
-         (all-the-icons-octicon "bookmark" :face 'doom-dashboard-menu-title)
-         :action bookmark-jump)))
+         :action =mu4e)))
 
 
 ;;; :email mu4e
