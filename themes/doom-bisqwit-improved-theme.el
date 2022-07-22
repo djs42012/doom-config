@@ -192,6 +192,18 @@ determine the exact padding."
    (magit-blame-heading     :foreground orange :background bg-alt)
    (magit-diff-removed :foreground (doom-darken red 0.2) :background (doom-blend red bg 0.1))
    (magit-diff-removed-highlight :foreground red :background (doom-blend red bg 0.2) :bold bold)
+   ;; treemacs
+   ((treemacs-root-face &override) :inherit 'variable-pitch :foreground violet :weight 'bold :height 1.3)
+   ((treemacs-file-face &override) :inherit 'variable-pitch :foreground fg :weight 'bold)
+   ((treemacs-git-unmodified-face &override) :inherit 'variable-pitch :foreground fg :weight 'bold)
+   ((treemacs-git-modified-face &override) :inherit 'variable-pitch :foreground orange :weight 'bold)
+   ((treemacs-git-ignored-face &override) :inherit 'variable-pitch :foreground fg-alt :weight 'bold)
+   ((treemacs-git-conflict-face &override) :inherit 'variable-pitch :foreground msft-yellow :weight 'bold)
+   ((treemacs-git-renamed-face &override) :inherit 'variable-pitch :foreground blue :weight 'bold)
+   ((treemacs-git-added-face &override) :inherit 'variable-pitch :foreground green :weight 'bold)
+   ((treemacs-directory-face &override) :inherit 'variable-pitch :foreground fg :weight 'bold)
+   ((doom-themes-treemacs-file-face &override) :inherit 'font-lock-doc-face :foreground blue :weight 'bold :height 1.2)
+   ((doom-themes-treemacs-root-face &override) :inherit 'font-lock-doc-face :foreground violet :weight 'bold :height 1.3)
    ;;;; markdown-mode
    (markdown-markup-face     :foreground base5)
    (markdown-header-face     :inherit 'bold :foreground red)
