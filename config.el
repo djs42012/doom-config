@@ -13,6 +13,9 @@
 ;; Start in Fullscreen Mode
 ;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
+;; Not a fan of line highlighting
+(remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
+
 ;; I prefer new windows to take me to my dashboard...for now
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
