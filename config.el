@@ -141,7 +141,7 @@
      ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , "* %T\n** %?\n%i\n** Link\n%a")
      ;; Default cenralized project templates
      ("g" "🌏 Global Project Files")
-     ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %i\n %?\n %a" :heading "Tasks" :prepend nil)
+     ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %i %?\n%a" :heading "Tasks" :prepend nil)
      ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend nil)
      ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)
      ;; Default local project templates
@@ -308,7 +308,7 @@ skip exactly those headlines that do not match."
 
 ;;; :lang lua
 ;; enable rainbow delimiters mode (not sure why this isn't default)
-(add-hook! lua-mode
+(add-hook! 'lua-mode-hook
            #'rainbow-delimiters-mode-enable)
 
 
