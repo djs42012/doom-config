@@ -187,7 +187,8 @@ determine the exact padding."
    (ediff-current-diff-Ancestor :foreground teal  :background (doom-lighten teal 0.8))
    ;;;; magit
    ((git-commit-summary &override) :foreground green)
-   ((magit-diff-hunk-heading           &override) :foreground fg    :background bg-alt :bold bold)
+   ((magit-diff-file-heading           &override) :foreground violet    :background bg-alt :bold bold)
+   ((magit-diff-hunk-heading           &override) :foreground orange    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading-highlight &override) :foreground base8 :background bg-alt :bold bold)
    (magit-blame-heading     :foreground orange :background bg-alt)
    (magit-diff-removed :foreground (doom-darken red 0.2) :background (doom-blend red bg 0.1))
