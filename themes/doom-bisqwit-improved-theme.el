@@ -224,9 +224,9 @@ determine the exact padding."
    (lsp-face-highlight-textual :inherit 'lsp-face-highlight-read)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
    ;;;; outline <built-in>
-   ((outline-1  &override) :foreground violet  :height 1.25                      :weight 'bold :extend t)
-   ((outline-2  &override) :foreground blue :height 1.1                          :weight 'bold :extend t)
-   ((outline-3  &override) :foreground yellow                       :weight 'bold :extend t)
+   ((outline-1  &override) :foreground violet  :height 1.4 :weight 'bold :extend t)
+   ((outline-2  &override) :foreground blue :height 1.3 :weight 'bold :extend t)
+   ((outline-3  &override) :foreground yellow :height 1.2 :weight 'bold :extend t)
    ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
    ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
    ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold :extend t)
