@@ -176,13 +176,13 @@
            (file "~/Sync/projects/org/roam/template/agenda.org")
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
            :kill-buffer t)
-          ("d" "💤 Dream" entry "* Dream\n%?"
+          ("d" "💤 Dream" entry "* 💤 Dream\n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
            :kill-buffer t)
-          ("t" "💭 Thought" entry "* Thought\n%?"
+          ("t" "💭 Thought" entry "* 💭 Thought\n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
            :kill-buffer t)
-          ("w" "💪 Workout" entry "* [ ] Workout [/]\n** [ ] %?"
+          ("w" "💪 Workout" entry "* [ ] 💪 Workout [/]\n** [ ] %?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
            :kill-buffer t))))
 
