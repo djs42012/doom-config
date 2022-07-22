@@ -224,7 +224,7 @@ skip exactly those headlines that do not match."
   (org-agenda nil "j"))
 
 ;; Hide noisy tag labels in agenda
-(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide")
+(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping")
 
 ;; Hide certain tags from main agenda
 ;; No longer needed with custom blocks
