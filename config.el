@@ -396,6 +396,7 @@ skip exactly those headlines that do not match."
    (list
     (cfw:org-create-file-source "Appts." "~/Sync/projects/org/appt.org" "#fdb900")
     (cfw:org-create-file-source "TODO" "~/Sync/projects/org/todo.org" "#a9a1e1")
+    ;; lunar calendar from https://github.com/PanderMusubi/lunar-phase-calendar
     (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
    )))
 
