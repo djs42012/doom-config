@@ -90,7 +90,10 @@
       ;; <leader> t --- toggle
       (:prefix-map ("t" . "toggle")
        (:when (featurep! :completion company)
-        :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)))
+        :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)
+        :desc "Command-logging"          "c"     #'command-log-mode)
+      (:prefix-map ("o" . "open")
+        :desc "Command log"          "l"     #'clm/toggle-command-log-buffer))
 ;; evil mode (I need to figure out how to get these in the previous call)
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
