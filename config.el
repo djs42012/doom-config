@@ -81,18 +81,20 @@
 
 ;;
 ;;; Keybinds
+;; TODO Fix/remove :prefix calls and combine !map calls
 (map! :leader
       :desc "Org Agenda"         "j"     #'org-launch-custom-agenda
       :desc "Doom Splash"        "k"     #'+doom-dashboard/open
       :desc "Kill buffer"        "\\"   #'kill-current-buffer
       :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
       :desc "Auto complete at point" "-" #'+company/complete
+      ;; :desc "Immediate Capture" "nrm" #'+org-roam-node-insert-immediate
       ;; <leader> t --- toggle
-      (:prefix-map ("t" . "toggle")
+      (:prefix ("t" . "toggle")
        (:when (featurep! :completion company)
         :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)
         :desc "Command-logging"          "c"     #'command-log-mode)
-      (:prefix-map ("o" . "open")
+      (:prefix ("o" . "open")
         :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
         :desc "Calendar"          "c"            #'cfw:my-personal-calendar))
 ;; evil mode (I need to figure out how to get these in the previous call)
@@ -185,6 +187,14 @@
           ("w" "💪 Workout" entry "* [ ] 💪 Workout [/]\n** [ ] %?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
            :kill-buffer t))))
+  ;; allow for immediate node insertion without popup buffer
+  ;; TODO Fix immediate capture function/keybind
+  ;; (defun org-roam-node-insert-immediate (arg &rest args)
+  ;; (interactive "P")
+  ;; (let ((args (cons arg args))
+  ;;       (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+  ;;                                                 '(:immediate-finish t)))))
+  ;;   (apply #'org-roam-node-insert args))))
 
 ;; set org-journal type to daily
 (after! org-journal
