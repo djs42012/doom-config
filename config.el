@@ -142,11 +142,11 @@
 
 (after! org
   (setq ;;org-startup-folded 'show2levels
-   org-ellipsis " [...] "
+   org-ellipsis " ..."
    org-capture-templates
    ;; Personal Todo Templates
    `(("t" "✅ Todo")
-     ("tp" "👦 Personal" entry (file+headline "todo.org" "👦 Personal") "* TODO %?" :kill-buffer t)
+     ("tp" "♉ Personal" entry (file+headline "todo.org" "♉ Personal") "* TODO %?" :kill-buffer t)
      ("ta" "🐍 Animals" entry (file+headline "todo.org" "🐍 Animals") "* TODO %?" :kill-buffer t)
      ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "🛒 Shopping") "* [ ] 🛒 %?" :kill-buffer t)
      ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?" :kill-buffer t)
@@ -173,7 +173,7 @@
 (after! org-roam
   (setq org-roam-capture-templates
         `(("f" "⏳ Fleeting" plain
-           ,(format "#+title: Fleeting - %s\n#+filetags: fleeting\n\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
+           ,(format "#+title: ##Fleeting - ${title} - %s\n#+filetags: :fleeting:\n\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
            :target (file "inbox/fleeting_%<%Y%m%d%H%M%S>.org")
            :kill-buffer t)
           ("z" "💭 Zettel" plain
@@ -181,11 +181,11 @@
            :target (file "zettels/zettel_${slug}.org")
            :kill-buffer t)
           ("e" "💪 Exercise" plain
-           ,(format "#+title: ${title}\n#+filetags: exercise\n* ${title}\n%%[%s/template/exercise.org]" org-roam-directory)
+           ,(format "#+title: ${title}\n#+filetags: :exercise:\n* ${title}\n%%[%s/template/exercise.org]" org-roam-directory)
            :target (file "exercises/exercises_${slug}.org")
            :kill-buffer t)
           ("a" "🤸 Asana" plain
-           ,(format "#+title: ${title}\n#+filetags: yoga\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
+           ,(format "#+title: ${title}\n#+filetags: :yoga:\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
            :target (file "asanas/asana_${slug}.org")
            :kill-buffer t))
         ;; Use human readable dates for dailies titles
@@ -193,25 +193,25 @@
         '(("a" "📅 Agenda" entry
            ;; TODO figure out how not to hard code this path...
            (file "~/Sync/projects/org/roam/template/agenda.org")
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
            :kill-buffer t)
           ("d" "💤 Dream" entry "* 💤 Dream\n%?"
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
            :kill-buffer t)
           ("t" "💭 Thought" entry "* 💭 Thought\n%?"
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
            :kill-buffer t)
           ("w" "💪 Workout" entry "* [ ] 💪 Workout [/]\n** [ ] %?"
-           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n\n")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
            :kill-buffer t))))
-  ;; allow for immediate node insertion without popup buffer
-  ;; TODO Fix immediate capture function/keybind
-  ;; (defun org-roam-node-insert-immediate (arg &rest args)
-  ;; (interactive "P")
-  ;; (let ((args (cons arg args))
-  ;;       (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-  ;;                                                 '(:immediate-finish t)))))
-  ;;   (apply #'org-roam-node-insert args))))
+;; allow for immediate node insertion without popup buffer
+;; TODO Fix immediate capture function/keybind
+;; (defun org-roam-node-insert-immediate (arg &rest args)
+;; (interactive "P")
+;; (let ((args (cons arg args))
+;;       (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+;;                                                 '(:immediate-finish t)))))
+;;   (apply #'org-roam-node-insert args))))
 
 ;; set org-journal type to daily
 (after! org-journal
