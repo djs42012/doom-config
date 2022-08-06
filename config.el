@@ -29,18 +29,6 @@
 ;; Reduce delay time on which-key popups - because I'm still a noob
 (setq which-key-idle-delay 1)
 
-;; Stop embark from taking over which-key paging abilities
-;; (setq which-key-use-C-h-commands t
-;;       prefix-help-command #'which-key-C-h-dispatch)
-
-;; (defadvice! fix-which-key-dispatcher-a (fn &rest args)
-;;   :around #'which-key-C-h-dispatch
-;;   (let ((keys (this-command-keys-vector)))
-;;     (if (equal (elt keys (1- (length keys))) ?\?)
-;;         (let ((keys (which-key--this-command-keys)))
-;;           (embark-bindings (seq-take keys (1- (length keys)))))
-;;       (apply fn args))))
-
 ;;permanently display workspaces in echo line
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
