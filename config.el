@@ -61,6 +61,22 @@
         typescript-mode
         web-mode))
 
+;; dired/dirvish
+(dirvish-override-dired-mode)
+(remove-hook! 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
+(map! :map dired-mode-map :ng "q" #'dirvish-quit)
+(after! dirvish
+  (setq dirvish-attributes '(vc-state
+                             subtree-state
+                             all-the-icons
+                             collapse
+                             git-msg
+                             file-size)
+        dirvish-emerge-groups '(("Recent"
+                                 (predicate . recent-files-2h))
+                                ("README"
+                                 (regex . "README")))))
+
 ;;
 ;;; Keybinds
 ;; TODO Fix/remove :prefix calls and combine !map calls
