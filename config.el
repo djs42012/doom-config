@@ -439,7 +439,7 @@ skip exactly those headlines that do not match."
 ;;; :app calendar
 ;; Create custom set of calendar sources from org files
 ;; TODO pull calendar colors from theme variables
- (defun cfw:my-personal-calendar ()
+(defun cfw:my-personal-calendar ()
   (interactive)
   (cfw:open-calendar-buffer
    :contents-sources
@@ -447,8 +447,7 @@ skip exactly those headlines that do not match."
     (cfw:org-create-file-source "Appts." "~/Sync/projects/org/appt.org" "#fdb900")
     (cfw:org-create-file-source "TODO" "~/Sync/projects/org/todo.org" "#a9a1e1")
     ;; lunar calendar from https://github.com/PanderMusubi/lunar-phase-calendar
-    (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
-   )))
+    (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa"))))
 
 ;; Show only desired holidays
 (setq calendar-holidays
