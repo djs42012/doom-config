@@ -105,6 +105,9 @@
 ;;
 ;;; Modules
 
+;;; :checkers spell
+(after! flyspell
+  (setq flyspell-duplicate-distance 0))
 
 ;;; :lang org
 (setq +org-roam-auto-backlinks-buffer t
