@@ -341,6 +341,8 @@ skip exactly those headlines that do not match."
 
 ;;; :lang web
 ;; choose extensions to open in web-mode
+(add-hook! 'web-mode-hook
+           #'rainbow-delimiters-mode-enable)
 (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
