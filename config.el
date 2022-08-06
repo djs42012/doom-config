@@ -221,7 +221,9 @@
 ;; Start org-agenda at current date and show only 7 day outlook
 (after! org-agenda
   (setq org-agenda-start-day "+0d"
-        org-agenda-span 7))
+        org-agenda-span 7
+        org-agenda-breadcrumbs-separator " ❱ "
+        org-agenda-block-separator nil))
 
 ;; Create custom block-limited agenda filters
 (defun my/org-match-at-point-p (match)
@@ -254,12 +256,14 @@ skip exactly those headlines that do not match."
 ;; Third block shows full list of main TODOs
 (setq org-agenda-custom-commands
       '(("j" "Main agenda and TODO list"
-         ((agenda "" ((org-agenda-span 1)))
+         ((agenda "" ((org-agenda-span 1)
+                      (org-agenda-overriding-header "Today\n-----")))
           (agenda "" ((org-agenda-span 9)
+                      (org-agenda-overriding-header "\nUpcoming\n--------")
                       (org-agenda-start-day "+1d")
                       (org-agenda-skip-function
                        '(my/org-agenda-skip-without-match "-hide"))))
-          (tags-todo "+main")))))
+          (tags-todo "+main" ((org-agenda-overriding-header "\nTODO\n----")))))))
 
 ;;; ;; Create function to launch custom agenda
 ;; TODO allow for arguments when launching custom agenda
