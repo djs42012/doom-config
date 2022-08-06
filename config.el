@@ -6,12 +6,9 @@
 
 ;;
 ;;; UI/UX
-(setq doom-theme 'doom-bisqwit-improved
+(setq doom-theme 'doom-bisqwit
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Quicksand" :weight 'medium :size 16))
-
-;; Start in Fullscreen Mode
-;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; Not a fan of line highlighting
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
