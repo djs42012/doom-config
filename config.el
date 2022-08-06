@@ -80,27 +80,43 @@
 ;;
 ;;; Keybinds
 ;; TODO Fix/remove :prefix calls and combine !map calls
+;; Create custom function to kill buffer and close window
+(defun djs-kill-buffer-and-close-window ()
+  "Kill the current buffer and close the window"
+  (interactive)
+  (kill-current-buffer)
+  (+workspace/close-window-or-workspace))
 (map! :leader
       :desc "Org Agenda"         "j"     #'org-launch-custom-agenda
       :desc "Doom Splash"        "k"     #'+doom-dashboard/open
       :desc "Kill buffer"        "\\"   #'kill-current-buffer
-      :desc "Close window"       "DEL" #'+workspace/close-window-or-workspace
+      :desc "Close window"       "DEL" #'djs-kill-buffer-and-close-window
       :desc "Auto complete at point" "-" #'+company/complete
+      :desc "Rename file" "R" #'doom/move-this-file
       ;; :desc "Immediate Capture" "nrm" #'+org-roam-node-insert-immediate
       ;; <leader> t --- toggle
       (:prefix ("t" . "toggle")
        (:when (featurep! :completion company)
         :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)
-        :desc "Command-logging"          "c"     #'command-log-mode)
+       :desc "Command-logging"          "c"     #'command-log-mode
+       :desc "Rainbow mode"          "R"     #'rainbow-mode
+       :desc "Writegood mode"          "G"     #'writegood-mode)
       (:prefix ("o" . "open")
-        :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
-        :desc "Calendar"          "c"            #'cfw:my-personal-calendar))
+       :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
+       :desc "Calendar"          "c"            #'cfw:my-personal-calendar
+       :desc "All Mail"          "M"            #'djs-mu4e-all-mail)
+      )
 ;; evil mode (I need to figure out how to get these in the previous call)
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
       :n "] TAB" #'+workspace/switch-right)
-
+;; mode specific bindings
+(map! :map Info-mode-map
+      :n "<down>" #'Info-forward-node
+      :n "<up>" #'Info-backward-node
+      :n "<left>" #'Info-history-back
+      :n "<right>" #'Info-history-forward)
 
 ;;
 ;;; Modules
@@ -360,6 +376,11 @@ skip exactly those headlines that do not match."
   (interactive)
   (org-agenda-list)
   (+zen/toggle))
+(defun djs-mu4e-all-mail ()
+  "Start mu4e and jump to All mail folder of main inbox"
+  (interactive)
+  (mu4e t)
+  (mu4e~headers-jump-to-maildir "/proton/All mail"))
 
 ;; My preferred dashboard functions. I think I should be doing this without setq
 ;; as per the doom FAQ, but this works just fine for now
@@ -375,9 +396,9 @@ skip exactly those headlines that do not match."
         ("Open Terminal" :icon
          (all-the-icons-octicon "terminal" :face 'doom-dashboard-menu-title)
          :action +vterm/here)
-        ("Open mail" :icon
+        ("Open Mail" :icon
          (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
-         :action =mu4e)))
+         :action djs-mu4e-all-mail)))
 
 
 ;;; :email mu4e
