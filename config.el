@@ -39,12 +39,9 @@
   (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
   (+workspace/display))
 
-;; Set visual line mode globally. I can't remember how I got here exactly but
-;; doom's word-wrap module wasn't wrapping in all the cases I'd expect it to,
-;; particularly in org-mode. I also couldn't figure out why visual-line-mode
+;; I couldn't figure out why visual-line-mode
 ;; wasn't causing editing commands to act on visual lines rather than logical
 ;; lines like the docs say they should, so I changed the keys myself.
-(global-visual-line-mode)
 (after! evil
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
