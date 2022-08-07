@@ -79,7 +79,6 @@
 
 ;;
 ;;; Keybinds
-;; TODO Fix/remove :prefix calls and combine !map calls
 ;; Create custom function to kill buffer and close window
 (defun djs-kill-buffer-and-close-window ()
   "Kill the current buffer and close the window"
@@ -93,8 +92,6 @@
       :desc "Close window"       "DEL" #'djs-kill-buffer-and-close-window
       :desc "Auto complete at point" "-" #'+company/complete
       :desc "Rename file" "R" #'doom/move-this-file
-      ;; :desc "Immediate Capture" "nrm" #'+org-roam-node-insert-immediate
-      ;; <leader> t --- toggle
       (:prefix ("t" . "toggle")
        (:when (featurep! :completion company)
         :desc "Auto-completion"          "p"     #'+company/toggle-auto-completion)
@@ -106,12 +103,10 @@
        :desc "Calendar"          "c"            #'cfw:my-personal-calendar
        :desc "All Mail"          "M"            #'djs-mu4e-all-mail)
       )
-;; evil mode (I need to figure out how to get these in the previous call)
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
       :n "] TAB" #'+workspace/switch-right)
-;; mode specific bindings
 (map! :map Info-mode-map
       :n "<down>" #'Info-forward-node
       :n "<up>" #'Info-backward-node
@@ -141,34 +136,33 @@
 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
 
 (after! org
-  (setq ;;org-startup-folded 'show2levels
-   org-ellipsis " ..."
-   org-capture-templates
-   ;; Personal Todo Templates
-   `(("t" "✅ Todo")
-     ("tp" "♉ Personal" entry (file+headline "todo.org" "♉ Personal") "* TODO %?" :kill-buffer t)
-     ("ta" "🐍 Animals" entry (file+headline "todo.org" "🐍 Animals") "* TODO %?" :kill-buffer t)
-     ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "🛒 Shopping") "* [ ] 🛒 %?" :kill-buffer t)
-     ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?" :kill-buffer t)
-     ("to" "🖥 Office" entry (file+headline "todo.org" "🖥 Office") "* TODO %?" :kill-buffer t)
-     ("tm" "⁉ Misc." entry (file+headline "todo.org" "⁉ Inbox") "* TODO %?" :kill-buffer t)
-     ("c" "💻 Code")
-     ("ce" "🇪 Emacs" entry (file+headline "code.org" "Emacs") "* %?" :kill-buffer t)
-     ("ca" "🇦 Awesome" entry (file+headline "code.org" "Awesome") "* %?" :kill-buffer t)
-     ("cm" "⁉ Misc" entry (file+headline "code.org" "Inbox") "* %?" :kill-buffer t)
-     ("a" "📅 Appointment" entry (file+headline "appt.org" "Inbox") "* %?\n<%(org-read-date)>" :kill-buffer t)
-     ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , "* %T\n** %?\n%i\n** Link\n%a")
-     ;; Default cenralized project templates
-     ("g" "🌏 Global Project Files")
-     ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %i %?\n%a" :heading "Tasks" :prepend nil :kill-buffer t)
-     ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend nil :kill-buffer t)
-     ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend nil :kill-buffer t)
-     ;; Default local project templates
-     ("l" "🔒 Local Project Files")
-     ("lt" "✅ Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %i\n%?\n%a" :prepend nil :kill-buffer t)
-     ("ln" "✏ Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend nil :kill-buffer t)
-     ("lc" "🏁 Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend nil :kill-buffer t)
-     )))
+  (setq org-ellipsis " ..."
+        org-capture-templates
+        ;; Personal Todo Templates
+        `(("t" "✅ Todo")
+          ("tp" "♉ Personal" entry (file+headline "todo.org" "♉ Personal") "* TODO %?" :kill-buffer t)
+          ("ta" "🐍 Animals" entry (file+headline "todo.org" "🐍 Animals") "* TODO %?" :kill-buffer t)
+          ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "🛒 Shopping") "* [ ] 🛒 %?" :kill-buffer t)
+          ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?" :kill-buffer t)
+          ("to" "🖥 Office" entry (file+headline "todo.org" "🖥 Office") "* TODO %?" :kill-buffer t)
+          ("tm" "⁉ Misc." entry (file+headline "todo.org" "⁉ Inbox") "* TODO %?" :kill-buffer t)
+          ("c" "💻 Code")
+          ("ce" "🇪 Emacs" entry (file+headline "code.org" "Emacs") "* %?" :kill-buffer t)
+          ("ca" "🇦 Awesome" entry (file+headline "code.org" "Awesome") "* %?" :kill-buffer t)
+          ("cm" "⁉ Misc" entry (file+headline "code.org" "Inbox") "* %?" :kill-buffer t)
+          ("a" "📅 Appointment" entry (file+headline "appt.org" "Inbox") "* %?\n<%(org-read-date)>" :kill-buffer t)
+          ;; ("n" "Note" entry (file+headline "notes.org" "Inbox") , "* %T\n** %?\n%i\n** Link\n%a")
+          ;; Default cenralized project templates
+          ("g" "🌏 Global Project Files")
+          ("gt" "✅ Project todo" entry #'+org-capture-central-project-todo-file "* TODO %i %?\n%a" :heading "Tasks" :prepend nil :kill-buffer t)
+          ("gn" "✏ Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend nil :kill-buffer t)
+          ("gc" "🏁 Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend nil :kill-buffer t)
+          ;; Default local project templates
+          ("l" "🔒 Local Project Files")
+          ("lt" "✅ Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %i\n%?\n%a" :prepend nil :kill-buffer t)
+          ("ln" "✏ Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend nil :kill-buffer t)
+          ("lc" "🏁 Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend nil :kill-buffer t)
+          )))
 
 (after! org-roam
   (setq org-roam-capture-templates
@@ -204,14 +198,6 @@
           ("w" "💪 Workout" entry "* [ ] 💪 Workout [/]\n** [ ] %?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
            :kill-buffer t))))
-;; allow for immediate node insertion without popup buffer
-;; TODO Fix immediate capture function/keybind
-;; (defun org-roam-node-insert-immediate (arg &rest args)
-;; (interactive "P")
-;; (let ((args (cons arg args))
-;;       (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-;;                                                 '(:immediate-finish t)))))
-;;   (apply #'org-roam-node-insert args))))
 
 ;; set org-journal type to daily
 (after! org-journal
@@ -274,14 +260,6 @@ skip exactly those headlines that do not match."
 
 ;; Hide noisy tag labels in agenda
 (setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping")
-
-;; Hide certain tags from main agenda
-;; No longer needed with custom blocks
-;; (defun org-my-auto-exclude-fn (tag)
-;;   (if (cond
-;;        ((string= tag "hide")))
-;;       (concat "-" tag)))
-;; (setq org-agenda-auto-exclude-function 'org-my-auto-exclude-fn)
 
 
 ;;; info mode
@@ -421,7 +399,7 @@ skip exactly those headlines that do not match."
         mu4e-index-update-error-warning nil
         mu4e--update-buffer-height 2
         mu4e-update-interval 900)
- (setq mu4e-contexts
+  (setq mu4e-contexts
         (list
          ;; proton
          (make-mu4e-context
