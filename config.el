@@ -102,8 +102,7 @@
        :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
        :desc "Calendar"          "c"            #'cfw:my-personal-calendar
        :desc "All Mail"          "M"            #'djs-mu4e-all-mail
-       :desc "Dirvish"          "e"            #'dirvish)
-      )
+       :desc "Dirvish"          "e"            #'dirvish))
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
@@ -468,4 +467,4 @@ skip exactly those headlines that do not match."
               holiday-hebrew-holidays
               holiday-solar-holidays))
 (fset 'mu4e-read-all
-   (kmacro-lambda-form [?v ?G ?! ?x ?y ?v ?G] 0 "%d"))
+      (kmacro-lambda-form [?v ?G ?! ?x ?y ?v ?G] 0 "%d"))
