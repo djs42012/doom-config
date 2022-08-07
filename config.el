@@ -101,12 +101,14 @@
       (:prefix ("o" . "open")
        :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
        :desc "Calendar"          "c"            #'cfw:my-personal-calendar
-       :desc "All Mail"          "M"            #'djs-mu4e-all-mail)
+       :desc "All Mail"          "M"            #'djs-mu4e-all-mail
+       :desc "Dirvish"          "e"            #'dirvish)
       )
 (map! :n "[w" #'evil-window-prev
       :n "]w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
-      :n "] TAB" #'+workspace/switch-right)
+      :n "] TAB" #'+workspace/switch-right
+      :g "M-p" #'yank-from-kill-ring)
 (map! :map Info-mode-map
       :n "<down>" #'Info-forward-node
       :n "<up>" #'Info-backward-node
