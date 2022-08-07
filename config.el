@@ -142,7 +142,7 @@
         `(("t" "✅ Todo")
           ("tp" "♉ Personal" entry (file+headline "todo.org" "♉ Personal") "* TODO %?" :kill-buffer t)
           ("ta" "🐍 Animals" entry (file+headline "todo.org" "🐍 Animals") "* TODO %?" :kill-buffer t)
-          ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "🛒 Shopping") "* [ ] 🛒 %?" :kill-buffer t)
+          ("ts" "🛒 Shopping List" entry (file+headline "todo.org" "🛒 Shopping") "* [ ] %?" :kill-buffer t)
           ("th" "🏡 Home" entry (file+headline "todo.org" "🏡 Home") "* TODO %?" :kill-buffer t)
           ("to" "🖥 Office" entry (file+headline "todo.org" "🖥 Office") "* TODO %?" :kill-buffer t)
           ("tm" "⁉ Misc." entry (file+headline "todo.org" "⁉ Inbox") "* TODO %?" :kill-buffer t)
