@@ -114,6 +114,8 @@
       :n "<up>" #'Info-backward-node
       :n "<left>" #'Info-history-back
       :n "<right>" #'Info-history-forward)
+(map! :map #'mu4e-headers-mode-map
+      :n "M-+" #'mu4e-read-all)
 
 ;;
 ;;; Modules
@@ -465,3 +467,5 @@ skip exactly those headlines that do not match."
       (append holiday-general-holidays
               holiday-hebrew-holidays
               holiday-solar-holidays))
+(fset 'mu4e-read-all
+   (kmacro-lambda-form [?v ?G ?! ?x ?y ?v ?G] 0 "%d"))
