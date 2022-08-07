@@ -408,34 +408,63 @@ skip exactly those headlines that do not match."
 
 
 ;;; :email mu4e
-;; I learned the hard way not to use custom domains setting up protonmail
-;; even though I'm pretty sure it was no issue when setitng up Thunderbird
-;; and the bridge app itself shows your custom domain as the username
+;; https://groups.google.com/g/mu-discuss/c/kkhTgTgvlhc
+(defun file-string (file)
+  "Read the contents of a file and return as a string."
+  (with-current-buffer (find-file-noselect file)
+    (buffer-string)))
 
-;; Prefer variable pitch
-;; TODO Make mu4e hooks DRY
-(add-hook! 'mu4e-main-mode-hook #'variable-pitch-mode)
-(add-hook! 'mu4e-org-mode-hook #'variable-pitch-mode)
-(add-hook! 'mu4e-view-mode-hook #'variable-pitch-mode)
-(add-hook! 'mu4e-compose-mode-hook #'variable-pitch-mode)
-(add-hook! 'mu4e-headers-mode-hook #'variable-pitch-mode)
+;; set default update interval
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+(after! mu4e
+  (setq mu4e-get-mail-commant "mbsync -a"
+        mu4e-index-update-error-warning nil
+        mu4e--update-buffer-height 2
+        mu4e-update-interval 900)
+ (setq mu4e-contexts
+        (list
+         ;; proton
+         (make-mu4e-context
+          :name "proton"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/proton" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder       . "/proton/Sent")
+                  (mu4e-drafts-folder     . "/proton/Drafts")
+                  (mu4e-trash-folder      . "/proton/Trash")
+                  (mu4e-refile-folder     . "/proton/All Mail")
+                  (smtpmail-smtp-user     . "d.sharfi@protonmail.com")
+                  (smtpmail-auth-credentials . "~/.authinfo.gpg")
+                  (smtpmail-smtp-server   . "127.0.0.1")
+                  (smtpmail-smtp-service   . 1025)
+                  (smtpmail-stream-type   . starttls)
+                  (user-mail-address      . "d.sharfi@protonmail.com")    ;; only needed for mu < 1.4
+                  (mu4e-compose-signature . "\n-David")
+                  ;; (mu4e-compose-signature . (file-string "~/Sync/Templates/poa-signature.html"))
+                  (+mu4e-personal-addresses . ("david@djs.gg"
+                                               "catchall@djs.gg"
+                                               "d.sharfi@protonmail.com"))
+                  ))
 
-(set-email-account! "proton"
-                    '((mu4e-sent-folder       . "/proton/Sent")
-                      (mu4e-drafts-folder     . "/proton/Drafts")
-                      (mu4e-trash-folder      . "/proton/Trash")
-                      (mu4e-refile-folder     . "/proton/All Mail")
-                      (smtpmail-smtp-user     . "d.sharfi@protonmail.com")
-                      (smtpmail-auth-credentials . "~/.authinfo.gpg")
-                      (smtpmail-smtp-server   . "127.0.0.1")
-                      (smtpmail-smtp-service   . 1025)
-                      (smtpmail-stream-type   . starttls)
-                      (user-mail-address      . "d.sharfi@protonmail.com")    ;; only needed for mu < 1.4
-                      (mu4e-compose-signature . "---\nDavid")
-                      (+mu4e-personal-addresses . ("david@djs.gg"
-                                                   "catchall@djs.gg"
-                                                   "d.sharfi@protonmail.com")))
-                    t)
+         ;; work
+         (make-mu4e-context
+          :name "Plus One"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/poa" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-drafts-folder  . "/poa/Drafts")
+                  (mu4e-trash-folder      . "/poa/Deleted Items")
+                  (mu4e-refile-folder  . "/poa/inbox")
+                  (mu4e-sent-folder  . "/poa/Sent Items")
+                  (smtpmail-smtp-user     . "dsharfi@plusoneair.com")
+                  (smtpmail-smtp-server . "smtp.office365.com")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-stream-type . starttls)
+                  (user-mail-address . "dsharfi@plusoneair.com")
+                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
+                  )))))
 
 
 ;;; :app calendar
