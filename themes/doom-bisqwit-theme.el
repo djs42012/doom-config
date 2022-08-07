@@ -132,7 +132,8 @@ determine the exact padding."
    (css-selector             :foreground blue)
 
    ;; dired/dirvish
-   ((diredfl-dir-name &override) :foreground green)
+   ((diredfl-dir-name &override) :foreground blue)
+   ((dirvish-hl-line &override) :background region)
 
    ;; Doom dashboard
    ((doom-dashboard-menu-title &override) :foreground fg :slant 'italic)
