@@ -87,7 +87,7 @@ determine the exact padding."
   ;; Base theme face overrides
   (((hl-line &override) :background region)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
-   ((line-number-current-line &override) :foreground bright-yellow :weight 'bold)
+   (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background bg :foreground fg )
    ((secondary-selection &override) :background base0)
    ((highlight-quoted-symbol &override) :foreground yellow)
