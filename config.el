@@ -32,6 +32,13 @@
 ;; Reduce delay time on which-key popups - because I'm still a noob
 (setq which-key-idle-delay 1)
 
+;; Custom function to invoke symbol at point
+(defun djs-invoke-vertico-candidate()
+  "Interactively invoke the selected vertico candidate"
+  (interactive)
+  (call-interactively
+   (intern (vertico--candidate))))
+
 ;;permanently display workspaces in echo line
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
@@ -106,10 +113,11 @@
        :desc "Calendar"          "c"            #'cfw:my-personal-calendar
        :desc "All Mail"          "M"            #'djs-mu4e-all-mail
        :desc "Dirvish"          "e"            #'dirvish))
-(map! :n "[w" #'evil-window-prev
-      :n "]w" #'evil-window-next
+(map! :n "[ w" #'evil-window-prev
+      :n "] w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
       :n "] TAB" #'+workspace/switch-right
+      :g "M-s-i" #'djs-invoke-vertico-candidate
       :g "M-p" #'yank-from-kill-ring)
 (map! :map Info-mode-map
       :n "<down>" #'Info-forward-node
