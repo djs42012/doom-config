@@ -194,7 +194,8 @@ determine the exact padding."
    (diff-refine-removed  :inherit 'diff-removed)
 
    ;; Man
-   ((Man-overstrike &override) :inherit 'bold  :height 1.05 :foreground violet)
+   (Man-overstrike :inherit 'outline-1)
+   ((Man-underline &override) :foreground blue)
 
    ;; markdown-mode
    (markdown-markup-face     :foreground base5)
