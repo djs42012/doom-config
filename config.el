@@ -471,3 +471,10 @@ skip exactly those headlines that do not match."
               holiday-solar-holidays))
 (fset 'mu4e-read-all
       (kmacro-lambda-form [?v ?G ?! ?x ?y ?v ?G] 0 "%d"))
+
+;; command-log-mode
+(after! command-log-mode
+  (setq command-log-mode-is-global t
+        command-log-mode-open-log-turns-on-mode t
+        command-log-mode-auto-show t
+        command-log-mode-window-font-size 1))
