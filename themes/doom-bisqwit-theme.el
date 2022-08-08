@@ -182,6 +182,7 @@ determine the exact padding."
    ((magit-diff-file-heading           &override) :foreground violet    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading           &override) :foreground orange    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading-highlight &override) :foreground orange :background bg-alt :bold bold)
+   ((magit-header-line &override) :foreground violet :background bg :height 1.3 :box `(:line-width -1 :color ,fg))
    (magit-blame-heading     :foreground orange :background bg-alt)
    (magit-diff-removed :foreground (doom-darken red 0.5) :background bg)
    (magit-diff-removed-highlight :foreground red :background bg)
