@@ -10,6 +10,9 @@
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Quicksand" :weight 'medium :size 16))
 
+;; configure trash
+(setq delete-by-moving-to-trash t
+      trash-directory "~/.local/share/Trash/files")
 ;; Not a fan of line highlighting
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
 
