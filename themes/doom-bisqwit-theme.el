@@ -42,13 +42,15 @@ determine the exact padding."
    (base8           '("#DFDFDF" "#dfdfdf" "white"        ))
    (fg              '("#d4d4d4" "#d0d0d0" "brightwhite"  ))
    (fg-alt          '("#a9a5aa" "#afafaf" "brightwhite"  ))
-   (red             '("#b95959" "#d75f5f" "red"          ))
+   ;; (red             '("#b95959" "#d75f5f" "red"          ))
+   (red             '("#c16b6b" "#d75f5f" "red"          ))
    (orange          '("#cd9731" "#d7af5f" "brightred"    ))
    (green           '("#93e079" "#87d787" "brightgreen"  ))
    (dark-green      '("#008000" "#008000" "brightgreen"  ))
    (teal            '("#4db5bd" "#5fafaf" "brightgreen"  ))
    (yellow          '("#dcdcaa" "#d7d7af" "yellow"       ))
    (bright-yellow   '("#fdb900" "#ffaf00" "yellow"       ))
+   (bright-ylw-alt  '("#d7d700" "#d7d700" "brightyellow" ))
    (blue            '("#96CBFE" "#87d7ff" "brightblue"   ))
    (dark-blue       '("#2257A0" "#005faf" "blue"         ))
    (magenta         '("#c586c0" "#d787af" "magenta"      ))
@@ -58,9 +60,10 @@ determine the exact padding."
    (light-cyan      '("#9cdcfe" "#afd7ff" "brightcyan"   ))
    (turquoise       '("#00d7ff" "#00d7ff" "brightblue"   ))
    (grey            '("#5B6268" "#525252" "brightblack"  ))
+   (light-grey            '("#252525" "#525252" "brightblack"  ))
 
    ;; face categories -- required for all themes
-   (highlight      fg-alt)
+   (highlight      `(,(doom-lighten (car base0) 0.15) ,@(doom-lighten (cdr base0) 0.35)))
    (selection      blue)
    (builtin        yellow)
    (comments       red)
@@ -71,7 +74,7 @@ determine the exact padding."
    (keywords       magenta)
    (methods        yellow)
    (operators      green)
-   (type           dark-green)
+   (type           (doom-lighten dark-green 0.2))
    (strings        cyan)
    (variables      fg-alt)
    (numbers        violet)
@@ -85,13 +88,18 @@ determine the exact padding."
 
 
   ;; Base theme face overrides
-  (((hl-line &override) :background region)
+  (((hl-line &override) :background base1)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
+   ((link &override) :foreground blue)
+   (show-paren-match :foreground bg :background red)
+   (cursor :foreground fg :distant-foreground bg)
+   (lazy-highlight :background blue :foreground bg :distant-foreground fg)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
-   (tooltip :background bg :foreground fg )
-   ((secondary-selection &override) :background base0)
+   (tooltip :background base1 :foreground fg )
+   ((secondary-selection &override) :background base1)
    ((highlight-quoted-symbol &override) :foreground yellow)
    ((font-lock-preprocessor-face &override) :inherit 'bold :foreground magenta)
+   ((help-key-binding &override) :foreground magenta :background bg :)
    ((minibuffer-prompt &override) :foreground blue)
 
    ;; modeline
@@ -99,8 +107,8 @@ determine the exact padding."
     :background bg :foreground fg
     :box `(:line-width -1 :color ,fg))
    (mode-line-inactive
-    :background bg :foreground fg
-    :box `(:line-width -1 :color ,violet))
+    :background bg :foreground grey
+    :box `(:line-width -1 :color ,grey))
    (mode-line-emphasis :foreground fg)
    (doom-modeline-bar :background bg)
 
@@ -108,23 +116,21 @@ determine the exact padding."
    ((calendar-month-header &override) :foreground violet :weight 'bold)
    ((calendar-weekday-header &override) :foreground blue :weight 'bold)
    ((calendar-weekend-header &override) :foreground red :weight 'bold)
-   ((cfw:face-grid &override) :foreground base0)
+   ((cfw:face-grid &override) :foreground fg)
    ((cfw:face-title &override) :foreground violet)
    ((cfw:face-today-title &override) :background green)
    ((cfw:face-toolbar-button-on &override) :foreground bright-yellow)
+   ((cfw:face-toolbar &override) :foreground bg :background bg)
    ((cfw:face-saturday &override) :foreground red)
    ((cfw:face-sunday &override) :foreground red)
    ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
-
-   ;; centaur-tabs
-   (centaur-tabs-unselected :background bg-alt :foreground base4)
 
    ;; company
    ((company-tooltip-common &override) :foreground blue :weight 'bold)
    ((company-tooltip-selection &override) :background base2 )
    ((company-scrollbar-fg &override)   :background red)
    ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
-   ((company-tooltip-scrollbar-thumb &override) :foreground red)
+   ((company-tooltip &override) :background base0)
 
    ;; css-mode / scss-mode
    (css-proprietary-property :foreground orange)
@@ -133,12 +139,13 @@ determine the exact padding."
 
    ;; dired/dirvish
    ((diredfl-dir-name &override) :foreground blue)
-   ((dirvish-hl-line &override) :background region)
+   ((dirvish-hl-line &override) :background base1)
 
-   ;; Doom dashboard
+   ;; Doom
    ((doom-dashboard-menu-title &override) :foreground fg :slant 'italic)
    ((doom-dashboard-menu-desc &override) :foreground violet)
    ((doom-dashboard-footer-icon &override) :foreground red)
+   ((doom-themes-org-hash-tag &override) :foreground green :box nil)
 
    ;; ediff
    (ediff-current-diff-A        :foreground red   :background (doom-lighten red 0.8))
@@ -146,21 +153,33 @@ determine the exact padding."
    (ediff-current-diff-C        :foreground blue  :background (doom-lighten blue 0.8))
    (ediff-current-diff-Ancestor :foreground teal  :background (doom-lighten teal 0.8))
 
+   ;; fringe
+   (fringe :foreground fg)
+
    ;; embark
    ((embark-keybinding &override) :foreground magenta)
+
+   ;; gnus
+   ((gnus-header-content &override) :foreground green)
+   ((gnus-header-subject &override) :foreground magenta)
+   ((gnus-header-from &override) :foreground violet)
+   ((gnus-header-name &override) :foreground cyan)
+   ((gnus-button &override) :underline t)
+   ((gnus-cite-1 &override) :foreground blue)
+   ((shr-link &override) :foreground cyan :underline t)
 
    ;; helm
    (helm-candidate-number :background blue :foreground bg)
 
    ;; Info-mode
    ((info-xref &override) :inherit 'link :foreground blue)
-   ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground blue)
+   ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground fg-alt)
    ((info-menu-star &override) :foreground fg)
    ((info-menu-header &override) :inherit 'variable-pitch :weight 'bold :foreground blue)
    ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground violet :height 1.3)
    ((info-title-3 &override) :inherit 'info-title-4  :height 1.3)
    ((info-title-2 &override) :inherit 'info-title-3  :height 1.3)
-   ((info-title-1 &override) :inherit 'info-title-2  :height 1.4)
+   ((info-title-1 &override) :inherit 'info-title-2  :height 1.5)
    ((Info-quoted &override) :inherit 'fixed-pitch-serif :foreground bright-yellow :background bg)
 
    ;; ivy
@@ -177,12 +196,14 @@ determine the exact padding."
    (lsp-face-highlight-textual :inherit 'lsp-face-highlight-read)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
 
+
    ;; magit
    ((git-commit-summary &override) :foreground green)
    ((magit-diff-file-heading           &override) :foreground violet    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading           &override) :foreground orange    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading-highlight &override) :foreground orange :background bg-alt :bold bold)
-   ((magit-header-line &override) :foreground violet :background bg :height 1.3 :box `(:line-width -1 :color ,fg))
+   ((magit-header-line &override) :foreground violet :background bg :height 1.5 :box `(:line-width -1 :color ,fg))
+   ((magit-section-highlight &override) :background base1)
    (magit-blame-heading     :foreground orange :background bg-alt)
    (magit-diff-removed :foreground (doom-darken red 0.5) :background bg)
    (magit-diff-removed-highlight :foreground red :background bg)
@@ -192,22 +213,49 @@ determine the exact padding."
    (diff-removed  :forground red :background (doom-blend red bg 0.35))
    (diff-refine-added  :inherit 'diff-added)
    (diff-refine-removed  :inherit 'diff-removed)
+   (git-commit-nonempty-second-line :foreground fg :slant 'italic)
 
    ;; Man
    (Man-overstrike :inherit 'outline-1)
    ((Man-underline &override) :foreground blue)
 
    ;; markdown-mode
-   (markdown-markup-face     :foreground base5)
+   (markdown-markup-face     :foreground fg)
+   (markdown-link-face     :inherit 'org-link)
+   (markdown-url-face     :inherit 'org-link :foreground cyan)
+   (markdown-list-face     :foreground fg-alt)
+   ((markdown-strikethrough-face &override)     :foreground fg-alt)
+   (markdown-reference-face     :inherit 'org-link)
+   (markdown-html-attr-name-face     :inherit 'web-mode-html-attr-name-face)
+   (markdown-html-attr-value-face     :inherit 'web-mode-html-attr-value-face)
+   (markdown-html-tag-delimiter-face     :inherit 'web-mode-html-tag-bracket-face)
    (markdown-header-face     :inherit 'bold :foreground red)
    ((markdown-code-face &override)       :background base1)
-   (mmm-default-submode-face :background base1)
+   (markdown-header-face :foreground violet :weight 'bold)
+   ((markdown-header-face-1  &override) :foreground violet  :height 1.5 :weight 'bold)
+   ((markdown-header-face-2  &override) :foreground blue :height 1.4 :weight 'bold)
+   ((markdown-header-face-3  &override) :foreground yellow :height 1.3 :weight 'bold)
+   ((markdown-header-face-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
+   ((markdown-header-face-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold)
+   ((markdown-header-face-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold)
+   (markdown-bold-face :foreground violet :weight 'bold)
+   (markdown-italic-face :foreground red :slant 'italic)
+   (markdown-header-face :foreground violet :weight 'bold)
+   (markdown-inline-code-face :foreground bright-yellow)
+   (mmm-default-submode-face :background base0)
 
    ;; mu4e
    (mu4e-highlight-face :background bg :inherit 'bold)
-   (mu4e-unread-face :foreground violet :inherit 'bold)
-   (mu4e-header-face :foreground fg)
-   (mu4e-header-title-face :foreground magenta)
+   ((mu4e-header-highlight-face &override) :inherit 'bold :underline nil :background base1)
+   ((mu4e-flagged-face &override) :foreground bright-yellow)
+   ((mu4e-replied-face &override) :foreground green)
+   (mu4e-unread-face :foreground cyan :inherit 'bold)
+   (mu4e-header-key-face :foreground fg)
+   (mu4e-header-face :foreground fg-alt)
+   (mu4e-related-face :foreground fg-alt)
+   ((mu4e-trashed-face &override) :inherit 'org-done :strike-through 't)
+   (mu4e-header-title-face :foreground blue)
+   (mu4e-header-title-key :foreground fg)
    ((mu4e-title-face &override) :inherit 'outline-1)
    (message-header-name :foreground blue)
 
@@ -222,42 +270,61 @@ determine the exact padding."
 
    ;; org
    ((org-todo &override) :foreground bright-yellow)
+   ((org-done &override) :strike-through t)
+   ((org-headline-done &override) :strike-through t)
    ((org-tag &override)   :foreground green :background nil
     :box `(:line-width -1 :color ,green :style 'released-button))
    ((org-date &override)  :foreground bright-yellow :background nil)
    ((org-special-keyword &override)  :foreground fg-alt)
    ((org-drawer          &override)  :foreground base5)
-   (org-ellipsis :underline nil :box nil :foreground fg :background bg)
+   (org-ellipsis :underline nil :box nil :foreground fg-alt :background bg :height 0.75)
    (org-link :inherit 'link :foreground blue)
-   ((org-block &override) :background base0)
-   ((org-block-begin-line &override) :foreground fg :slant 'italic)
-   ((org-quote &override) :background base0)
+   ((org-block &override) :background bg)
+   ((org-block-begin-line &override) :foreground bright-yellow :slant 'italic :height 0.8)
+   ((org-quote &override) :background bg :extend t)
    ((org-table &override) :foreground fg)
+   ((org-list-dt &override) :foreground blue)
    (org-agenda-structure :inherit `outline-1)
    (org-upcoming-deadline         :foreground base8)
    (org-upcoming-distant-deadline :foreground fg)
    (org-scheduled                 :foreground fg)
    (org-scheduled-today           :foreground fg)
    (org-scheduled-previously      :foreground base8)
+   ((org-priority &override) :foreground red)
    ((org-agenda-date &override) :foreground blue)
-   ((org-agenda-date-today &override) :foreground green)
+   ((org-agenda-date-today &override) :foreground green :slant 'italic :height 1.1)
    ((org-agenda-date-weekend &override) :foreground blue)
 
+   ;; org-modern
+   (org-modern-label :inherit 'org-todo :foreground bright-yellow :weight 'bold)
+   (org-modern-todo :inherit 'org-modern-label)
+   (org-modern-done  :inherit 'org-done)
+   (org-modern-tag  :inherit 'org-tag  :height 0.9 :box nil)
+   (org-modern-time-active :foreground bright-yellow :background nil)
+   (org-modern-time-inactive :foreground fg-alt :background nil)
+   ((org-modern-date-active &override)  :foreground bright-yellow :background nil)
+   ((org-modern-date-inactive &override)  :foreground fg-alt :background nil)
+   ((org-modern-priority &override) :background nil)
+
    ;; outline
-   ((outline-1  &override) :foreground violet  :height 1.4 :weight 'bold :extend t)
-   ((outline-2  &override) :foreground blue :height 1.3 :weight 'bold :extend t)
-   ((outline-3  &override) :foreground yellow :height 1.2 :weight 'bold :extend t)
-   ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
-   ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
-   ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold :extend t)
-   ((outline-7  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold :extend t)
-   ((outline-8  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold :extend t)
+   ((outline-1  &override) :foreground violet  :height 1.5 :weight 'bold)
+   ((outline-2  &override) :foreground blue :height 1.3 :weight 'bold)
+   ((outline-3  &override) :foreground yellow :height 1.2 :weight 'bold)
+   ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
+   ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold)
+   ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold)
+   ((outline-7  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
+   ((outline-8  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold)
 
    ;; rainbow-delimiters
-   ((rainbow-delimiters-depth-1-face &override) :foreground bright-yellow)
+   ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw-alt)
    ((rainbow-delimiters-depth-2-face &override) :foreground magenta)
    ((rainbow-delimiters-depth-3-face &override) :foreground turquoise)
    ((rainbow-delimiters-depth-4-face &override) :foreground green)
+
+   ;; rjsx mode
+   (rjsx-text :foreground fg :slant 'italic)
+   (rjsx-tag :foreground green)
 
    ;; solaire-mode
    (solaire-mode-line-face
@@ -286,6 +353,9 @@ determine the exact padding."
    ((doom-themes-treemacs-file-face &override) :inherit 'font-lock-doc-face :foreground blue :weight 'bold :height 1.2)
    ((doom-themes-treemacs-root-face &override) :inherit 'font-lock-doc-face :foreground violet :weight 'bold :height 1.3)
 
+   ;;vertico
+   (vertico-current :foreground fg :background base1 :weight 'bold)
+
    ;; vc-state
    ((vc-edited-state &override) :foreground orange)
    ((vc-conflict-state &override) :foreground red)
@@ -293,10 +363,14 @@ determine the exact padding."
    ;; web-mode
    (web-mode-current-element-highlight-face :background dark-blue :foreground bg)
    (web-mode-html-attr-name-face :foreground yellow)
-   (web-mode-html-tag-face :foreground magenta)
-   (web-mode-html-tag-bracket-face :foreground dark-green)
+   (web-mode-html-tag-face :foreground green)
+   (web-mode-html-tag-bracket-face :foreground fg)
 
    ;; wgrep
-   (wgrep-face :background base1)))
-  ;;;; Base theme variable overrides-
+   (wgrep-face :background base1)
+   ;; which-key
+   ((which-key-key-face &override) :background base0 :inherit 'bold)
+
+   ))
+     ;;;; Base theme variable overrides-
 ;;; doom-bisqwit-theme.el ends here
