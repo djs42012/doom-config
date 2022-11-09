@@ -1,0 +1,1181 @@
+* General Settings
+** Personal Information
+#+begin_src emacs-lisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(setq user-full-name    "DJS"
+      user-mail-address "david@djs.gg")
+#+end_src
+** Appearance
+*** Theme and Fonts
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-bisqwit
+      doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light))
+#+end_src
+*** Window Borders
+#+begin_src emacs-lisp
+(modify-all-frames-parameters
+ '((right-divider-width . 5)
+   (internal-border-width . 5)))
+#+end_src
+*** Line Numbers and Highlighting
+#+begin_src emacs-lisp
+(remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
+(setq display-line-numbers-type nil)
+#+end_src
+*** Rainbow Delimiters
+#+begin_src emacs-lisp
+(setq rainbow-delimiters-max-face-count 3)
+#+end_src
+*** Special Punctuation Faces
+#+begin_src emacs-lisp
+(defface heavy-punctuation-face '((t (:foreground "#008000")))
+  "Face for extra emphasis on a customizable list of symbols.")
+(mapc (lambda (mode)
+        (font-lock-add-keywords
+         mode
+         '(("[;:,.#]" . 'heavy-punctuation-face))))
+      '(emacs-lisp-mode
+        c-mode lua-mode
+        rjsx-mode
+        typescript-mode
+        web-mode
+        gfm-mode))
+#+end_src
+** Behavior
+*** Trash
+#+begin_src emacs-lisp
+(setq delete-by-moving-to-trash t
+      trash-directory "~/.local/share/Trash/files")
+#+end_src
+*** Character Deletion
++ Prevent text deleted with =x= from entering kill ring
+#+begin_src emacs-lisp
+(defadvice! djs-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
+  "Advise `evil-delete-char' to set default REGISTER to the black hole register."
+  :around #'evil-delete-char
+  (unless register (setq register ?_))
+  (funcall fn beg end type register))
+#+end_src
+*** Word Wrap and Visual Mode
+#+begin_src emacs-lisp
+(+global-word-wrap-mode)
+#+end_src
++ I couldn't figure out why visual-line-mode wasn't forcing editing commands to act on visual lines rather than logical lines, so I changed the keys myself.
+#+begin_src emacs-lisp
+;; TODO Properly configure visual-line-mode
+(after! evil
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (setq evil-snipe-spillover-scope 'visible))
+#+end_src
+*** Scratch Buffer
+#+begin_src emacs-lisp
+(setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
+#+end_src
+*** New Windows
+  #+begin_src emacs-lisp
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+  #+end_src
++ Prompt for a buffer when creating a new window
+  #+begin_src emacs-lisp
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-buffer))
+  #+end_src
+*** which-key
+#+begin_src emacs-lisp
+(setq which-key-idle-delay .5
+      which-key-allow-imprecise-window-fit nil)
+#+end_src
+*** Keybinds
+#+begin_src emacs-lisp
+;; TODO combine map! calls
+(map! :leader
+      :desc "Doom Splash"        "k"            #'+doom-dashboard/open
+      :desc "Kill buffer"        "\\"           #'kill-current-buffer
+      :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
+      :desc "Auto complete at point" "-"        #'+company/complete
+      :desc "Rename file" "R"                   #'doom/move-this-file
+      (:prefix ("t" . "toggle")
+               (:when (modulep! :completion company)
+                 :desc "Auto-completion"          "p"    #'+company/toggle-auto-completion)
+               :desc "Command-logging"          "c"     #'command-log-mode
+               :desc "Rainbow mode"          "R"        #'rainbow-mode
+               :desc "Writegood mode"          "G"      #'writegood-mode)
+      (:prefix ("o" . "open")
+       :desc "Org Agenda"         "j"           #'org-launch-custom-agenda
+       :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
+       :desc "Calendar"          "c"            #'djs-my-personal-calendar
+       :desc "Treemacs peek mode" "p"           #'djs-treemacs/toggle
+       :desc "Treemacs toggle" "P"              #'+treemacs/toggle
+       :desc "Dirvish"          "e"            #'dirvish))
+(map! :n "[ w" #'evil-window-prev
+      :n "] w" #'evil-window-next
+      :n "[ TAB" #'+workspace/switch-left
+      :n "] TAB" #'+workspace/switch-right)
+(map! :map #'mu4e-headers-mode-map
+      :n "M-+" #'mu4e-headers-mark-all-unread-read
+      :n "t" #'djs-capture-msg-to-agenda)
+#+end_src
+** Helper Functions
+*** Kill Buffer and Close Window
+#+begin_src emacs-lisp
+(defun djs-kill-buffer-and-close-window ()
+  "Kill the current buffer and close the window"
+  (interactive)
+  (kill-current-buffer)
+  (+workspace/close-window-or-workspace))
+#+end_src
+* Modules
+** Completion
+*** company
+#+begin_src emacs-lisp
+(after! company
+  (setq company-idle-delay              nil
+        company-minimum-prefix-length   0)
+  (setq company-show-quick-access       t))
+#+end_src
+** Checkers
+*** spell
+#+begin_src emacs-lisp
+;; TODO figure out what's causing some words to highlight even when spelled correctly
+(after! flyspell
+  (setq flyspell-duplicate-distance 0))
+#+end_src
+
+** Emacs
+*** dired/dirvish
+#+begin_src emacs-lisp
+;; TODO Look into enabling dirvish through Doom's modules
+(dirvish-override-dired-mode)
+(remove-hook! 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
+(map! :map dired-mode-map :ng "q" #'dirvish-quit)
+(after! dirvish
+  (setq dirvish-attributes '(vc-state
+                             subtree-state
+                             all-the-icons
+                             collapse
+                             git-msg
+                             file-size)
+        dirvish-emerge-groups '(("Recent"
+                                 (predicate . recent-files-2h))
+                                ("README"
+                                 (regex . "README")))))
+#+end_src
+** Tools
+*** biblio (citar)
+#+begin_src emacs-lisp
+(after! citar
+  (setq! citar-bibliography '("~/Sync/Refs/My Library.bib")
+         citar-org-roam-subdir "literature-notes"
+         citar-notes-paths '("~/Sync/projects/org/roam/literature-notes")
+         citar-symbol-separator "  "
+        ;; TODO Read this template from a file (insert-file-contents?)
+         citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: :literature: \n* TODOs\n:PROPERTIES:\n:CATEGORY: ${author}\n:END:\n* Notes\n* Takeaways\n* Practices\n* Quotes\n* Thoughts"
+
+         citar-symbols `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " " )
+                         (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
+                         (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " "))))
+#+end_src
+*** lsp
++ Disable auto formatting with lsp to prevent interference with tools like prettier
+  #+begin_src emacs-lisp
+  (setq +format-with-lsp nil)
+  #+end_src
++ Make sure certain language servers are always available
+  #+begin_src emacs-lisp
+(after! lsp-mode
+  (lsp-ensure-server 'ts-ls)
+  (lsp-ensure-server 'bash-ls)
+  (lsp-ensure-server 'emmet-ls)
+  (lsp-ensure-server 'html-ls)
+  (lsp-ensure-server 'dockerfile-ls)
+  (lsp-ensure-server 'yamlls)
+  (lsp-ensure-server 'json-ls)
+  (lsp-ensure-server 'eslint)
+  (lsp-ensure-server 'css-ls)
+  (lsp-ensure-server 'vimls)
+  (lsp-ensure-server 'clangd)
+  (lsp-ensure-server 'tailwindcss)
+  (lsp-ensure-server 'lua-language-server))
+  #+end_src
++ Enable linting for tailwindcss
+  #+begin_src emacs-lisp
+(use-package lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t))
+  #+end_src
++ Match major modes to file extendions
+  #+begin_src emacs-lisp
+(add-to-list 'lsp-language-id-configuration
+               '(web-mode . "scss"))
+#+end_src
+*** rgb
++ Prevent ordinary words (e.g "red", "blue", etc.) from highlight in rainbow mode
+#+begin_src emacs-lisp
+(add-hook 'rainbow-mode-hook
+          (defun rainbow-turn-off-words ()
+            "Turn off word colours in rainbow-mode."
+            (interactive)
+            (font-lock-remove-keywords
+             nil
+             `(,@rainbow-x-colors-font-lock-keywords
+               ,@rainbow-latex-rgb-colors-font-lock-keywords
+               ,@rainbow-r-colors-font-lock-keywords
+               ,@rainbow-html-colors-font-lock-keywords
+               ,@rainbow-html-rgb-colors-font-lock-keywords))))
+#+end_src
+
+** UI
+*** doom-dashboard
+#+begin_src emacs-lisp
+(setq +doom-dashboard-menu-sections
+      '(("Open Agenda" :icon
+         (all-the-icons-octicon "checklist" :face 'doom-dashboard-menu-title)
+         :when (fboundp 'org-launch-custom-agenda)
+         :action org-launch-custom-agenda)
+        ("Open Calendar" :icon
+         (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
+         :when (fboundp 'djs-my-personal-calendar)
+         :action djs-my-personal-calendar)
+        ("Open Terminal" :icon
+         (all-the-icons-octicon "terminal" :face 'doom-dashboard-menu-title)
+         :action +vterm/here)
+        ("Open Mail" :icon
+         (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
+         :action =mu4e)))
+#+end_src
+*** hl-todo :ATTACH:
+:PROPERTIES:
+:ID:       e52972ac-f793-453d-84ff-191b06cdf813
+:END:
++ Set some preferred colors for highlighting todo items
++ TODO Currently, some keywords (ones that I defined explicitly...) do not always highlight correctly as shown. In some buffers, disabling and reenabling ~hl-todo-mode~ does the trick
+
+[[attachment:_20221107_1853582022-11-07-141312_1331x514_scrot.png]]
+#+begin_src emacs-lisp
+(after! hl-todo
+  (setq  hl-todo-keyword-faces
+          '(("TODO" . "#fdb900")
+          ("PROG" .  "#93e079")
+          ("WAIT" .  "#569cd6")
+          ("HOLD" .  "#a9a5aa")
+          ("SHOP" .  "#c586c0")
+          ("IDEA" .  "#93e079")
+          ("NEXT" . "#b6a0ff")
+          ("THEM" . "#f78fe7")
+          ("OKAY" . "#4ae2f0")
+          ("DONT" . "#70b900")
+          ("FAIL" . "#ff8059")
+          ("BUG" . "#ff8059")
+          ("DONE" . "#44bc44")
+          ("NOTE" . "#d3b55f")
+          ("KLUDGE" . "#d0bc00")
+          ("HACK" . "#d0bc00")
+          ("TEMP" . "#ffcccc")
+          ("FIXME" . "#ff9077")
+          ("XXX+" . "#ef8b50")
+          ("REVIEW" . "#6ae4b9")
+          ("DEPRECATED" . "#bfd9ff"))))
+#+end_src
+*** popup
++ Keep certain windows hanging around longer than Doom's defaults
+#+begin_src emacs-lisp
+(set-popup-rules!
+  '(("^\\*help"         :ignore t)
+    ("^\\*info\\*"      :ignore t)
+    ("^\\*Man"          :ignore t)))
+#+end_src
+*** treemacs
+#+begin_src emacs-lisp
+(setq doom-themes-treemacs-theme        'doom-colors
+      +treemacs-git-mode                'extended)
+#+end_src
++ Sensibly launch treemacs in ~peek-mode~
+#+begin_src emacs-lisp
+(defun djs-treemacs-peek-mode ()
+  "Custom function to launch treemacs for the current file in peek-mode"
+  (interactive)
+  (treemacs-find-file)
+  (treemacs-select-window)
+  (treemacs-peek-mode)
+  (treemacs-fit-window-width))
+#+end_src
++ Clone toggle function to launch in ~peek-mode~
+#+begin_src emacs-lisp
+(defun djs-treemacs/toggle ()
+  "Initialize or toggle treemacs in peek mode."
+  (interactive)
+  (require 'treemacs)
+  (pcase (treemacs-current-visibility)
+    (`visible (delete-window (treemacs-get-local-window)))
+    (_ (if (doom-project-p)
+           (djs-treemacs-peek-mode)
+         (treemacs)))))
+#+end_src
+
+* Lang
+** web
++ Set the file extensions to open in ~web-mode~
+#+begin_src emacs-lisp
+(add-hook! 'web-mode-hook
+           #'rainbow-delimiters-mode-enable)
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
+(add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
+#+end_src
+** lua
++ Enable rainbow delimiters mode (not sure why this isn't default)
+#+begin_src emacs-lisp
+(add-hook! 'lua-mode-hook
+           #'rainbow-delimiters-mode-enable)
+#+end_src
+
+* Org
+** org-mode
+*** Paths and Default Settings
++ Set default paths and customize ~org-mode-hook~
+#+begin_src emacs-lisp
+(after! org
+  (setq
+   org-directory "~/Sync/projects/org/"
+   +org-capture-emails-file "todo.org"
+   ;; workaround to get diary date formats into cfw-cal
+   diary-file "~/Sync/projects/org/calendars/birthdays-anniversaries.org"
+   org-startup-indented nil
+   org-startup-folded 'show2levels
+   org-ellipsis " ..."))
+#+end_src
+
+#+RESULTS:
+
+*** Behavior
++ Automatically complete a parent todo when all subentries are completed.
+#+begin_src emacs-lisp
+(after! org
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+      (org-todo (if (= n-not-done 0) "DONE" "[ ]"))))
+  (add-hook 'org-after-todo-statistics-hook #'org-summary-todo))
+#+end_src
+*** org-modern
+#+begin_src emacs-lisp
+  (global-org-modern-mode)
+  (after! org-modern
+    (setq
+     org-modern-checkbox '((?\s . "TODO"))
+     org-modern-todo-faces '(("TODO" :foreground "#fdb900")
+                             ("PROG" :foreground "#93e079")
+                             ("WAIT" :foreground "#569cd6")
+                             ("HOLD" :foreground "#a9a5aa")
+                             ("[ ]" :foreground "#fdb900")
+                             ("[-]" :foreground "#93e079")
+                             ("[?]" :foreground "#569cd6")
+                             ("[~]" :foreground "#a9a5aa")
+                             ("SHOP" :foreground "#c586c0")
+                             ("IDEA" :foreground "#93e079"))))
+#+end_src
+*** fancy-priorities
+#+begin_src emacs-lisp
+(after! org-fancy-priorities
+  (setq org-fancy-priorities-list '( "⚠" "‼" "❗" )))
+#+end_src
+*** Custom todo-keywords
+#+begin_src emacs-lisp
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO(t)"
+           "PROG(p)"
+           "WAIT(w)"
+           "HOLD(h)"
+           "|"
+           "DONE(d)")
+          (sequence "[ ](T)"
+                    "[-](P)"
+                    "[?](W)"
+                    "[~](H)"
+                    "|"
+                    "[X](D)")
+          (sequence "SHOP(s)"
+                    "IDEA(i)"
+                    "|"
+                    "DONE(d)"))))
+#+end_src
+*** Capture
+**** Templates
+#+begin_src emacs-lisp
+(after! org
+  (setq
+   org-capture-templates
+   ;; Personal Todo Templates
+   ;; TODO figure out how to use %i inside %(sexp) to prevent prefixes when capturing a multi-line region
+   `(("t" "✅ Todo")
+     ("tp" "♉ Personal"
+      entry (file+headline "todo.org" "♉ Personal")
+      "* TODO %?"
+      :kill-buffer t)
+
+     ("ta" "🐍 Animals"
+      entry (file+headline "todo.org" "🐍 Animals")
+      "* TODO %?"
+      :kill-buffer t)
+
+     ("ts" "🛒 Shopping List"
+      entry (file+headline "todo.org" "🛒 Shopping")
+      "* SHOP %?"
+      :kill-buffer t)
+
+     ("th" "🏡 Home"
+      entry (file+headline "todo.org" "🏡 Home")
+      "* TODO %?"
+      :kill-buffer t)
+
+     ("to" "🖥 Office"
+      entry (file+headline "todo.org" "🖥 Office")
+      "* TODO %?"
+      :kill-buffer t)
+
+     ("tm" "⁉ Misc."
+      entry (file+headline "todo.org" "⁉ Inbox")
+      "* TODO %?"
+      :kill-buffer t)
+
+     ("a" "📅 Appointment"
+      entry (file+headline "appt.org" "Inbox")
+      "* %?\n<%(org-read-date)>"
+      :kill-buffer t)
+
+     ("n" "📥 Note"
+      entry (file+headline "notes.org" "📥 Inbox") ,
+      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a")
+
+     ;; Default cenralized project templates
+     ("g" "🌏 Global Project Files")
+     ("gt" "✅ Project todo"
+      entry #'+org-capture-central-project-todo-file
+      "* TODO %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      :heading "Tasks"
+      :prepend nil
+      :kill-buffer t)
+
+     ("gn" "✏ Project notes"
+      entry #'+org-capture-central-project-notes-file
+      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      :heading "Notes"
+      :prepend nil
+      :kill-buffer t)
+
+     ("gc" "🏁 Project changelog"
+      entry #'+org-capture-central-project-changelog-file
+      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      :heading "Changelog"
+      :prepend nil
+      :kill-buffer t)
+
+     ;; Default local project templates
+     ("l" "🔒 Local Project Files")
+     ("lt" "✅ Project-local todo"
+      entry (file+headline +org-capture-project-todo-file "Inbox")
+      "* TODO %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      :prepend nil
+      :kill-buffer t)
+
+     ("ln" "✏ Project-local notes"
+      entry (file+headline +org-capture-project-notes-file "Inbox")
+      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      :prepend nil
+      :kill-buffer t)
+
+     ("lc" "🏁 Project-local changelog"
+      entry (file+headline +org-capture-project-changelog-file "Unreleased")
+      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      :prepend nil
+      :kill-buffer t))))
+#+end_src
+
+**** Email
++ Clone ~+mu4e/capture-msg-to-agenda~ to modify the timestamp behavior and default heading
+#+begin_src emacs-lisp
+(defun djs-capture-msg-to-agenda (arg)
+    "Refile a message and add a entry in `+org-capture-emails-file' with no deadline. With one prefix, deadline
+is tomorrow.  With two prefixes, select the deadline."
+    (interactive "p")
+    (let ((sec "^* 📧 Email")
+          (msg (mu4e-message-at-point)))
+      (when msg
+        ;; put the message in the agenda
+        (with-current-buffer (find-file-noselect
+                              (expand-file-name +org-capture-emails-file org-directory))
+          (save-excursion
+            ;; find header section
+            (goto-char (point-min))
+            (when (re-search-forward sec nil t)
+              (let (org-M-RET-may-split-line
+                    (lev (org-outline-level))
+                    (folded-p (invisible-p (point-at-eol)))
+                    (from (plist-get msg :from)))
+                (when (consp (car from)) ; Occurs when using mu4e 1.8+.
+                  (setq from (car from)))
+                (unless (keywordp (car from)) ; If using mu4e <= 1.6.
+                  (setq from (list :name (or (caar from) (cdar from)))))
+                ;; place the subheader
+                (when folded-p (show-branches))    ; unfold if necessary
+                (org-end-of-meta-data) ; skip property drawer
+                (org-insert-todo-heading 1)        ; insert a todo heading
+                (when (= (org-outline-level) lev)  ; demote if necessary
+                  (org-do-demote))
+                ;; insert message and add deadline
+                (insert (concat " [[mu4e:msgid:"
+                                (plist-get msg :message-id) "]["
+                                (truncate-string-to-width
+                                 (plist-get from :name) 25 nil nil t)
+                                " - "
+                                (truncate-string-to-width
+                                 (plist-get msg :subject) 40 nil nil t)
+                                "]] "))
+                (cond
+                 ((= arg 4) (org-deadlline nil (format-time-string "%Y-%m-%d"))))
+                (org-update-parent-todo-statistics)
+                ;; refold as necessary
+                (if folded-p
+                    (progn
+                      (org-up-heading-safe)
+                      (hide-subtree))
+                  (hide-entry))))))
+        ;; refile the message and update
+        ;; (cond ((eq major-mode 'mu4e-view-mode)
+        ;;        (mu4e-view-mark-for-refile))
+        ;;       ((eq major-mode 'mu4e-headers-mode)
+        ;;        (mu4e-headers-mark-for-refile)))
+        (message "Refiled and added to the agenda."))))
+#+end_src
+
+** org-roam
+*** Paths and Default Settings
+#+begin_src emacs-lisp
+(after! org-roam
+  (setq +org-roam-auto-backlinks-buffer nil
+        org-roam-directory (concat org-directory "roam/")
+        org-roam-db-location (concat org-roam-directory ".org-roam.db")
+        org-roam-dailies-directory "journal/"))
+#+end_src
+
+*** Capture
+#+begin_src emacs-lisp
+(after! org-roam
+  (setq org-roam-capture-templates
+        `(("f" "⏳ Fleeting" plain
+           ,(format "#+title: Fleeting - ${title} - %s\n#+filetags: :fleeting:\n* ${title}\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
+           :target (file "inbox/fleeting_${slug}_%<%Y%m%d%H%M%S>.org")
+           :kill-buffer t)
+
+          ("z" "💭 Zettel" plain
+           ,(format "#+title: ${title}\n* ${title}\n%%[%s/template/zettel.org]" org-roam-directory)
+           :target (file "zettels/zettel_${slug}.org")
+           :kill-buffer t)
+
+          ("e" "💪 Exercise" plain
+           ,(format "#+title: ${title}\n#+filetags: :exercise:\n* ${title}\n%%[%s/template/exercise.org]" org-roam-directory)
+           :target (file "exercises/exercises_${slug}.org")
+           :kill-buffer t)
+
+          ("a" "🤸 Asana" plain
+           ,(format "#+title: ${title}\n#+filetags: :yoga:\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
+           :target (file "asanas/asana_${slug}.org")
+           :kill-buffer t)
+
+          ("c" "💻 Command" plain
+           ,(format "#+title: ${title}\n#+filetags: :command_line:\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
+           :target (file "commands/command_${slug}.org")
+           :kill-buffer t))
+
+        org-roam-dailies-capture-templates
+        '(("a" "📅 Agenda" entry
+           ;; TODO Use path expansion for templates
+           ;; TODO Ensure templates to properly add tags when not invoked to create file
+           (file "~/Sync/projects/org/roam/template/agenda.org")
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
+           :kill-buffer t)
+
+          ("d" "💤 Dream" entry "* 💤 Dream\n%?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:dream:")
+           :kill-buffer t)
+
+          ("g" "🏌 Golf" entry "* 🏌 Golf\n%?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:golf:")
+           :kill-buffer t)
+
+          ("t" "💭 Thought" entry "* 💭 Thought %<%H:%M> \n%?"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:thought:")
+           :kill-buffer t)
+
+          ("w" "💪 Workout" entry "* 💪 Workout \n** Warm-up\n*** [ ] %?\n** Main Circuit\n*** [ ]\n** Cool down\n*** [ ]"
+           :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:workout:")
+           :kill-buffer t))))
+#+end_src
+
+** org-agenda
+*** Set Agenda Files
++ Grab the most recent ~org-roam~ daily and set the list of agenda files
+  #+begin_src emacs-lisp
+(after! org-agenda
+  (defun djs-get-most-recent-daily-node ()
+    "Fetch the path of the most recent org-roam daily node"
+    (car
+     (car
+      (org-roam-db-query
+       [:SELECT file
+        :FROM nodes
+        :INNER-JOIN tags
+        :ON (= nodes:id tags:node-id)
+        :WHERE (= tag "daily")
+        :ORDER-BY [(desc file)]
+        :LIMIT 1
+        ]))))
+  (defun djs-org-agenda-files ()
+    "add selected files to org-agenda-files"
+    (setq org-agenda-files
+          `("~/Sync/projects/org"
+            "~/Sync/projects/org/calendars"
+            "~/Sync/projects/org/roam/literature-notes"
+            ,(djs-get-most-recent-daily-node)
+            )))
+  (add-hook! 'org-agenda-mode-hook #'djs-org-agenda-files))
+  #+end_src
+*** Generate Custom Agenda
++ Set default agenda windows
+  #+begin_src emacs-lisp
+(after! org-agenda
+  (setq org-agenda-start-day "+0d"
+        org-agenda-span 7
+        org-agenda-breadcrumbs-separator " ❱ "
+        org-agenda-block-separator nil))
+  #+end_src
++ Create a block agenda with the following sections:
+  1) Daily overview that includes all scheduled items
+  2) A weekly outlook that shows all scheduled items except those we want hidden via a ~:hide:~ tag (this relies on helper functions defined below)
+  3) Additional sections for ~org-roam~ dailies, emails, my "main" todo items, and todo items from ~org-roam~ literature notes. This schema relies on having already declared my ~org-agenda-files~ and strategically tagging the headlines within.
+#+begin_src emacs-lisp
+(after! org-agenda
+  (setq org-agenda-custom-commands
+        '(("j" "Main agenda and todo list"
+           ((agenda "" ((org-agenda-span 1)
+                        (org-agenda-overriding-header "⚡ Today \n---------")))
+            (agenda "" ((org-agenda-span 9)
+                        (org-agenda-overriding-header "\n🗓 Upcoming\n------------")
+                        (org-agenda-start-day "+1d")
+                        (org-agenda-skip-function
+                         '(my/org-agenda-skip-without-match "-hide"))))
+            (tags-todo "+email" ((org-agenda-overriding-header "\n📧 Email\n--------")))
+            (tags-todo "+daily" ((org-agenda-overriding-header "\n📅 Today\n--------")))
+            (tags-todo "+main" ((org-agenda-overriding-header "\n✅ Todo\n--------")))
+            (tags-todo "+literature" ((org-agenda-overriding-header "\n📚 Reading\n--------"))))))))
+
+;; Hide noisy tag labels in agenda
+(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature")
+#+end_src
+*** Agenda Helper Functions
++ Functions relied on by ~org-agenda-skip-function~
++ TODO find original source and cite
+#+begin_src emacs-lisp
+(after! org-agenda
+  (defun my/org-match-at-point-p (match)
+    "Return non-nil if headline at point matches MATCH.
+Here MATCH is a match string of the same format used by
+`org-tags-view'."
+    (funcall (cdr (org-make-tags-matcher match))
+             (org-get-todo-state)
+             (org-get-tags-at)
+             (org-reduced-level (org-current-level))))
+
+  (defun my/org-agenda-skip-without-match (match)
+    "Skip current headline unless it matches MATCH.
+
+Return nil if headline containing point matches MATCH (which
+should be a match string of the same format used by
+`org-tags-view').  If headline does not match, return the
+position of the next headline in current buffer.
+
+Intended for use with `org-agenda-skip-function', where this will
+skip exactly those headlines that do not match."
+    (save-excursion
+      (unless (org-at-heading-p) (org-back-to-heading))
+      (let ((next-headline (save-excursion
+                             (or (outline-next-heading) (point-max)))))
+        (if (my/org-match-at-point-p match) nil next-headline)))))
+#+end_src
++ Function to launch the custom agenda
+#+begin_src emacs-lisp
+(defun org-launch-custom-agenda ()
+  "Launch the org agenda using the custom command supplied"
+  (interactive)
+  (org-agenda nil "j"))
+#+end_src
+* Email (mu4e)
+** Load Path
++ Make sure we can find mu4e
+  #+begin_src emacs-lisp
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; TODO check if this is really needed
+  #+end_src
+** Default Behavior
+#+begin_src emacs-lisp
+(after! mu4e
+  (require 'mu4e-contrib) ;; TODO check is this is really needed
+  (setq mu4e-main-hide-personal-addresses t
+        mu4e-mu-binary "/usr/bin/mu"
+        mu4e-get-mail-command "mu index"
+        +mu4e-backend 'mbsync
+        mu4e-index-update-error-warning nil
+        mu4e-index-update-in-background t
+        mu4e--update-buffer-height 5
+        mu4e-update-interval 5
+        mu4e-split-view 'vertical
+        mu4e-headers-fields '((:account-stripe . 1)
+                              (:human-date . 12)
+                              (:flags . 6)
+                              (:from-or-to . 25)
+                              (:subject . nil))
+        mu4e-alert-interesting-mail-query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread"))
+#+end_src
+
+** Colorization
++ Reduce html coloring in messages for improved readability
+  #+begin_src emacs-lisp
+(after! mu4e
+  (setq mu4e-html2text-command 'mu4e-shr2text
+        shr-color-visible-luminance-min 60
+        shr-color-visible-distance-min 5
+        shr-use-colors nil)
+(advice-add #'shr-colorize-region :around (defun shr-no-colourise-region (&rest ignore))))
+  #+end_src
++ Colorize account stripe per context
+#+begin_src emacs-lisp
+(after! mu4e
+  (defface mu4e-personal-mail-face '((t (:foreground "#dcdcaa")))
+    "Face for personal mail.")
+  (defface mu4e-work-mail-face '((t (:foreground "#2257a0")))
+    "Face for work mail.")
+  (defface mu4e-gmail-mail-face '((t (:foreground "#c16b6b")))
+    "Face for personal mail.")
+  (setq
+   +mu4e-header--maildir-colors '(("poa" . mu4e-work-mail-face)
+                                  ("personal" . mu4e-personal-mail-face)
+                                  ("gmail" . mu4e-gmail-mail-face))))
+#+end_src
+
+** Bookmarks
++ Set our custom search queries for mu4e's homepage
+  #+begin_src emacs-lisp
+(after! mu4e
+  (setq mu4e-bookmarks
+        '((:name "📧 All Mail"
+           :query "maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox"
+           :key 97)
+          (:name "⁉ Unread Messages"
+           :query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread"
+           :key 117)
+          (:name "🔥 Spam"
+           :query "maildir:/personal/\[Gmail\]/Spam OR maildir:/poa/\"Junk Email\" OR maildir:/gmail/\[Gmail\]/Spam"
+           :key 115
+           )
+          (:name "🗑 Deleted Items"
+           :query "maildir:/personal/\[Gmail\]/Trash OR maildir:/poa/\"Deleted Items\" OR maildir:/gmail/\[Gmail\]/Trash"
+           :hide-unread t
+           :key 100)
+          (:name "🚩 Flagged"
+           :query "flag:flagged"
+           :hide-unread t
+           :key 102)
+          (:name "✈ Sent"
+           :query "maildir:/personal/\[Gmail\]/\"Sent Mail\" OR maildir:/gmail/\[Gmail\]/\"Sent Mail\" OR maildir:/poa/\"Sent Items\""
+           :hide-unread t
+           :key 116))))
+  #+end_src
+
+** Contexts
++ Create a context for each mail account
++ TODO consider offloading this configuration to a separate file
+#+begin_src emacs-lisp
+(after! mu4e
+  (setq mu4e-contexts
+        (list
+         ;; personal
+         (make-mu4e-context
+          :name "personal"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/personal" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder       . "/personal/[Gmail]/Sent Mail")
+                  (mu4e-drafts-folder     . "/personal/[Gmail]/Drafts")
+                  (mu4e-trash-folder      . "/personal/[Gmail]/Trash")
+                  (mu4e-refile-folder     . "/personal/[Gmail]/All Mail")
+                  (smtpmail-smtp-user     . "david@djs.gg")
+                  (smtpmail-smtp-server   . "smtp.gmail.com")
+                  (smtpmail-auth-credentials . "~/.authinfo.gpg")
+                  (user-mail-address . "david@djs.gg")
+                  (smtpmail-smtp-service   . 587)
+                  (smtpmail-stream-type   . starttls)
+                  (mu4e-compose-signature . "\n-David")
+                  (+mu4e-personal-addresses . ("david@djs.gg"
+                                               "catchall@djs.gg"
+                                               "david@djs.money"
+                                               "catchall@djs.money"))))
+         ;; gmail
+         (make-mu4e-context
+          :name "gmail"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder       . "/gmail/[Gmail]/Sent Mail")
+                  (mu4e-drafts-folder     . "/gmail/[Gmail]/Drafts")
+                  (mu4e-trash-folder      . "/gmail/[Gmail]/Trash")
+                  (mu4e-refile-folder     . "/gmail/[Gmail]/All Mail")
+                  (smtpmail-smtp-user     . "dsharfi@gmail.com")
+                  (smtpmail-smtp-server   . "smtp.gmail.com")
+                  (smtpmail-auth-credentials . "~/.authinfo.gpg")
+                  (user-mail-address . "dsharfi@gmail.com")
+                  (smtpmail-smtp-service   . 587)
+                  (smtpmail-stream-type   . starttls)
+                  (mu4e-compose-signature . "\n-David")
+                  (+mu4e-personal-addresses . ("dsharfi@gmail.com"
+                                               "dsharfi2@gmail.com"))))
+         ;; work
+         (make-mu4e-context
+          :name "Plus One"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/poa" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-drafts-folder  . "/poa/Drafts")
+                  (mu4e-trash-folder      . "/poa/Deleted Items")
+                  (mu4e-refile-folder  . "/poa/Inbox")
+                  (mu4e-sent-folder  . "/poa/Sent Items")
+                  (smtpmail-smtp-user     . "dsharfi@plusoneair.com")
+                  (smtpmail-smtp-server . "smtp.office365.com")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-stream-type . starttls)
+                  (user-mail-address . "dsharfi@plusoneair.com")
+                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
+                  )))))
+#+end_src
+
+** Dashboard
++ I've gone to some length to clone and edit the functions responsible for rendering mu4e's dashboard in order to make it more visually appealing. In most cases I am just removing the radio buttons and replacing them with emojis, though I do change some of anchor points and heading names used to render the display.
+*** "Basic" Region
++ Here I just add some emojis to the existing prompts in the "Basic" section
+#+begin_src emacs-lisp
+(after! mu4e
+  (setq evil-collection-mu4e-new-region-basic
+        #("	👉 Jump to some maildir [J]\n	🔎 Enter a search query [s]\n	🚀 Compose a new message [C]\n" 0 3
+          (keymap
+           (keymap
+            (13)
+            (mouse-2)))
+          3 4
+          (mouse-face highlight keymap
+                      (keymap
+                       (13)
+                       (mouse-2)))
+          4 5
+          (mouse-face highlight keymap
+                      (keymap
+                       (13)
+                       (mouse-2))
+                      face mu4e-highlight-face)
+          5 25
+          (mouse-face highlight keymap
+                      (keymap
+                       (13)
+                       (mouse-2)))
+          25 26
+          (keymap
+           (keymap
+            (13)
+            (mouse-2)))
+          26 37
+          (keymap
+           (keymap
+            (13 . mu4e-search)
+            (mouse-2 . mu4e-search)))
+          37 38
+          (mouse-face highlight keymap
+                      (keymap
+                       (13 . mu4e-search)
+                       (mouse-2 . mu4e-search)))
+          38 39
+          (mouse-face highlight keymap
+                      (keymap
+                       (13 . mu4e-search)
+                       (mouse-2 . mu4e-search))
+                      face mu4e-highlight-face)
+          39 51
+          (mouse-face highlight keymap
+                      (keymap
+                       (13 . mu4e-search)
+                       (mouse-2 . mu4e-search)))
+          51 52
+          (keymap
+           (keymap
+            (13 . mu4e-search)
+            (mouse-2 . mu4e-search)))
+          52 55
+          (keymap
+           (keymap
+            (13 . mu4e-compose-new)
+            (mouse-2 . mu4e-compose-new)))
+          55 56
+          (mouse-face highlight keymap
+                      (keymap
+                       (13 . mu4e-compose-new)
+                       (mouse-2 . mu4e-compose-new)))
+          56 57
+          (mouse-face highlight keymap
+                      (keymap
+                       (13 . mu4e-compose-new)
+                       (mouse-2 . mu4e-compose-new))
+                      face mu4e-highlight-face)
+          57 78
+          (mouse-face highlight keymap
+                      (keymap
+                       (13 . mu4e-compose-new)
+                       (mouse-2 . mu4e-compose-new)))
+          78 79
+          (keymap
+           (keymap
+            (13 . mu4e-compose-new)
+            (mouse-2 . mu4e-compose-new))))))
+#+end_src
+*** "Misc" Region
++ Here I override the functions responsible for drawing the "Misc" region in order to prettify it to my liking
+#+begin_src emacs-lisp
+(after! mu4e
+  (defadvice! djs-evil-collection-mu4e-new-region-misc ()
+    "Customize the mu4e misc heading"
+    :override #'evil-collection-mu4e-new-region-misc
+    (concat
+     (evil-collection-mu4e--main-action-str "\t 🔀 Switch focus [[;]]\n" 'mu4e-context-switch)
+     (evil-collection-mu4e--main-action-str "\t ♻ Update email & database [[u]]\n"
+                                            'mu4e-update-mail-and-index)
+
+     ;; show the queue functions if `smtpmail-queue-dir' is defined
+     (if (file-directory-p smtpmail-queue-dir)
+         (evil-collection-mu4e--main-view-queue)
+       "")
+     "\n"
+
+     (evil-collection-mu4e--main-action-str "\t 🗞 News [[N]]\n" 'mu4e-news)
+     (evil-collection-mu4e--main-action-str "\t 📓 About mu4e [[A]]\n" 'mu4e-about)
+     (evil-collection-mu4e--main-action-str "\t ❓ Help [[H]]\n" 'mu4e-display-manual)
+     (evil-collection-mu4e--main-action-str "\t 🚫 Quit [[q]]\n" 'mu4e-quit))))
+#+end_src
+
+*** "Bookmarks" Region
+#+begin_src emacs-lisp
+(after! mu4e
+  (defadvice! djs-mu4e--main-bookmarks ()
+    "Customize the mu4e bookmarks heading"
+    :override #'mu4e--main-bookmarks
+    (cl-loop with bmks = (mu4e-bookmarks)
+             with longest = (mu4e--longest-of-maildirs-and-bookmarks)
+             with queries = (mu4e-last-query-results)
+             for bm in bmks
+             for key = (string (plist-get bm :key))
+             for name = (plist-get bm :name)
+             for query = (funcall (or mu4e-query-rewrite-function #'identity)
+                                  (plist-get bm :query))
+             for qcounts = (and (stringp query)
+                                (cl-loop for q in queries
+                                         when (string=
+                                               (decode-coding-string
+                                                (plist-get q :query) 'utf-8 t)
+                                               query)
+                                         collect q))
+             for unread = (and qcounts (plist-get (car qcounts) :unread))
+             when (not (plist-get bm :hide))
+             when (not (and mu4e-main-hide-fully-read (eq unread 0)))
+             concat (concat
+                     ;; menu entry
+                     (mu4e--main-action-str
+                      (concat "\t" name  " [[b" key "]]"))
+                     ;; append all/unread numbers, if available.
+                     (if qcounts
+                         (let ((unread (plist-get (car qcounts) :unread))
+                               (count  (plist-get (car qcounts) :count)))
+                           (format
+                            "%s (%s/%s)"
+                            (make-string (- longest (string-width name)) ? )
+                            (propertize (number-to-string unread)
+                                        'face 'mu4e-header-key-face)
+                            count))
+                       "")
+                     "\n"))))
+#+end_src
+
+*** "Main" Redraw Function
++ Here I customize the strings that denote the beginning of some of the regions to be drawn, and then define redefine ~mu4e--key-val~ to remove even more of those pesky radio buttons that used to get rendered by =*='s.
++ Finally, I prettify a couple more items on the page by overriding ~mu4e--main-redraw-buffer~ and modify the structure of the page to remove a couple of unwanted items by overriding ~evil-collection-mu4e-update-main-view~
+#+begin_src emacs-lisp
+(after! mu4e
+  (setq evil-collection-mu4e-begin-region-basic "Navigation\n")
+  (setq evil-collection-mu4e-begin-region-misc "Actions\n")
+  (defun djs-mu4e--key-val (key val &optional unit)
+    "Custom mu4e--key-val function"
+    (concat
+     "\t "
+     (propertize (format "%-20s" key) 'face 'mu4e-header-title-face)
+     ": "
+     (propertize val 'face 'mu4e-header-key-face)
+     (if unit
+         (propertize (concat " " unit) 'face 'mu4e-header-title-face)
+       "")
+     "\n")))
+#+end_src
+#+begin_src emacs-lisp
+(after! mu4e
+  (defadvice! djs-mu4e--main-redraw-buffer ()
+    "Customize the mu4e main buffer"
+    :override #'mu4e--main-redraw-buffer
+    (with-current-buffer mu4e-main-buffer-name
+      (let ((inhibit-read-only t)
+            (pos (point))
+            (addrs (mu4e-personal-addresses)))
+        (erase-buffer)
+        (insert
+         (propertize "📨 mu4e - version " 'face 'mu4e-title-face)
+         (propertize  mu4e-mu-version 'face 'mu4e-title-face)
+         "\n\n"
+         (propertize "Navigation\n\n" 'face 'mu4e-title-face)
+         (mu4e--main-action-str
+          "\t* [j]ump to some maildir\n" #'mu4e~headers-jump-to-maildir)
+         (mu4e--main-action-str
+          "\t* enter a [s]earch query\n" #'mu4e-search)
+         (mu4e--main-action-str
+          "\t* [C]ompose a new message\n" #'mu4e-compose-new)
+         "\n"
+         (propertize "Bookmarks\n\n" 'face 'mu4e-title-face)
+         (mu4e--main-bookmarks)
+         "\n"
+         (mu4e--main-maildirs)
+         "\n"
+         (propertize "Actions\n\n" 'face 'mu4e-title-face)
+
+         (mu4e--main-action-str "\t* [;]Switch context\n"
+                                (lambda()(interactive)
+			          (mu4e-context-switch)(revert-buffer)))
+
+         (mu4e--main-action-str "\t* [U]pdate email & database\n"
+                                'mu4e-update-mail-and-index)
+
+         ;; show the queue functions if `smtpmail-queue-dir' is defined
+         (if (file-directory-p smtpmail-queue-dir)
+             (mu4e--main-view-queue)
+           "")
+         "\n"
+         (mu4e--main-action-str "\t* [N]ews\n" #'mu4e-news)
+         (mu4e--main-action-str "\t* [A]bout mu4e\n" #'mu4e-about)
+         (mu4e--main-action-str "\t* [H]elp\n" #'mu4e-display-manual)
+         (mu4e--main-action-str "\t* [q]uit\n" #'mu4e-quit)
+
+         "\n"
+         (propertize "Info\n\n" 'face 'mu4e-title-face)
+         (djs-mu4e--key-val "🕰 Last updated" (current-time-string (plist-get mu4e-index-update-status :tstamp)))
+         (djs-mu4e--key-val "↪ Database path" (mu4e-database-path))
+         (djs-mu4e--key-val "📧 Maildir" (mu4e-root-maildir))
+         (djs-mu4e--key-val "💾 In store"
+                            (format "%d" (plist-get mu4e--server-props :doccount))
+		            "messages")
+         (if mu4e-main-hide-personal-addresses ""
+           (djs-mu4e--key-val "🏘 Personal addresses"
+		              (if addrs (mapconcat #'identity addrs ", "  ) "none"))))
+
+        (if mu4e-main-hide-personal-addresses ""
+          (unless (mu4e-personal-address-p user-mail-address)
+            (mu4e-message (concat
+                           "Tip: `user-mail-address' ('%s') is not part "
+                           "of mu's addresses; add it with 'mu init
+                        --my-address='") user-mail-address)))
+        (mu4e-main-mode)
+        (goto-char pos)))))
+#+end_src
+#+begin_src emacs-lisp
+(after! mu4e
+  (defadvice! djs-evil-collection-mu4e-update-main-view ()
+    "Custom update mu4e main view"
+    :override #'evil-collection-mu4e-update-main-view
+    (evil-collection-mu4e-replace-region evil-collection-mu4e-new-region-basic
+                                         evil-collection-mu4e-begin-region-basic
+                                         evil-collection-mu4e-end-region-basic)
+    (evil-collection-mu4e-replace-region (evil-collection-mu4e-new-region-misc)
+                                         evil-collection-mu4e-begin-region-misc
+                                         evil-collection-mu4e-end-region-misc)))
+#+end_src
+* Other packages
+** cfw:calendar
+*** Default Calendar Behavior
+#+begin_src emacs-lisp
+(after! cfw:calendar
+  ;; Show only desired holidays
+  (setq calendar-holidays
+        (append holiday-general-holidays
+                holiday-hebrew-holidays
+                holiday-solar-holidays)))
+#+end_src
+*** Create a Custom Calendar
+#+begin_src emacs-lisp
+(defun djs-my-personal-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-file-source "Appts." "~/Sync/projects/org/appt.org" "#fdb900")
+    (cfw:org-create-file-source "Todo" "~/Sync/projects/org/todo.org" "#a9a1e1")
+    (djs-cfw:org-create-file-source "Calendar" "~/Sync/projects/org/calendars/2022.org" "#c586c0" "#23272e")
+    (cfw:cal-create-source "#a9a1e1")
+    (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa"))))
+#+end_src
+*** Helper Functions
++ To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of forground and background colors for events
+#+begin_src emacs-lisp
+(defun djs-cfw:org-create-file-source (name file color bgcolor)
+  "Create org-element based source with cusomg bg-color "
+  (lexical-let ((file file))
+    (make-cfw:source
+     :name (concat "Org:" name)
+     :period-fgcolor color
+     :period-bgcolor bgcolor
+     :data (lambda (begin end)
+             (cfw:org-to-calendar file begin end)))))
+#+end_src
+
+** Info-mode
++ Prefer variable pitch for reading in ~Info-mode~ and fix an annoying little feature where previous nodes would restore my cursor to the bottom of the page when navigating.
+#+begin_src emacs-lisp
+(add-hook! 'Info-mode-hook #'variable-pitch-mode)
+(defadvice! djs-Info-goto-top-of-node ()
+  "Move cursor to the top of info node"
+  :after #'Info-backward-node
+  :after #'Info-prev
+  :after #'Info-history-back
+  (goto-char (point-min)))
+
+(map! :map Info-mode-map
+      :n "<down>" #'Info-forward-node
+      :n "<up>" #'Info-backward-node
+      :n "C-<down>" #'Info-next
+      :n "C-<up>" #'Info-prev
+      :n "<left>" #'Info-history-back
+      :n "<right>" #'Info-history-forward)
+#+end_src
+** command-log-mode
++ Here I just add some defaults to enable ~command-log-mode~ for all buffers when activated, and to automatically show the log window whenever I activate the mode
+  #+begin_src emacs-lisp
+(after! command-log-mode
+  (setq command-log-mode-is-global t
+        command-log-mode-open-log-turns-on-mode t
+        command-log-mode-auto-show t
+        command-log-mode-window-font-size 1))
+  #+end_src
