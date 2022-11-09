@@ -662,16 +662,16 @@ is tomorrow.  With two prefixes, select the deadline."
   (setq org-agenda-custom-commands
         '(("j" "Main agenda and todo list"
            ((agenda "" ((org-agenda-span 1)
-                        (org-agenda-overriding-header "⚡ Today \n---------")))
+                        (org-agenda-overriding-header "⚡ Agenda ")))
             (agenda "" ((org-agenda-span 9)
-                        (org-agenda-overriding-header "\n🗓 Upcoming\n------------")
+                        (org-agenda-overriding-header "")
                         (org-agenda-start-day "+1d")
                         (org-agenda-skip-function
                          '(my/org-agenda-skip-without-match "-hide"))))
-            (tags-todo "+email" ((org-agenda-overriding-header "\n📧 Email\n--------")))
-            (tags-todo "+daily" ((org-agenda-overriding-header "\n📅 Today\n--------")))
-            (tags-todo "+main" ((org-agenda-overriding-header "\n✅ Todo\n--------")))
-            (tags-todo "+literature" ((org-agenda-overriding-header "\n📚 Reading\n--------"))))))))
+            (tags-todo "+daily" ((org-agenda-overriding-header "📅 Today")))
+            (tags-todo "+email" ((org-agenda-overriding-header "📧 Email")))
+            (tags-todo "+main" ((org-agenda-overriding-header "✅ Todo")))
+            (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading"))))))))
 
 ;; Hide noisy tag labels in agenda
 (setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature")

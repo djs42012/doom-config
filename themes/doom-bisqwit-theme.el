@@ -291,8 +291,8 @@ determine the exact padding."
    (org-scheduled-today           :foreground fg)
    (org-scheduled-previously      :foreground base8)
    ((org-priority &override) :foreground red)
-   ((org-agenda-date &override) :foreground blue)
-   ((org-agenda-date-today &override) :foreground green :slant 'italic :height 1.1)
+   ((org-agenda-date &override) :foreground blue :height 1.1)
+   ((org-agenda-date-today &override) :foreground green :slant 'italic :height 1.3)
    ((org-agenda-date-weekend &override) :foreground blue)
 
    ;; org-modern
