@@ -17,7 +17,11 @@
 (package! solo-jazz-theme)
 (package! command-log-mode)
 (package! dirvish)
-(package! modus-themes)
+(package! org-modern)
+(package! nano-theme
+  :recipe (:host github
+           :repo "rougier/nano-theme"))
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
