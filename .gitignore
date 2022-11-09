@@ -1,1 +1,6 @@
 /flycheck_init.el
+/custom.el
+/org-roam-db-query.el
+*.bak
+/notes.org
+config.el
