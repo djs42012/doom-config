@@ -101,6 +101,7 @@ determine the exact padding."
    ((font-lock-preprocessor-face &override) :inherit 'bold :foreground magenta)
    ((help-key-binding &override) :foreground magenta :background bg :)
    ((minibuffer-prompt &override) :foreground blue)
+   ((vertical-border &override) :foreground violet :background violet)
 
    ;; modeline
    (mode-line

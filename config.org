@@ -14,8 +14,8 @@
 *** Window Borders
 #+begin_src emacs-lisp
 (modify-all-frames-parameters
- '((right-divider-width . 5)
-   (internal-border-width . 5)))
+ '((right-divider-width . 1)
+   (internal-border-width . 1)))
 #+end_src
 *** Line Numbers and Highlighting
 #+begin_src emacs-lisp
