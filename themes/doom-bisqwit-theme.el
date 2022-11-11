@@ -127,7 +127,7 @@ determine the exact padding."
    ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
 
    ;; company
-   ((company-tooltip-common &override) :foreground blue :weight 'bold)
+   ((company-tooltip-common &override) :weight 'normal :foreground blue)
    ((company-tooltip-selection &override) :background base2 )
    ((company-scrollbar-fg &override)   :background red)
    ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
