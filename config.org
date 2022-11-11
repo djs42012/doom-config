@@ -132,7 +132,7 @@
 *** company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay              nil
+  (setq company-idle-delay              1
         company-minimum-prefix-length   0)
   (setq company-show-quick-access       t))
 #+end_src
