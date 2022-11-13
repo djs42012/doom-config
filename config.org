@@ -200,18 +200,16 @@
   (lsp-ensure-server 'json-ls)
   (lsp-ensure-server 'eslint)
   (lsp-ensure-server 'css-ls)
-  (lsp-ensure-server 'vimls)
-  (lsp-ensure-server 'clangd)
   (lsp-ensure-server 'tailwindcss)
   (lsp-ensure-server 'lua-language-server))
   #+end_src
 + Enable linting for tailwindcss
   #+begin_src emacs-lisp
-(use-package lsp-tailwindcss
+(use-package! lsp-tailwindcss
   :init
   (setq lsp-tailwindcss-add-on-mode t))
   #+end_src
-+ Match major modes to file extendions
++ Match major modes to file extensions
   #+begin_src emacs-lisp
 (add-to-list 'lsp-language-id-configuration
                '(web-mode . "scss"))
