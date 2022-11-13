@@ -734,7 +734,7 @@ skip exactly those headlines that do not match."
         mu4e-index-update-in-background t
         mu4e--update-buffer-height 5
         mu4e-update-interval 5
-        mu4e-headers-visible-columns 80
+        mu4e-headers-visible-columns (* (/ (window-total-width) 3) 1)
         mu4e-split-view 'vertical
         mu4e-headers-fields '((:account-stripe . 1)
                               (:human-date . 12)
