@@ -4,3 +4,4 @@
 *.bak
 /notes.org
 config.el
+/org-db.el

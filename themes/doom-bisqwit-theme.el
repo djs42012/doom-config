@@ -194,7 +194,7 @@ determine the exact padding."
    ;;;; lsp-mode
    (lsp-ui-doc-background      :background base0)
    (lsp-face-highlight-read    :background (doom-blend red bg 0.3))
-   (lsp-face-highlight-textual :inherit 'lsp-face-highlight-read)
+   (lsp-face-highlight-textual :inherit 'region)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
 
 
@@ -306,6 +306,7 @@ determine the exact padding."
    ((org-modern-date-active &override)  :foreground bright-yellow :background nil)
    ((org-modern-date-inactive &override)  :foreground fg-alt :background nil)
    ((org-modern-priority &override) :background nil)
+   (org-modern-statistics  :foreground nil)
 
    ;; outline
    ((outline-1  &override) :foreground violet  :height 1.5 :weight 'bold)
