@@ -277,7 +277,7 @@
           ("DONT" . "#70b900")
           ("FAIL" . "#ff8059")
           ("BUG" . "#ff8059")
-          ("DONE" . "#44bc44")
+          ("DONE" . "#5B6268")
           ("NOTE" . "#d3b55f")
           ("KLUDGE" . "#d0bc00")
           ("HACK" . "#d0bc00")
@@ -384,6 +384,7 @@
                              ("[~]" :foreground "#a9a5aa")
                              ("SHOP" :foreground "#c586c0")
                              ("IDEA" :foreground "#93e079"))))
+(add-hook! 'org-modern-mode-hook #'hl-todo-mode)
 #+end_src
 *** fancy-priorities
 #+begin_src emacs-lisp
