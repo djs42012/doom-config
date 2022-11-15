@@ -118,6 +118,11 @@
       :n "M-+" #'mu4e-headers-mark-all-unread-read
       :n "t" #'djs-capture-msg-to-agenda)
 #+end_src
+*** Auth
+#+begin_src emacs-lisp
+(setq auth-sources '("~/.authinfo.gpg"))
+#+end_src
+
 ** Helper Functions
 *** Kill Buffer and Close Window
 #+begin_src emacs-lisp
