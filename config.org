@@ -786,6 +786,16 @@ skip exactly those headlines that do not match."
   (interactive)
   (org-agenda nil "j"))
 #+end_src
+** exports
+*** LaTeX exports
++ TODO This isn't working with ~#+ATTR_LATEX: :booktabs t~
+#+begin_src emacs-lisp
+(after! org
+  (add-to-list 'org-latex-default-packages-alist '("" "booktabs"))
+  (setq org-format-latex-header "\\documentclass{article}
+\\usepackage{booktabs}"))
+#+end_src
+
 * Email (mu4e)
 ** Load Path
 + Make sure we can find mu4e
