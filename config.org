@@ -845,13 +845,13 @@ skip exactly those headlines that do not match."
 (after! mu4e
   (setq mu4e-bookmarks
         '((:name "📧 All Mail"
-           :query "maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox"
+           :query "maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox AND NOT flag:trashed"
            :key 97)
           (:name "⁉ Unread Messages"
-           :query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread"
+           :query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread AND NOT flag:trashed"
            :key 117)
           (:name "🔥 Spam"
-           :query "maildir:/personal/\[Gmail\]/Spam OR maildir:/poa/\"Junk Email\" OR maildir:/gmail/\[Gmail\]/Spam"
+           :query "maildir:/personal/\[Gmail\]/Spam OR maildir:/poa/\"Junk Email\" OR maildir:/gmail/\[Gmail\]/Spam AND NOT flag:trashed"
            :key 115
            )
           (:name "🗑 Deleted Items"
@@ -859,11 +859,11 @@ skip exactly those headlines that do not match."
            :hide-unread t
            :key 100)
           (:name "🚩 Flagged"
-           :query "flag:flagged"
+           :query "flag:flagged "
            :hide-unread t
            :key 102)
           (:name "✈ Sent"
-           :query "maildir:/personal/\[Gmail\]/\"Sent Mail\" OR maildir:/gmail/\[Gmail\]/\"Sent Mail\" OR maildir:/poa/\"Sent Items\""
+           :query "maildir:/personal/\[Gmail\]/\"Sent Mail\" OR maildir:/gmail/\[Gmail\]/\"Sent Mail\" OR maildir:/poa/\"Sent Items\" AND NOT flag:trashed"
            :hide-unread t
            :key 116))))
   #+end_src
