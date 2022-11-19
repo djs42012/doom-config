@@ -560,6 +560,21 @@ is tomorrow.  With two prefixes, select the deadline."
         ;;        (mu4e-headers-mark-for-refile)))
         (message "Refiled and added to the agenda."))))
 #+end_src
+*** Archiving
++ Create a function to archive all completed tasks in a file (from [[https://stackoverflow.com/a/27043756][this]] stack overflow post)
++ TODO find out how to recreate subtree in lambda expression so as not to rely on :ARCHIVE: property
+#+begin_src emacs-lisp
+(after! org
+  (defun org-archive-done-tasks ()
+    "Archive all tasks marked DONE in the file."
+    (interactive)
+    (org-map-entries
+     (lambda ()
+       (org-archive-subtree)
+       (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+     "/DONE" 'file)))
+#+end_src
+
 
 ** org-roam
 *** Paths and Default Settings
