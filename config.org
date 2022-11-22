@@ -348,6 +348,7 @@
 (after! org
   (setq
    org-directory "~/Sync/projects/org/"
+   org-attach-directory "~/Sync/projects/org/.attach/"
    +org-capture-emails-file "todo.org"
    ;; workaround to get diary date formats into cfw-cal
    diary-file "~/Sync/projects/org/calendars/birthdays-anniversaries.org"
@@ -506,6 +507,7 @@
 
 **** Email
 + Clone ~+mu4e/capture-msg-to-agenda~ to modify the timestamp behavior and default heading
++ TODO fix universal argument for deadline
 #+begin_src emacs-lisp
 (defun djs-capture-msg-to-agenda (arg)
     "Refile a message and add a entry in `+org-capture-emails-file' with no deadline. With one prefix, deadline
