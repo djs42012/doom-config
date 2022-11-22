@@ -234,10 +234,10 @@ determine the exact padding."
    ((markdown-code-face &override)       :background base1)
    (markdown-header-face :foreground violet :weight 'bold)
    ((markdown-header-face-1  &override) :foreground violet  :height 1.5 :weight 'bold)
-   ((markdown-header-face-2  &override) :foreground blue :height 1.4 :weight 'bold)
+   ((markdown-header-face-2  &override) :foreground cyan :height 1.4 :weight 'bold)
    ((markdown-header-face-3  &override) :foreground yellow :height 1.3 :weight 'bold)
    ((markdown-header-face-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
-   ((markdown-header-face-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold)
+   ((markdown-header-face-5  &override) :foreground (doom-lighten cyan 0.25)      :weight 'bold)
    ((markdown-header-face-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold)
    (markdown-bold-face :foreground violet :weight 'bold)
    (markdown-italic-face :foreground red :slant 'italic)
@@ -255,7 +255,7 @@ determine the exact padding."
    (mu4e-header-face :foreground fg-alt)
    (mu4e-related-face :foreground fg-alt)
    ((mu4e-trashed-face &override) :inherit 'org-done :strike-through 't)
-   (mu4e-header-title-face :foreground blue)
+   (mu4e-header-title-face :foreground cyan)
    (mu4e-header-title-key :foreground fg)
    ((mu4e-title-face &override) :inherit 'outline-1)
    (message-header-name :foreground blue)
@@ -310,13 +310,13 @@ determine the exact padding."
 
    ;; outline
    ((outline-1  &override) :foreground violet  :height 1.5 :weight 'bold)
-   ((outline-2  &override) :foreground blue :height 1.3 :weight 'bold)
+   ((outline-2  &override) :foreground cyan :height 1.3 :weight 'bold)
    ((outline-3  &override) :foreground yellow :height 1.2 :weight 'bold)
    ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
-   ((outline-5  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold)
+   ((outline-5  &override) :foreground (doom-lighten cyan 0.25)      :weight 'bold)
    ((outline-6  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold)
    ((outline-7  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
-   ((outline-8  &override) :foreground (doom-lighten blue 0.25)      :weight 'bold)
+   ((outline-8  &override) :foreground (doom-lighten cyan 0.25)      :weight 'bold)
 
    ;; rainbow-delimiters
    ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw-alt)
