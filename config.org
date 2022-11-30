@@ -578,7 +578,6 @@ is tomorrow.  With two prefixes, select the deadline."
      "/DONE" 'file)))
 #+end_src
 
-
 ** org-roam
 *** Paths and Default Settings
 #+begin_src emacs-lisp
@@ -761,7 +760,7 @@ tasks."
                          '(my/org-agenda-skip-without-match "-hide"))))
             (tags-todo "+daily" ((org-agenda-overriding-header "📅 Today")))
             (tags-todo "+email" ((org-agenda-overriding-header "📧 Email")))
-            (tags-todo "+main" ((org-agenda-overriding-header "✅ Todo")))
+            (tags-todo "+main-email" ((org-agenda-overriding-header "✅ Todo")))
             (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading"))))))))
 
 ;; Hide noisy tag labels in agenda
