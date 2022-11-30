@@ -116,7 +116,8 @@
       :n "] TAB" #'+workspace/switch-right)
 (map! :map #'mu4e-headers-mode-map
       :n "M-+" #'mu4e-headers-mark-all-unread-read
-      :n "t" #'djs-capture-msg-to-agenda)
+      :n "t" #'djs-capture-msg-to-agenda
+      :n "z t" #'evil-scroll-line-to-top)
 #+end_src
 *** Auth
 #+begin_src emacs-lisp
@@ -830,7 +831,7 @@ skip exactly those headlines that do not match."
         mu4e-index-update-error-warning nil
         mu4e-index-update-in-background t
         mu4e--update-buffer-height 5
-        mu4e-update-interval 5
+        mu4e-update-interval 60
         mu4e-headers-visible-columns (* (/ (window-total-width) 3) 1)
         mu4e-split-view 'vertical
         mu4e-headers-fields '((:account-stripe . 1)
