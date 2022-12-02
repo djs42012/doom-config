@@ -732,8 +732,6 @@ tasks."
   (add-hook! 'find-file-hook #'roam-extra:update-todo-tag)
   (add-hook! 'before-save-hook #'roam-extra:update-todo-tag))
     #+end_src
-+
-+
 *** Generate Custom Agenda
 + Set default agenda windows
   #+begin_src emacs-lisp
@@ -760,8 +758,9 @@ tasks."
                          '(my/org-agenda-skip-without-match "-hide"))))
             (tags-todo "+daily" ((org-agenda-overriding-header "📅 Today")))
             (tags-todo "+email" ((org-agenda-overriding-header "📧 Email")))
-            (tags-todo "+main-email" ((org-agenda-overriding-header "✅ Todo")))
-            (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading"))))))))
+            ;; (tags-todo "+main-email" ((org-agenda-overriding-header "✅ Todo")))
+            ;; (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading")))
+            )))))
 
 ;; Hide noisy tag labels in agenda
 (setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo")
