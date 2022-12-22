@@ -68,6 +68,10 @@
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (setq evil-snipe-spillover-scope 'visible))
 #+end_src
+*** evil-escape
+#+begin_src emacs-lisp
+(evil-escape-mode)
+#+end_src
 *** Scratch Buffer
 #+begin_src emacs-lisp
 (setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
