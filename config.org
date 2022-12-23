@@ -932,6 +932,7 @@ skip exactly those headlines that do not match."
                   (smtpmail-smtp-service   . 587)
                   (smtpmail-stream-type   . starttls)
                   (mu4e-compose-signature . "\n-David")
+                  (org-msg-signature . "\n-David")
                   (+mu4e-personal-addresses . ("david@djs.gg"
                                                "catchall@djs.gg"
                                                "david@djs.money"
@@ -954,6 +955,7 @@ skip exactly those headlines that do not match."
                   (smtpmail-smtp-service   . 587)
                   (smtpmail-stream-type   . starttls)
                   (mu4e-compose-signature . "\n-David")
+                  (org-msg-signature . "\n-David")
                   (+mu4e-personal-addresses . ("dsharfi@gmail.com"
                                                "dsharfi2@gmail.com"))))
          ;; work
@@ -963,7 +965,7 @@ skip exactly those headlines that do not match."
           (lambda (msg)
             (when msg
               (string-prefix-p "/poa" (mu4e-message-field msg :maildir))))
-          :vars '((mu4e-drafts-folder  . "/poa/Drafts")
+          :vars `((mu4e-drafts-folder  . "/poa/Drafts")
                   (mu4e-trash-folder      . "/poa/Deleted Items")
                   (mu4e-refile-folder  . "/poa/Inbox")
                   (mu4e-sent-folder  . "/poa/Sent Items")
@@ -972,7 +974,9 @@ skip exactly those headlines that do not match."
                   (smtpmail-smtp-service . 587)
                   (smtpmail-stream-type . starttls)
                   (user-mail-address . "dsharfi@plusoneair.com")
-                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
+                  (mu4e-compose-signature . "\n-David")
+                  (org-msg-signature . ,(file-to-string "~/Sync/Templates/poa-signature.txt"))
+                 (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
                   )))))
 #+end_src
 
