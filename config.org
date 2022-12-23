@@ -137,6 +137,15 @@
   (kill-current-buffer)
   (+workspace/close-window-or-workspace))
 #+end_src
+*** Insert File Contents as String
+#+begin_src emacs-lisp
+(defun file-to-string (file)
+  "File to string function"
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string)))
+#+end_src
+
 * Modules
 ** Completion
 *** company
