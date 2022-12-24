@@ -151,7 +151,7 @@
 *** company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay              1
+  (setq company-idle-delay              0.5
         company-minimum-prefix-length   0)
   (setq company-show-quick-access       t))
 #+end_src
@@ -230,8 +230,9 @@
   #+end_src
 + Match major modes to file extensions
   #+begin_src emacs-lisp
-(add-to-list 'lsp-language-id-configuration
-               '(web-mode . "scss"))
+(with-eval-after-load 'lsp-mode (add-to-list 'lsp-language-id-configuration
+                                             '(web-mode . "scss"))
+                      (add-to-list 'lsp-disabled-clients 'flow-ls))
 #+end_src
 *** rgb
 + Prevent ordinary words (e.g "red", "blue", etc.) from highlight in rainbow mode
