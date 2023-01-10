@@ -92,7 +92,7 @@ determine the exact padding."
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((link &override) :foreground blue)
    (show-paren-match :foreground bg :background red)
-   (cursor :foreground fg :distant-foreground bg)
+   (cursor :foreground blue :background blue :distant-foreground bg)
    (lazy-highlight :background blue :foreground bg :distant-foreground fg)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
