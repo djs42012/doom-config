@@ -193,5 +193,4 @@
        twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       literate
-       (default +bindings +smartparens))
+       literate (default +bindings +smartparens))
