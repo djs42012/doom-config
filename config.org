@@ -682,7 +682,8 @@ is tomorrow.  With two prefixes, select the deadline."
     (setq org-agenda-files
           '("~/Sync/projects/org"
             "~/Sync/projects/org/calendars"
-            "~/Sync/projects/org/roam/literature-notes"))
+            "~/Sync/projects/org/roam/literature-notes"
+            "~/Sync/projects/org/hide-from-orgzly"))
     (setq org-agenda-files
           (append org-agenda-files (roam-extra:todo-files))))
   (add-hook! 'org-agenda-mode-hook #'djs-org-agenda-files))
