@@ -773,13 +773,18 @@ tasks."
                          '(my/org-agenda-skip-without-match "-hide"))))
             (tags-todo "+daily" ((org-agenda-overriding-header "📅 Today")))
             (tags-todo "+email" ((org-agenda-overriding-header "📧 Email")))
+            (tags-todo "+phone" ((org-agenda-overriding-header "📱 Phone")))
             ;; (tags-todo "+main-email" ((org-agenda-overriding-header "✅ Todo")))
             ;; (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading")))
             )))))
 
 ;; Hide noisy tag labels in agenda
-(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo")
+(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo\\|phone")
 #+end_src
+
+#+RESULTS:
+: main\|chore\|hide\|shopping\|daily\|calendars\|email\|daily\|attach\|literature\|todo
+
 *** Agenda Helper Functions
 + Functions relied on by ~org-agenda-skip-function~
 + TODO find original source and cite
