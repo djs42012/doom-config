@@ -92,8 +92,9 @@ determine the exact padding."
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((link &override) :foreground blue)
    (show-paren-match :foreground bg :background red)
-   (cursor :foreground blue :background blue :distant-foreground bg)
-   (lazy-highlight :background blue :foreground bg :distant-foreground fg)
+   (cursor :foreground bg :background fg)
+   (lazy-highlight :background magenta :foreground bg)
+   (evil-ex-search :background magenta :foreground bg)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
@@ -125,6 +126,9 @@ determine the exact padding."
    ((cfw:face-saturday &override) :foreground red)
    ((cfw:face-sunday &override) :foreground red)
    ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
+
+   ;; centaur-tabs
+   ((centaur-tabs-selected &override) :background base2 :foreground fg :underline green :weight 'bold)
 
    ;; company
    ((company-tooltip-common &override) :weight 'normal :foreground blue)
@@ -170,7 +174,11 @@ determine the exact padding."
    ((shr-link &override) :foreground cyan :underline t)
 
    ;; helm
-   (helm-candidate-number :background blue :foreground bg)
+   (helm-candidate-number :background blue :foreground red)
+
+   ;; indent guides
+   ;; TODO Figure out why this only sometimes works
+   ;; ((highlight-indent-guides-character-face &override) :foreground red)
 
    ;; Info-mode
    ((info-xref &override) :inherit 'link :foreground blue)
@@ -295,6 +303,8 @@ determine the exact padding."
    ((org-agenda-date &override) :foreground blue :height 1.1)
    ((org-agenda-date-today &override) :foreground green :slant 'italic :height 1.3)
    ((org-agenda-date-weekend &override) :foreground blue)
+   ((org-time-grid &override) :foreground fg)
+   ((org-agenda-current-time &override) :foreground bright-yellow)
 
    ;; org-modern
    (org-modern-label :inherit 'org-todo :foreground bright-yellow :weight 'bold)

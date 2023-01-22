@@ -5,3 +5,4 @@
 /notes.org
 config.el
 /org-db.el
+flycheck_config.el

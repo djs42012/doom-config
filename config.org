@@ -269,14 +269,11 @@
          (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
          :action =mu4e)))
 #+end_src
-*** hl-todo :ATTACH:
+*** hl-todo
 :PROPERTIES:
 :ID:       e52972ac-f793-453d-84ff-191b06cdf813
 :END:
 + Set some preferred colors for highlighting todo items
-+ TODO Currently, some keywords (ones that I defined explicitly...) do not always highlight correctly as shown. In some buffers, disabling and reenabling ~hl-todo-mode~ does the trick
-
-[[attachment:_20221107_1853582022-11-07-141312_1331x514_scrot.png]]
 #+begin_src emacs-lisp
 (after! hl-todo
   (setq  hl-todo-keyword-faces
@@ -310,6 +307,29 @@
     ("^\\*info\\*"      :ignore t)
     ("^\\*Man"          :ignore t)))
 #+end_src
+*** tabs
+#+begin_src emacs-lisp
+(after! centaur-tabs
+  (centaur-tabs-group-by-projectile-project)
+  (setq centaur-tabs-style "slant"
+        centaur-tabs-set-bar 'under
+        centaur-tabs-label-fixed-length 12))
+(add-hook! ('cfw:calendar-mode-hook
+            'mu4e-main-mode-hook
+            'mu4e-headers-mode-hook
+            'mu4e-view-mode-hook
+            'org-msg-edit-mode-hook
+            'org-agenda-mode-hook
+            'magit-select-mode-hook
+            'magit-log-select-mode-hook
+            'magit-log-mode-hook
+            'git-commit-mode-hook
+            'magit-diff-mode-hook)
+           #'centaur-tabs-local-mode)
+#+end_src
+
+#+RESULTS:
+
 *** treemacs
 #+begin_src emacs-lisp
 (setq doom-themes-treemacs-theme        'doom-colors
@@ -781,9 +801,6 @@ tasks."
 ;; Hide noisy tag labels in agenda
 (setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo\\|phone")
 #+end_src
-
-#+RESULTS:
-: main\|chore\|hide\|shopping\|daily\|calendars\|email\|daily\|attach\|literature\|todo
 
 *** Agenda Helper Functions
 + Functions relied on by ~org-agenda-skip-function~
@@ -1260,7 +1277,7 @@ skip exactly those headlines that do not match."
     (djs-cfw:org-create-file-source "Calendar" "~/Sync/projects/org/calendars/2022.org" "#c586c0" "#23272e")
     (cfw:cal-create-source "#a9a1e1")
     (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
-    (cfw:ical-create-source "PGA" "~/.doom.d/pga-tour.ics" "#93e079"))))
+    (cfw:ical-create-source "PGA" "~/.doom.d/pga-tour.ics" "#569cd6"))))
 #+end_src
 *** Helper Functions
 + To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of forground and background colors for events
