@@ -839,6 +839,12 @@ skip exactly those headlines that do not match."
   (interactive)
   (org-agenda nil "j"))
 #+end_src
+*** Auto Save Org Buffers
+I want to auto save all org buffers every time I load my agenda, so that refreshing the agenda effectively applies any changes I make using the agenda
+#+begin_src emacs-lisp
+(add-hook! 'org-agenda-mode-hook #'org-save-all-org-buffers)
+#+end_src
+
 ** exports
 *** LaTeX exports
 + TODO This isn't working with ~#+ATTR_LATEX: :booktabs t~
