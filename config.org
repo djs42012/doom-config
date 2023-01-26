@@ -391,10 +391,15 @@
    org-startup-folded 'show2levels
    org-ellipsis " ..."))
 #+end_src
++ Enable ~auto-revert-mode~ for org buffers to facilitate syncthing more conveniently
+#+begin_src emacs-lisp
+(add-hook! 'org-mode-hook #'auto-revert-mode)
+#+end_src
+
 
 #+RESULTS:
 
-*** Behavior
+*** 'TODO' Behavior
 + Automatically complete a parent todo when all subentries are completed.
 #+begin_src emacs-lisp
 (after! org
