@@ -8,7 +8,7 @@
 ** Appearance
 *** Theme and Fonts
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-bisqwit
+(setq doom-theme 'doom-tibetan
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light))
 #+end_src
 *** Window Borders
@@ -424,9 +424,16 @@
                              ("[?]" :foreground "#569cd6")
                              ("[~]" :foreground "#a9a5aa")
                              ("SHOP" :foreground "#c586c0")
-                             ("IDEA" :foreground "#93e079"))))
-(add-hook! 'org-modern-mode-hook #'hl-todo-mode)
+                             ("IDEA" :foreground "#93e079")))
+    (defun my/org-modern-set-star-based-on-theme ()
+        "set the value of org-modern-star based on the current theme"
+      (if (eq doom-theme 'doom-tibetan)
+        (setq org-modern-star '("⚘" "✿" "❁" "✾" "❀" "✤"))
+      (setq org-modern-star 'nil)))
+    (add-hook! 'doom-load-theme-hook #'my/org-modern-set-star-based-on-theme)
+    (add-hook! 'org-modern-mode-hook #'hl-todo-mode))
 #+end_src
+
 *** fancy-priorities
 #+begin_src emacs-lisp
 (after! org-fancy-priorities
@@ -621,7 +628,7 @@ is tomorrow.  With two prefixes, select the deadline."
 *** Paths and Default Settings
 #+begin_src emacs-lisp
 (after! org-roam
-  (setq +org-roam-auto-backlinks-buffer nil
+  (setq +org-roam-auto-backlinks-buffer t
         org-roam-directory (concat org-directory "roam/")
         org-roam-db-location (concat org-roam-directory ".org-roam.db")
         org-roam-dailies-directory "journal/"))
