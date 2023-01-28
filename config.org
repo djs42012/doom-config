@@ -7,10 +7,18 @@
 #+end_src
 ** Appearance
 *** Theme and Fonts
++ TODO Add variable/serif fonts
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-tibetan
-      doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light))
+      doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
+      doom-serif-font (font-spec :family "CMU Serif" :size 16 :weight 'light)
+      mixed-pitch-face 'fixed-pitch-serif)
 #+end_src
+
+#+RESULTS:
+: fixed-pitch-serif
+
 *** Window Borders
 #+begin_src emacs-lisp
 (modify-all-frames-parameters
@@ -334,10 +342,13 @@
 #+RESULTS:
 
 *** treemacs
++ TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
 (setq doom-themes-treemacs-theme        'doom-colors
-      +treemacs-git-mode                'extended)
+      +treemacs-git-mode                'extended
+      doom-themes-treemacs-enable-variable-pitch nil)
 #+end_src
+
 + Sensibly launch treemacs in ~peek-mode~
 #+begin_src emacs-lisp
 (defun djs-treemacs-peek-mode ()
