@@ -121,7 +121,10 @@
 (map! :map #'mu4e-headers-mode-map
       :n "M-+" #'mu4e-headers-mark-all-unread-read
       :n "t" #'djs-capture-msg-to-agenda
-      :n "z t" #'evil-scroll-line-to-top)
+      :n "z t" #'evil-scroll-line-to-top
+      :n "C-/" #'evil-ex-search-forward)
+(map! :map #'mu4e-view-mode-map
+      :n "p" #'my/mu4e-view-save-attachments)
 #+end_src
 *** Auth
 #+begin_src emacs-lisp
@@ -892,7 +895,53 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                               (:flags . 6)
                               (:from-or-to . 25)
                               (:subject . nil))
-        mu4e-alert-interesting-mail-query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread"))
+        mu4e-alert-interesting-mail-query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread")
+  (defun my/mu4e-view-save-attachments (&optional arg)
+  "Save MIME-parts from current mu4e gnus view buffer to chosen directory."
+  (interactive "P")
+  (cl-assert (and (eq major-mode 'mu4e-view-mode)
+		  (derived-mode-p 'gnus-article-mode)))
+  (let* ((parts (mu4e~view-gather-mime-parts))
+	 (handles '())
+	 (files '())
+	 (compfn (if (and (boundp 'helm-mode) helm-mode)
+		     #'completing-read
+		   ;; Fallback to `completing-read-multiple' with poor
+		   ;; completion
+		   #'completing-read-multiple))
+	dir)
+    (dolist (part parts)
+      (let ((fname (or (cdr (assoc 'filename (assoc "attachment" (cdr part))))
+                       (cl-loop for item in part
+                                for name = (and (listp item)
+						(assoc-default 'name item))
+                                thereis (and (stringp name) name)))))
+	(when fname
+	  (push `(,fname . ,(cdr part)) handles)
+	  (push fname files))))
+    (if files
+	(progn
+	  (setq files (let ((helm-comp-read-use-marked t))
+			(funcall compfn "Save part(s): " files))
+		dir (if arg (read-directory-name "Save to directory: ")
+		      (read-directory-name "Save to directory: ")))
+	  (cl-loop for (f . h) in handles
+		   when (member f files)
+		   do (mm-save-part-to-file
+		       h (let ((file (expand-file-name f dir)))
+			   (if (file-exists-p file)
+			       (let (newname (count 1))
+				 (while (and
+					 (setq newname
+					       (concat
+						(file-name-sans-extension file)
+						(format "(%s)" count)
+						(file-name-extension file t)))
+					 (file-exists-p newname))
+				   (cl-incf count))
+				 newname)
+			     file)))))
+      (mu4e-message "No attached files found")))))
 #+end_src
 
 ** Colorization
