@@ -1,3 +1,4 @@
+#+STARTUP: show3levels
 * General Settings
 ** Personal Information
 #+begin_src emacs-lisp
@@ -133,6 +134,10 @@
       :n "C-/" #'evil-ex-search-forward)
 (map! :map #'mu4e-view-mode-map
       :n "p" #'my/mu4e-view-save-attachments)
+(map! :map #'org-agenda-mode-map
+      :g "C-=" #'text-scale-increase
+      :g "C--" #'text-scale-decrease)
+(map! :g "C-s" #'save-buffer)
 #+end_src
 *** Auth
 #+begin_src emacs-lisp
@@ -393,6 +398,7 @@
 ** org-mode
 *** Paths and Default Settings
 + Set default paths and customize ~org-mode-hook~
++ Enable ~auto-revert-mode~ for org buffers to facilitate syncthing more conveniently
 #+begin_src emacs-lisp
 (after! org
   (setq
@@ -404,15 +410,9 @@
    org-startup-indented nil
    org-startup-folded 'show2levels
    org-ellipsis " ..."))
-#+end_src
-+ Enable ~auto-revert-mode~ for org buffers to facilitate syncthing more conveniently
-#+begin_src emacs-lisp
 (add-hook! 'org-mode-hook #'auto-revert-mode)
+(add-hook! 'org-mode-hook #'mixed-pitch-mode)
 #+end_src
-
-
-#+RESULTS:
-
 *** 'TODO' Behavior
 + Automatically complete a parent todo when all subentries are completed.
 #+begin_src emacs-lisp
@@ -703,6 +703,11 @@ is tomorrow.  With two prefixes, select the deadline."
 #+end_src
 
 ** org-agenda
+*** Customize Appearence
+#+begin_src emacs-lisp
+(add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
+#+end_src
+
 *** Set Agenda Files
 + Grab the most recent ~org-roam~ daily and set the list of agenda files
 + TODO find a cleaner way to set org-agenda-files
