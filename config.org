@@ -1,4 +1,5 @@
 #+STARTUP: show3levels
+#+OPTIONS: eval:nil
 * General Settings
 ** Personal Information
 #+begin_src emacs-lisp
@@ -8,7 +9,6 @@
 #+end_src
 ** Appearance
 *** Theme and Fonts
-+ TODO Add variable/serif fonts
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-tibetan
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
@@ -16,10 +16,6 @@
       doom-serif-font (font-spec :family "CMU Serif" :size 16 :weight 'light)
       mixed-pitch-face 'fixed-pitch-serif)
 #+end_src
-
-#+RESULTS:
-: fixed-pitch-serif
-
 *** Window Borders
 #+begin_src emacs-lisp
 (modify-all-frames-parameters
@@ -111,7 +107,6 @@
 #+begin_src emacs-lisp
 (after! marginalia
   (setq marginalia-censor-variables nil)
-
   (defadvice! +marginalia--anotate-local-file-colorful (cand)
     "Just a more colourful version of `marginalia--anotate-local-file'."
     :override #'marginalia--annotate-local-file
@@ -126,7 +121,6 @@
         :width 7)
        ((+marginalia--time-colorful (file-attribute-modification-time attrs))
         :width 12))))
-
   (defun +marginalia--time-colorful (time)
     (let* ((seconds (float-time (time-subtract (current-time) time)))
            (color (doom-blend
@@ -135,7 +129,6 @@
                    (/ 1.0 (log (+ 3 (/ (+ 1 seconds) 345600.0)))))))
       ;; 1 - log(3 + 1/(days + 1)) % grey
       (propertize (marginalia--time time) 'face (list :foreground color))))
-
   (defun +marginalia-file-size-colorful (size)
     (let* ((size-index (/ (log10 (+ 1 size)) 7.0))
            (color (if (< size-index 10000000) ; 10m
@@ -143,7 +136,6 @@
                     (doom-blend 'red 'orange (- size-index 1)))))
       (propertize (file-size-human-readable size) 'face (list :foreground color)))))
 #+end_src
-
 *** Keybinds
 #+begin_src emacs-lisp
 ;; TODO combine map! calls
@@ -186,7 +178,6 @@
 #+begin_src emacs-lisp
 (setq auth-sources '("~/.authinfo.gpg"))
 #+end_src
-
 *** Lookup Providers
 #+begin_src emacs-lisp
 (setq +lookup-provider-url-alist
@@ -216,7 +207,6 @@
     (insert-file-contents file)
     (buffer-string)))
 #+end_src
-
 * Modules
 ** Completion
 *** company
@@ -233,7 +223,6 @@
 (after! flyspell
   (setq flyspell-duplicate-distance 0))
 #+end_src
-
 ** Emacs
 *** dired/dirvish
 #+begin_src emacs-lisp
@@ -263,7 +252,6 @@
          citar-symbol-separator "  "
          ;; TODO Read this template from a file (insert-file-contents?)
          citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: :literature: \n* TODOs\n:PROPERTIES:\n:CATEGORY: ${author}\n:END:\n* Notes\n* Takeaways\n* Practices\n* Quotes\n* Thoughts"
-
          citar-symbols `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " " )
                          (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
                          (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " "))
@@ -320,7 +308,6 @@
                ,@rainbow-html-colors-font-lock-keywords
                ,@rainbow-html-rgb-colors-font-lock-keywords))))
 #+end_src
-
 ** UI
 *** doom-dashboard
 #+begin_src emacs-lisp
@@ -398,9 +385,6 @@
             'magit-diff-mode-hook)
            #'centaur-tabs-local-mode)
 #+end_src
-
-#+RESULTS:
-
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
@@ -408,7 +392,6 @@
       +treemacs-git-mode                'extended
       doom-themes-treemacs-enable-variable-pitch nil)
 #+end_src
-
 + Sensibly launch treemacs in ~peek-mode~
 #+begin_src emacs-lisp
 (defun djs-treemacs-peek-mode ()
@@ -431,7 +414,6 @@
            (djs-treemacs-peek-mode)
          (treemacs)))))
 #+end_src
-
 * Lang
 ** web
 + Set the file extensions to open in ~web-mode~
@@ -448,7 +430,6 @@
 (add-hook! 'lua-mode-hook
            #'rainbow-delimiters-mode-enable)
 #+end_src
-
 * Org
 ** org-mode
 *** Paths and Default Settings
@@ -502,7 +483,6 @@
     (add-hook! 'doom-load-theme-hook #'my/org-modern-set-star-based-on-theme)
     (add-hook! 'org-modern-mode-hook #'hl-todo-mode))
 #+end_src
-
 *** fancy-priorities
 #+begin_src emacs-lisp
 (after! org-fancy-priorities
@@ -542,41 +522,33 @@
       entry (file+headline "todo.org" "♉ Personal")
       "* TODO %?"
       :kill-buffer t)
-
      ("ta" "🐍 Animals"
       entry (file+headline "todo.org" "🐍 Animals")
       "* TODO %?"
       :kill-buffer t)
-
      ("ts" "🛒 Shopping List"
       entry (file+headline "todo.org" "🛒 Shopping")
       "* SHOP %?"
       :kill-buffer t)
-
      ("th" "🏡 Home"
       entry (file+headline "todo.org" "🏡 Home")
       "* TODO %?"
       :kill-buffer t)
-
      ("to" "🖥 Office"
       entry (file+headline "todo.org" "🖥 Office")
       "* TODO %?"
       :kill-buffer t)
-
      ("tm" "⁉ Misc."
       entry (file+headline "todo.org" "⁉ Inbox")
       "* TODO %?"
       :kill-buffer t)
-
      ("a" "📅 Appointment"
       entry (file+headline "appt.org" "Inbox")
       "* %?\n<%(org-read-date)>"
       :kill-buffer t)
-
      ("n" "📥 Note"
       entry (file+headline "notes.org" "📥 Inbox") ,
       "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a")
-
      ;; Default cenralized project templates
      ("g" "🌏 Global Project Files")
      ("gt" "✅ Project todo"
@@ -585,21 +557,18 @@
       :heading "Tasks"
       :prepend nil
       :kill-buffer t)
-
      ("gn" "✏ Project notes"
       entry #'+org-capture-central-project-notes-file
       "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
       :heading "Notes"
       :prepend nil
       :kill-buffer t)
-
      ("gc" "🏁 Project changelog"
       entry #'+org-capture-central-project-changelog-file
       "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
       :heading "Changelog"
       :prepend nil
       :kill-buffer t)
-
      ;; Default local project templates
      ("l" "🔒 Local Project Files")
      ("lt" "✅ Project-local todo"
@@ -607,20 +576,17 @@
       "* TODO %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
       :prepend nil
       :kill-buffer t)
-
      ("ln" "✏ Project-local notes"
       entry (file+headline +org-capture-project-notes-file "Inbox")
       "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
       :prepend nil
       :kill-buffer t)
-
      ("lc" "🏁 Project-local changelog"
       entry (file+headline +org-capture-project-changelog-file "Unreleased")
       "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
       :prepend nil
       :kill-buffer t))))
 #+end_src
-
 **** Email
 + Clone ~+mu4e/capture-msg-to-agenda~ to modify the timestamp behavior and default heading
 + TODO fix universal argument for deadline
@@ -692,7 +658,6 @@ is tomorrow.  With two prefixes, select the deadline."
        (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
      "/DONE" 'file)))
 #+end_src
-
 ** org-roam
 *** Paths and Default Settings
 #+begin_src emacs-lisp
@@ -702,7 +667,6 @@ is tomorrow.  With two prefixes, select the deadline."
         org-roam-db-location (concat org-roam-directory ".org-roam.db")
         org-roam-dailies-directory "journal/"))
 #+end_src
-
 *** Capture
 #+begin_src emacs-lisp
 (after! org-roam
@@ -711,27 +675,22 @@ is tomorrow.  With two prefixes, select the deadline."
            ,(format "#+title: Fleeting - ${title} - %s\n#+filetags: :fleeting:\n* ${title}\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
            :target (file "inbox/fleeting_${slug}_%<%Y%m%d%H%M%S>.org")
            :kill-buffer t)
-
           ("z" "💭 Zettel" plain
            ,(format "#+title: ${title}\n* ${title}\n%%[%s/template/zettel.org]" org-roam-directory)
            :target (file "zettels/zettel_${slug}.org")
            :kill-buffer t)
-
           ("e" "💪 Exercise" plain
            ,(format "#+title: ${title}\n#+filetags: :exercise:\n* ${title}\n%%[%s/template/exercise.org]" org-roam-directory)
            :target (file "exercises/exercises_${slug}.org")
            :kill-buffer t)
-
           ("a" "🤸 Asana" plain
            ,(format "#+title: ${title}\n#+filetags: :yoga:\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
            :target (file "asanas/asana_${slug}.org")
            :kill-buffer t)
-
           ("c" "💻 Command" plain
            ,(format "#+title: ${title}\n#+filetags: :command_line:\n* ${title}\n%%[%s/template/asana.org]" org-roam-directory)
            :target (file "commands/command_${slug}.org")
            :kill-buffer t))
-
         org-roam-dailies-capture-templates
         '(("a" "📅 Agenda" entry
            ;; TODO Use path expansion for templates
@@ -739,30 +698,24 @@ is tomorrow.  With two prefixes, select the deadline."
            (file "~/Sync/projects/org/roam/template/agenda.org")
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: daily")
            :kill-buffer t)
-
           ("d" "💤 Dream" entry "* 💤 Dream\n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:dream:")
            :kill-buffer t)
-
           ("g" "🏌 Golf" entry "* 🏌 Golf\n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:golf:")
            :kill-buffer t)
-
           ("t" "💭 Thought" entry "* 💭 Thought %<%H:%M> \n%?"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:thought:")
            :kill-buffer t)
-
           ("w" "💪 Workout" entry "* 💪 Workout \n** Warm-up\n*** [ ] %?\n** Main Circuit\n*** [ ]\n** Cool down\n*** [ ]"
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:workout:")
            :kill-buffer t))))
 #+end_src
-
 ** org-agenda
 *** Customize Appearence
 #+begin_src emacs-lisp
 (add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
 #+end_src
-
 *** Set Agenda Files
 + Grab the most recent ~org-roam~ daily and set the list of agenda files
 + TODO find a cleaner way to set org-agenda-files
@@ -800,20 +753,16 @@ is tomorrow.  With two prefixes, select the deadline."
 (after! org-roam
   (defun roam-extra:get-filetags ()
     (split-string (or (org-roam-get-keyword "filetags") "")))
-
   (defun roam-extra:add-filetag (tag)
     (let* ((new-tags (cons tag (roam-extra:get-filetags)))
            (new-tags-str (combine-and-quote-strings new-tags)))
       (org-roam-set-keyword "filetags" new-tags-str)))
-
   (defun roam-extra:del-filetag (tag)
     (let* ((new-tags (seq-difference (roam-extra:get-filetags) `(,tag)))
            (new-tags-str (combine-and-quote-strings new-tags)))
       (org-roam-set-keyword "filetags" new-tags-str)))
-
   (defun roam-extra:todo-p ()
     "Return non-nil if current buffer has any TODO entry.
-
 TODO entries marked as done are ignored, meaning the this
 function returns nil if current buffer contains only completed
 tasks."
@@ -824,8 +773,6 @@ tasks."
         (eq (org-element-property :todo-type h)
             'todo))
       nil 'first-match))
-
-
   (defun roam-extra:update-todo-tag ()
     "Update TODO tag in the current buffer."
     (defun roam-extra:update-todo-tag ()
@@ -839,7 +786,6 @@ tasks."
                    (roam-extra:add-filetag "todo"))
                   ((and (not is-todo) (seq-contains-p tags "todo"))
                    (roam-extra:del-filetag "todo"))))))))
-
   (defun roam-extra:todo-files ()
     "Return a list of roam files containing todo tag."
     (org-roam-db-sync)
@@ -849,7 +795,6 @@ tasks."
                                                 (seq-contains-p (org-roam-node-tags n)  "daily"))
                                               (org-roam-node-list)))))
       (seq-uniq (seq-map #'org-roam-node-file todo-nodes))))
-
   (add-hook! 'find-file-hook #'roam-extra:update-todo-tag)
   (add-hook! 'before-save-hook #'roam-extra:update-todo-tag))
     #+end_src
@@ -883,11 +828,9 @@ tasks."
             ;; (tags-todo "+main-email" ((org-agenda-overriding-header "✅ Todo")))
             ;; (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading")))
             )))))
-
 ;; Hide noisy tag labels in agenda
 (setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo\\|phone")
 #+end_src
-
 *** Agenda Helper Functions
 + Functions relied on by ~org-agenda-skip-function~
 + TODO find original source and cite
@@ -901,15 +844,12 @@ Here MATCH is a match string of the same format used by
              (org-get-todo-state)
              (org-get-tags-at)
              (org-reduced-level (org-current-level))))
-
   (defun my/org-agenda-skip-without-match (match)
     "Skip current headline unless it matches MATCH.
-
 Return nil if headline containing point matches MATCH (which
 should be a match string of the same format used by
 `org-tags-view').  If headline does not match, return the
 position of the next headline in current buffer.
-
 Intended for use with `org-agenda-skip-function', where this will
 skip exactly those headlines that do not match."
     (save-excursion
@@ -930,7 +870,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 #+begin_src emacs-lisp
 (add-hook! 'org-agenda-mode-hook #'org-save-all-org-buffers)
 #+end_src
-
 ** exports
 *** LaTeX exports
 + TODO This isn't working with ~#+ATTR_LATEX: :booktabs t~
@@ -940,7 +879,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   (setq org-format-latex-header "\\documentclass{article}
 \\usepackage{booktabs}"))
 #+end_src
-
 * Email (mu4e)
 ** Load Path
 + Make sure we can find mu4e
@@ -1014,7 +952,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 			     file)))))
       (mu4e-message "No attached files found")))))
 #+end_src
-
 ** Colorization
 + Reduce html coloring in messages for improved readability
   #+begin_src emacs-lisp
@@ -1039,7 +976,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                   ("personal" . mu4e-personal-mail-face)
                                   ("gmail" . mu4e-gmail-mail-face))))
 #+end_src
-
 ** Bookmarks
 + Set our custom search queries for mu4e's homepage
   #+begin_src emacs-lisp
@@ -1068,7 +1004,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
            :hide-unread t
            :key 116))))
   #+end_src
-
 ** Contexts
 + Create a context for each mail account
 + TODO consider offloading this configuration to a separate file
@@ -1141,7 +1076,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
                   )))))
 #+end_src
-
 ** Dashboard
 + I've gone to some length to clone and edit the functions responsible for rendering mu4e's dashboard in order to make it more visually appealing. In most cases I am just removing the radio buttons and replacing them with emojis, though I do change some of anchor points and heading names used to render the display.
 *** "Basic" Region
@@ -1239,19 +1173,16 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
      (evil-collection-mu4e--main-action-str "\t 🔀 Switch focus [[;]]\n" 'mu4e-context-switch)
      (evil-collection-mu4e--main-action-str "\t ♻ Update email & database [[u]]\n"
                                             'mu4e-update-mail-and-index)
-
      ;; show the queue functions if `smtpmail-queue-dir' is defined
      (if (file-directory-p smtpmail-queue-dir)
          (evil-collection-mu4e--main-view-queue)
        "")
      "\n"
-
      (evil-collection-mu4e--main-action-str "\t 🗞 News [[N]]\n" 'mu4e-news)
      (evil-collection-mu4e--main-action-str "\t 📓 About mu4e [[A]]\n" 'mu4e-about)
      (evil-collection-mu4e--main-action-str "\t ❓ Help [[H]]\n" 'mu4e-display-manual)
      (evil-collection-mu4e--main-action-str "\t 🚫 Quit [[q]]\n" 'mu4e-quit))))
 #+end_src
-
 *** "Bookmarks" Region
 #+begin_src emacs-lisp
 (after! mu4e
@@ -1293,7 +1224,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                        "")
                      "\n"))))
 #+end_src
-
 *** "Main" Redraw Function
 + Here I customize the strings that denote the beginning of some of the regions to be drawn, and then define redefine ~mu4e--key-val~ to remove even more of those pesky radio buttons that used to get rendered by =*='s.
 + Finally, I prettify a couple more items on the page by overriding ~mu4e--main-redraw-buffer~ and modify the structure of the page to remove a couple of unwanted items by overriding ~evil-collection-mu4e-update-main-view~
@@ -1341,14 +1271,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          (mu4e--main-maildirs)
          "\n"
          (propertize "Actions\n\n" 'face 'mu4e-title-face)
-
          (mu4e--main-action-str "\t* [;]Switch context\n"
                                 (lambda()(interactive)
 			          (mu4e-context-switch)(revert-buffer)))
-
          (mu4e--main-action-str "\t* [U]pdate email & database\n"
                                 'mu4e-update-mail-and-index)
-
          ;; show the queue functions if `smtpmail-queue-dir' is defined
          (if (file-directory-p smtpmail-queue-dir)
              (mu4e--main-view-queue)
@@ -1358,7 +1285,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          (mu4e--main-action-str "\t* [A]bout mu4e\n" #'mu4e-about)
          (mu4e--main-action-str "\t* [H]elp\n" #'mu4e-display-manual)
          (mu4e--main-action-str "\t* [q]uit\n" #'mu4e-quit)
-
          "\n"
          (propertize "Info\n\n" 'face 'mu4e-title-face)
          (djs-mu4e--key-val "🕰 Last updated" (current-time-string (plist-get mu4e-index-update-status :tstamp)))
@@ -1370,7 +1296,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          (if mu4e-main-hide-personal-addresses ""
            (djs-mu4e--key-val "🏘 Personal addresses"
 		              (if addrs (mapconcat #'identity addrs ", "  ) "none"))))
-
         (if mu4e-main-hide-personal-addresses ""
           (unless (mu4e-personal-address-p user-mail-address)
             (mu4e-message (concat
@@ -1422,10 +1347,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
     (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
     (cfw:ical-create-source "PGA" "~/.doom.d/pga-tour.ics" "#569cd6"))))
 #+end_src
-
-#+RESULTS:
-: djs-my-personal-calendar
-
 *** Helper Functions
 + To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of foreground and background colors for events
 #+begin_src emacs-lisp
@@ -1439,7 +1360,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
      :data (lambda (begin end)
              (cfw:org-to-calendar file begin end)))))
 #+end_src
-
 ** Info-mode
 + Prefer variable pitch for reading in ~Info-mode~ and fix an annoying little feature where previous nodes would restore my cursor to the bottom of the page when navigating.
 #+begin_src emacs-lisp
@@ -1450,7 +1370,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   :after #'Info-prev
   :after #'Info-history-back
   (goto-char (point-min)))
-
 (map! :map Info-mode-map
       :n "<down>" #'Info-forward-node
       :n "<up>" #'Info-backward-node
