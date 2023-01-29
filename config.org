@@ -1410,15 +1410,24 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   (cfw:open-calendar-buffer
    :contents-sources
    (list
-    (cfw:org-create-file-source "Appts." "~/Sync/projects/org/appt.org" "#fdb900")
-    (cfw:org-create-file-source "Todo" "~/Sync/projects/org/todo.org" "#a9a1e1")
-    (djs-cfw:org-create-file-source "Calendar" "~/Sync/projects/org/calendars/2022.org" "#c586c0" "#23272e")
+    ;; for some reason this dummy file help prevents a bug where cfw:org-to-calendar will regester as void in my helper
+    (cfw:org-create-file-source "" "~/Sync/projects/org/calendars/dummy.org" (doom-color 'fg))
+    (cfw:org-create-file-source "Appts." "~/Sync/projects/org/appt.org" (doom-color (if (eq solaire-mode--theme 'doom-bisqwit)
+                                                                                            'bright-yellow
+                                                                                            'yellow))
+                                                                                        )
+    (djs-cfw:org-create-file-source "Todo" "~/Sync/projects/org/todo.org" (doom-color 'magenta) (doom-color 'base0))
+    (djs-cfw:org-create-file-source "Calendar" "~/Sync/projects/org/calendars/2022-2023.org"   (doom-color 'fg) (doom-color 'base0))
     (cfw:cal-create-source "#a9a1e1")
     (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
     (cfw:ical-create-source "PGA" "~/.doom.d/pga-tour.ics" "#569cd6"))))
 #+end_src
+
+#+RESULTS:
+: djs-my-personal-calendar
+
 *** Helper Functions
-+ To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of forground and background colors for events
++ To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of foreground and background colors for events
 #+begin_src emacs-lisp
 (defun djs-cfw:org-create-file-source (name file color bgcolor)
   "Create org-element based source with cusomg bg-color "
