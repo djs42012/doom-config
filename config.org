@@ -1,4 +1,4 @@
-#+STARTUP: show3levels
+#+STARTUP: show2levels
 #+OPTIONS: eval:nil
 * General Settings
 ** Personal Information
@@ -240,7 +240,8 @@
         dirvish-emerge-groups '(("Recent"
                                  (predicate . recent-files-2h))
                                 ("README"
-                                 (regex . "README")))))
+                                 (regex . "README")))
+        dirvish-default-layout '(1 0.20 0.5 )))
 #+end_src
 ** Tools
 *** biblio (citar)
