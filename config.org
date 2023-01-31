@@ -707,7 +707,8 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
     "Reload the org agenda if the file saved is an org file"
     (if (string= (file-name-extension (buffer-file-name)) "org")
         (my/reload-agenda-if-open)))
-  (add-hook 'after-save-hook #'my/reload-agenda-on-save-org-file))
+  (add-hook 'after-save-hook #'my/reload-agenda-on-save-org-file)
+  (add-hook 'after-revert-hook #'my/reload-agenda-if-open))
 #+end_src
 ** org-roam
 *** Paths and Default Settings
