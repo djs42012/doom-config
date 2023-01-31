@@ -439,6 +439,12 @@
            (djs-treemacs-peek-mode)
          (treemacs)))))
 #+end_src
+** Editor
+*** Format
+#+begin_src emacs-lisp
+(setq +format-on-save-enabled-modes
+  (append +format-on-save-enabled-modes '(org-mode)))
+#+end_src
 * Lang
 ** web
 + Set the file extensions to open in ~web-mode~
@@ -683,6 +689,22 @@ is tomorrow.  With two prefixes, select the deadline."
        (org-archive-subtree)
        (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
      "/DONE" 'file)))
+#+end_src
+#+RESULTS:
+: org-archive-done-tasks
+*** On-save
++ When I save an org file, reload the agenda if it's open
+#+begin_src emacs-lisp
+(after! org (defun my/reload-agenda-if-open ()
+              "Reload the org agenda if the buffer exists"
+              (if (get-buffer "*Org Agenda*")
+                  (with-current-buffer "*Org Agenda*"
+                    (org-launch-custom-agenda))))
+  (defun my/reload-agenda-on-save-org-file ()
+    "Reload the org agenda if the file saved is an org file"
+    (if (string= (file-name-extension (buffer-file-name)) "org")
+        (my/reload-agenda-if-open)))
+  (add-hook 'after-save-hook #'my/reload-agenda-on-save-org-file))
 #+end_src
 ** org-roam
 *** Paths and Default Settings
