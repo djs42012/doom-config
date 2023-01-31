@@ -469,7 +469,8 @@
    diary-file "~/Sync/projects/org/calendars/birthdays-anniversaries.org"
    org-startup-indented nil
    org-startup-folded 'show2levels
-   org-ellipsis " ..."))
+   org-ellipsis " ..."
+   org-log-into-drawer "LOGBOOK"))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
 (add-hook! 'org-mode-hook #'mixed-pitch-mode)
 #+end_src
