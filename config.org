@@ -301,6 +301,7 @@
   (lsp-ensure-server 'json-ls)
   (lsp-ensure-server 'eslint)
   (lsp-ensure-server 'css-ls)
+  (lsp-ensure-server 'clangd)
   (lsp-ensure-server 'tailwindcss)
   (lsp-ensure-server 'lua-language-server))
   #+end_src
