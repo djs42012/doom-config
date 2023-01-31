@@ -172,10 +172,28 @@
       :n "z t" #'evil-scroll-line-to-top
       :n "C-/" #'evil-ex-search-forward)
 (map! :map #'mu4e-view-mode-map
-      :n "p" #'my/mu4e-view-save-attachments)
+      :n "p" #'my/mu4e-view-save-attachments
+      :n "C-=" #'text-scale-increase
+      :n "C--" #'text-scale-decrease
+      :n "C-_" #'mu4e-headers-split-view-shrink)
 (map! :map #'org-agenda-mode-map
       :g "C-=" #'text-scale-increase
       :g "C--" #'text-scale-decrease)
+(map! :map #'org-mode-map
+      :n "C-j" #'outline-next-visible-heading
+      :n "C-k" #'outline-previous-visible-heading
+      :n "C-S-j" #'org-forward-element
+      :n "C-S-k" #'org-backward-element)
+(map! :map #'evil-org-mode-map
+      :n "C-S-j" #'org-forward-element
+      :n "C-S-k" #'org-backward-element)
+(map! :map Info-mode-map
+      :n "<down>" #'Info-forward-node
+      :n "<up>" #'Info-backward-node
+      :n "C-<down>" #'Info-next
+      :n "C-<up>" #'Info-prev
+      :n "<left>" #'Info-history-back
+      :n "<right>" #'Info-history-forward)
 (map! :g "C-s" #'save-buffer)
 #+end_src
 *** Auth
@@ -1376,13 +1394,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   :after #'Info-prev
   :after #'Info-history-back
   (goto-char (point-min)))
-(map! :map Info-mode-map
-      :n "<down>" #'Info-forward-node
-      :n "<up>" #'Info-backward-node
-      :n "C-<down>" #'Info-next
-      :n "C-<up>" #'Info-prev
-      :n "<left>" #'Info-history-back
-      :n "<right>" #'Info-history-forward)
 #+end_src
 ** command-log-mode
 + Here I just add some defaults to enable ~command-log-mode~ for all buffers when activated, and to automatically show the log window whenever I activate the mode
