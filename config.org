@@ -1022,6 +1022,18 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 			     file)))))
       (mu4e-message "No attached files found")))))
 #+end_src
+** Composing
++ I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
+#+begin_src emacs-lisp
+(after! org-msg
+  (defun my/org-msg-set-default-alternatives ()
+    "Set default alternatives for org msg"
+    (setq org-msg-default-alternatives '((new . (utf-8 html))
+                                         (reply-to-text . (utf-8 html))
+                                         (reply-to-html . (utf-8 html)))))
+  (add-hook! 'org-msg-mode-hook #'my/org-msg-set-default-alternatives))
+#+end_src
+
 ** Colorization
 + Reduce html coloring in messages for improved readability
   #+begin_src emacs-lisp
@@ -1098,8 +1110,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (user-mail-address . "david@djs.gg")
                   (smtpmail-smtp-service   . 587)
                   (smtpmail-stream-type   . starttls)
-                  (mu4e-compose-signature . "\n-David")
-                  (org-msg-signature . "\n-David")
+                  (org-msg-greeting-fmt . "\n-David")
                   (+mu4e-personal-addresses . ("david@djs.gg"
                                                "catchall@djs.gg"
                                                "david@djs.money"
@@ -1121,8 +1132,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (user-mail-address . "dsharfi@gmail.com")
                   (smtpmail-smtp-service   . 587)
                   (smtpmail-stream-type   . starttls)
-                  (mu4e-compose-signature . "\n-David")
-                  (org-msg-signature . "\n-David")
+                  (org-msg-greeting-fmt . "\n-David")
                   (+mu4e-personal-addresses . ("dsharfi@gmail.com"
                                                "dsharfi2@gmail.com"))))
          ;; work
@@ -1141,8 +1151,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (smtpmail-smtp-service . 587)
                   (smtpmail-stream-type . starttls)
                   (user-mail-address . "dsharfi@plusoneair.com")
-                  (mu4e-compose-signature . "\n-David")
-                  (org-msg-signature . ,(file-to-string "~/Sync/Templates/poa-signature.txt"))
+                  (org-msg-greeting-fmt . ,(file-to-string "~/Sync/Templates/poa-signature.txt"))
                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
                   )))))
 #+end_src
