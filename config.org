@@ -381,6 +381,24 @@
           ("REVIEW" . "#6ae4b9")
           ("DEPRECATED" . "#bfd9ff"))))
 #+end_src
+*** Indent guides
+#+begin_src emacs-lisp
+(after! highlight-indent-guides
+  (setq
+   ;; highlight-indent-guides-auto-odd-face-perc                 0
+   ;; highlight-indent-guides-auto-even-face-perc                0
+   ;; highlight-indent-guides-auto-top-odd-face-perc             0
+   ;; highlight-indent-guides-auto-top-even-face-perc            0
+   ;; highlight-indent-guides-auto-character-face-perc           0
+   ;; highlight-indent-guides-auto-stack-odd-face-perc           0
+   ;; highlight-indent-guides-auto-stack-even-face-perc          0
+   ;; highlight-indent-guides-auto-top-character-face-perc       0
+   ;; highlight-indent-guides-auto-stack-character-face-perc     0
+   highlight-indent-guides-method 'bitmap
+
+   ))
+#+end_src
+
 *** popup
 + Keep certain windows hanging around longer than Doom's defaults
 #+begin_src emacs-lisp

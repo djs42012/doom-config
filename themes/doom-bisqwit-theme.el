@@ -179,6 +179,16 @@ determine the exact padding."
    ;; indent guides
    ;; TODO Figure out why this only sometimes works
    ;; ((highlight-indent-guides-character-face &override) :foreground red)
+   ;; (highlight-indent-guides-character-face :background bg :foreground base0)
+   ;; (highlight-indent-guides-stack-character-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-odd-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-even-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-top-odd-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-top-even-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-stack-odd-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-stack-even-face  :background bg :foreground base0)
+   ;; (highlight-indent-guides-top-character-face  :background bg :foreground base0)
+
 
    ;; Info-mode
    ((info-xref &override) :inherit 'link :foreground blue)
@@ -377,6 +387,7 @@ determine the exact padding."
    (web-mode-html-attr-name-face :foreground yellow)
    (web-mode-html-tag-face :foreground green)
    (web-mode-html-tag-bracket-face :foreground fg)
+   (web-mode-folded-face :background base0)
 
    ;; wgrep
    (wgrep-face :background base1)
