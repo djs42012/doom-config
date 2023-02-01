@@ -411,7 +411,7 @@
 #+begin_src emacs-lisp
 (after! centaur-tabs
   (centaur-tabs-group-by-projectile-project)
-  (setq centaur-tabs-style "slant"
+  (setq centaur-tabs-style "chamfer"
         centaur-tabs-set-bar 'under
         centaur-tabs-label-fixed-length 12))
 (add-hook! ('cfw:calendar-mode-hook

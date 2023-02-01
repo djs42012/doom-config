@@ -211,7 +211,7 @@ determine the exact padding."
 
    ;;;; lsp-mode
    (lsp-ui-doc-background      :background base0)
-   (lsp-face-highlight-read    :background (doom-blend red bg 0.3))
+   (lsp-face-highlight-read    :background bg)
    (lsp-face-highlight-textual :inherit 'region)
    (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
 
