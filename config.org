@@ -10,10 +10,10 @@
 ** Appearance
 *** Theme and Fonts
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-tibetan
+(setq doom-theme 'doom-bisqwit
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
-      doom-serif-font (font-spec :family "CMU Serif" :size 16 :weight 'light)
+      doom-serif-font (font-spec :family "CMU Serif" :size 18 :weight 'light)
       mixed-pitch-face 'fixed-pitch-serif)
 #+end_src
 *** Window Borders
@@ -479,7 +479,7 @@
    org-ellipsis " ..."
    org-log-into-drawer "LOGBOOK"))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
-(add-hook! 'org-mode-hook #'mixed-pitch-mode)
+;; (add-hook! 'org-mode-hook #'mixed-pitch-mode)
 #+end_src
 *** 'TODO' Behavior
 + Automatically complete a parent todo when all subentries are completed.
@@ -766,7 +766,7 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
 ** org-agenda
 *** Customize Appearence
 #+begin_src emacs-lisp
-(add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
+;; (add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
 #+end_src
 *** Set Agenda Files
 + Grab the most recent ~org-roam~ daily and set the list of agenda files
