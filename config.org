@@ -411,8 +411,8 @@
 #+begin_src emacs-lisp
 (after! centaur-tabs
   (centaur-tabs-group-by-projectile-project)
-  (setq centaur-tabs-style "chamfer"
-        centaur-tabs-set-bar 'under
+  (setq centaur-tabs-style "bar"
+        centaur-tabs-set-bar 'left
         centaur-tabs-label-fixed-length 12))
 (add-hook! ('cfw:calendar-mode-hook
             'mu4e-main-mode-hook
@@ -976,51 +976,51 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                               (:subject . nil))
         mu4e-alert-interesting-mail-query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread")
   (defun my/mu4e-view-save-attachments (&optional arg)
-  "Save MIME-parts from current mu4e gnus view buffer to chosen directory."
-  (interactive "P")
-  (cl-assert (and (eq major-mode 'mu4e-view-mode)
-		  (derived-mode-p 'gnus-article-mode)))
-  (let* ((parts (mu4e~view-gather-mime-parts))
-	 (handles '())
-	 (files '())
-	 (compfn (if (and (boundp 'helm-mode) helm-mode)
-		     #'completing-read
-		   ;; Fallback to `completing-read-multiple' with poor
-		   ;; completion
-		   #'completing-read-multiple))
-	dir)
-    (dolist (part parts)
-      (let ((fname (or (cdr (assoc 'filename (assoc "attachment" (cdr part))))
-                       (cl-loop for item in part
-                                for name = (and (listp item)
-						(assoc-default 'name item))
-                                thereis (and (stringp name) name)))))
-	(when fname
-	  (push `(,fname . ,(cdr part)) handles)
-	  (push fname files))))
-    (if files
-	(progn
-	  (setq files (let ((helm-comp-read-use-marked t))
-			(funcall compfn "Save part(s): " files))
-		dir (if arg (read-directory-name "Save to directory: ")
-		      (read-directory-name "Save to directory: ")))
-	  (cl-loop for (f . h) in handles
-		   when (member f files)
-		   do (mm-save-part-to-file
-		       h (let ((file (expand-file-name f dir)))
-			   (if (file-exists-p file)
-			       (let (newname (count 1))
-				 (while (and
-					 (setq newname
-					       (concat
-						(file-name-sans-extension file)
-						(format "(%s)" count)
-						(file-name-extension file t)))
-					 (file-exists-p newname))
-				   (cl-incf count))
-				 newname)
-			     file)))))
-      (mu4e-message "No attached files found")))))
+    "Save MIME-parts from current mu4e gnus view buffer to chosen directory."
+    (interactive "P")
+    (cl-assert (and (eq major-mode 'mu4e-view-mode)
+                    (derived-mode-p 'gnus-article-mode)))
+    (let* ((parts (mu4e~view-gather-mime-parts))
+           (handles '())
+           (files '())
+           (compfn (if (and (boundp 'helm-mode) helm-mode)
+                       #'completing-read
+                     ;; Fallback to `completing-read-multiple' with poor
+                     ;; completion
+                     #'completing-read-multiple))
+           dir)
+      (dolist (part parts)
+        (let ((fname (or (cdr (assoc 'filename (assoc "attachment" (cdr part))))
+                         (cl-loop for item in part
+                                  for name = (and (listp item)
+                                                  (assoc-default 'name item))
+                                  thereis (and (stringp name) name)))))
+          (when fname
+            (push `(,fname . ,(cdr part)) handles)
+            (push fname files))))
+      (if files
+          (progn
+            (setq files (let ((helm-comp-read-use-marked t))
+                          (funcall compfn "Save part(s): " files))
+                  dir (if arg (read-directory-name "Save to directory: ")
+                        (read-directory-name "Save to directory: ")))
+            (cl-loop for (f . h) in handles
+                     when (member f files)
+                     do (mm-save-part-to-file
+                         h (let ((file (expand-file-name f dir)))
+                             (if (file-exists-p file)
+                                 (let (newname (count 1))
+                                   (while (and
+                                           (setq newname
+                                                 (concat
+                                                  (file-name-sans-extension file)
+                                                  (format "(%s)" count)
+                                                  (file-name-extension file t)))
+                                           (file-exists-p newname))
+                                     (cl-incf count))
+                                   newname)
+                               file)))))
+        (mu4e-message "No attached files found")))))
 #+end_src
 ** Composing
 + I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
@@ -1352,7 +1352,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          (propertize "Actions\n\n" 'face 'mu4e-title-face)
          (mu4e--main-action-str "\t* [;]Switch context\n"
                                 (lambda()(interactive)
-			          (mu4e-context-switch)(revert-buffer)))
+                                  (mu4e-context-switch)(revert-buffer)))
          (mu4e--main-action-str "\t* [U]pdate email & database\n"
                                 'mu4e-update-mail-and-index)
          ;; show the queue functions if `smtpmail-queue-dir' is defined
@@ -1371,10 +1371,10 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          (djs-mu4e--key-val "📧 Maildir" (mu4e-root-maildir))
          (djs-mu4e--key-val "💾 In store"
                             (format "%d" (plist-get mu4e--server-props :doccount))
-		            "messages")
+                            "messages")
          (if mu4e-main-hide-personal-addresses ""
            (djs-mu4e--key-val "🏘 Personal addresses"
-		              (if addrs (mapconcat #'identity addrs ", "  ) "none"))))
+                              (if addrs (mapconcat #'identity addrs ", "  ) "none"))))
         (if mu4e-main-hide-personal-addresses ""
           (unless (mu4e-personal-address-p user-mail-address)
             (mu4e-message (concat
@@ -1459,3 +1459,4 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
         command-log-mode-auto-show t
         command-log-mode-window-font-size 1))
   #+end_src
+

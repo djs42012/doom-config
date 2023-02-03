@@ -91,7 +91,7 @@ determine the exact padding."
   (((hl-line &override) :background base1)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((link &override) :foreground blue)
-   (show-paren-match :foreground bg :background red)
+   (show-paren-match :background base3)
    (cursor :foreground bg :background fg)
    (lazy-highlight :background magenta :foreground bg)
    (evil-ex-search :background magenta :foreground bg)
@@ -128,7 +128,13 @@ determine the exact padding."
    ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
 
    ;; centaur-tabs
-   ((centaur-tabs-selected &override) :background base2 :foreground fg :underline green :weight 'bold)
+   ((centaur-tabs-selected &override) :background base3 :foreground fg :weight 'bold)
+   ((centaur-tabs-unselected &override) :background base0 :foreground fg )
+   ((centaur-tabs-active-bar-face &override) :background green)
+   ((centaur-tabs-selected-modified &override) :foreground orange :background base3 :weight 'bold)
+   ((centaur-tabs-unselected-modified &override) :foreground orange :background base0)
+   ((centaur-tabs-modified-marker-selected &override) :foreground orange :background base3 :weight 'bold)
+   ((centaur-tabs-modified-marker-unselected &override) :foreground orange :background base0)
 
    ;; company
    ((company-tooltip-common &override) :weight 'normal :foreground blue)
