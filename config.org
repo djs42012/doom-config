@@ -412,7 +412,7 @@
 (after! centaur-tabs
   (centaur-tabs-group-by-projectile-project)
   (setq centaur-tabs-style "bar"
-        centaur-tabs-set-bar 'left
+        centaur-tabs-set-bar 'under
         centaur-tabs-label-fixed-length 12))
 (add-hook! ('cfw:calendar-mode-hook
             'mu4e-main-mode-hook
@@ -428,6 +428,9 @@
             '+doom-dashboard-mode-hook)
            #'centaur-tabs-local-mode)
 #+end_src
+
+#+RESULTS:
+
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
