@@ -13,7 +13,7 @@
 (setq doom-theme 'doom-bisqwit
       doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
-      doom-serif-font (font-spec :family "CMU Serif" :size 18 :weight 'light)
+      doom-serif-font (font-spec :family "Times New Roman" :size 18 :weight 'light)
       mixed-pitch-face 'fixed-pitch-serif)
 #+end_src
 *** Window Borders
