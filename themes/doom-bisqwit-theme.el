@@ -93,8 +93,8 @@ determine the exact padding."
    ((link &override) :foreground blue)
    (show-paren-match :background base3)
    (cursor :foreground bg :background fg)
-   (lazy-highlight :background magenta :foreground bg)
-   (evil-ex-search :background magenta :foreground bg)
+   (lazy-highlight :foreground magenta :background bg :underline t)
+   (evil-ex-search :foreground magenta :background bg :underline t)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
@@ -163,6 +163,10 @@ determine the exact padding."
    (ediff-current-diff-B        :foreground green :background (doom-lighten green 0.8))
    (ediff-current-diff-C        :foreground blue  :background (doom-lighten blue 0.8))
    (ediff-current-diff-Ancestor :foreground teal  :background (doom-lighten teal 0.8))
+
+   ;; evil snipe
+   ((evil-snipe-first-match-face &override) :foreground magenta :background bg :underline t)
+   ((evil-snipe-matches-face &override) :foreground magenta :background bg :underline t)
 
    ;; fringe
    (fringe :foreground fg)
