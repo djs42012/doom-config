@@ -252,6 +252,13 @@
 (dirvish-override-dired-mode)
 (remove-hook! 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
 (map! :map dired-mode-map :ng "q" #'dirvish-quit)
+(defun my/dired-toggle-hidden ()
+  "toggle hidden files and directories"
+  (interactive)
+  (if (string-equal dired-listing-switches "-hl -v --group-directories-first")
+      (setq dired-listing-switches "-ahl -v --group-directories-first")
+    (setq dired-listing-switches "-hl -v --group-directories-first")))
+
 (after! dirvish
   (setq dirvish-attributes '(vc-state
                              subtree-state
@@ -263,7 +270,8 @@
                                  (predicate . recent-files-2h))
                                 ("README"
                                  (regex . "README")))
-        dirvish-default-layout '(1 0.20 0.5 )))
+        dirvish-default-layout '(1 0.20 0.5 )
+        dired-listing-switches "-hl -v --group-directories-first"))
 #+end_src
 ** Tools
 *** biblio (citar)
