@@ -786,7 +786,7 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
            :kill-buffer t))))
 #+end_src
 ** org-agenda
-*** Customize Appearence
+*** Customize Appearance
 #+begin_src emacs-lisp
 ;; (add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
 #+end_src
@@ -890,7 +890,20 @@ tasks."
   (setq org-agenda-custom-commands
         '(("j" "Main agenda and todo list"
            ((agenda "" ((org-agenda-span 1)
-                        (org-agenda-overriding-header "⚡ Agenda ")))
+                        (org-agenda-overriding-header "⚡ Agenda")
+                        (org-deadline-past-days 0)
+                        (org-scheduled-past-days 0)))
+            (agenda "" ((org-agenda-overriding-header "⏰ Overdue")
+                        (org-agenda-time-grid nil)
+                        (org-agenda-show-all-dates nil)
+                        (org-agenda-format-date "")
+                        (org-agenda-span 1)
+                        (org-agenda-entry-types '(:deadline :scheduled))
+                        (org-deadline-past-days 999)
+                        (org-scheduled-past-days 999)
+                        (org-deadline-warning-days 0)
+                        (org-agenda-skip-function
+                         '(my/org-agenda-skip-without-match "-nowarn"))))
             (agenda "" ((org-agenda-span 9)
                         (org-agenda-overriding-header "")
                         (org-agenda-start-day "+1d")
@@ -903,7 +916,7 @@ tasks."
             ;; (tags-todo "+literature" ((org-agenda-overriding-header "📚 Reading")))
             )))))
 ;; Hide noisy tag labels in agenda
-(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo\\|phone")
+(setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo\\|phone\\|nowarn")
 #+end_src
 *** Agenda Helper Functions
 + Functions relied on by ~org-agenda-skip-function~
