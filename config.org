@@ -11,7 +11,7 @@
 *** Theme and Fonts
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
-      doom-font (font-spec :family "Berkeley Mono" :size 16 :weight 'light)
+      doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
       doom-serif-font (font-spec :family "Times New Roman" :size 18 :weight 'light)
       mixed-pitch-face 'fixed-pitch-serif)
@@ -172,7 +172,7 @@
       :n "z t" #'evil-scroll-line-to-top
       :n "C-/" #'evil-ex-search-forward)
 (map! :map #'mu4e-view-mode-map
-      :n "p" #'my/mu4e-view-save-attachments
+      :g "p" #'my/mu4e-view-save-attachments
       :n "C-=" #'text-scale-increase
       :n "C--" #'text-scale-decrease
       :n "C-_" #'mu4e-headers-split-view-shrink)
@@ -234,7 +234,7 @@
 *** company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay              0.5
+  (setq company-idle-delay              0.0
         company-minimum-prefix-length   0)
   (setq company-show-quick-access       t))
 #+end_src

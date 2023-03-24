@@ -6,3 +6,5 @@
 config.el
 /org-db.el
 flycheck_config.el
+/config.pdf
+/config.tex
