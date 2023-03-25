@@ -468,6 +468,12 @@
            (djs-treemacs-peek-mode)
          (treemacs)))))
 #+end_src
+*** Workspaces
+#+begin_src emacs-lisp
+(after! persp-mode
+  (setq persp-emacsclient-init-frame-behaviour-override "main"))
+#+end_src
+
 ** Editor
 *** Format
 #+begin_src emacs-lisp
