@@ -56,6 +56,11 @@
 (setq delete-by-moving-to-trash t
       trash-directory "~/.local/share/Trash/files")
 #+end_src
+*** Printing
+#+begin_src emacs-lisp
+(setq! printer-name "HP_Neverstop_Laser_MFP_120x")
+#+end_src
+
 *** Character Deletion
 + Prevent text deleted with =x= from entering kill ring
 #+begin_src emacs-lisp
@@ -270,7 +275,7 @@
                                  (predicate . recent-files-2h))
                                 ("README"
                                  (regex . "README")))
-        dirvish-default-layout '(1 0.20 0.5 )
+        dirvish-default-layout '(0 0.20 0.67 )
         dired-listing-switches "-hl -v --group-directories-first"))
 #+end_src
 ** Tools
@@ -470,8 +475,8 @@
 #+end_src
 *** Workspaces
 #+begin_src emacs-lisp
-(after! persp-mode
-  (setq persp-emacsclient-init-frame-behaviour-override "main"))
+;; (after! persp-mode
+;;   (setq persp-emacsclient-init-frame-behaviour-override "main"))
 #+end_src
 
 ** Editor
