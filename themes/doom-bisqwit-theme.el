@@ -75,9 +75,9 @@ determine the exact padding."
    (methods        yellow)
    (operators      green)
    (type           (doom-lighten dark-green 0.2))
-   (strings        cyan)
+   (strings        light-cyan)
    (variables      fg-alt)
-   (numbers        violet)
+   (numbers        bright-yellow)
    (region         `(,(doom-lighten (car base0) 0.15) ,@(doom-lighten (cdr base0) 0.35)))
    (error          red)
    (warning        bright-yellow)
@@ -217,7 +217,7 @@ determine the exact padding."
 
    ;; js2-mode
    ((js2-object-property-access &override) :foreground fg)
-   ((js2-object-property &override) :foreground light-cyan)
+   ((js2-object-property &override) :foreground cyan)
 
    ;;;; lsp-mode
    (lsp-ui-doc-background      :background base0)
@@ -357,7 +357,7 @@ determine the exact padding."
    ;; rjsx mode
    (rjsx-text :foreground fg :slant 'italic)
    (rjsx-tag :foreground green)
-   (rjsx-tag-bracket-face :foreground (doom-blend green grey 0.15))
+   (rjsx-tag-bracket-face :foreground (doom-blend green grey 0.25))
 
    ;; solaire-mode
    (solaire-mode-line-face
@@ -403,7 +403,7 @@ determine the exact padding."
    ;; wgrep
    (wgrep-face :background base1)
    ;; which-key
-   ((which-key-key-face &override) :background base0 :inherit 'bold)
+   ((which-key-key-face &override) :inherit 'bold)
 
    ))
      ;;;; Base theme variable overrides-
