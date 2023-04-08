@@ -29,7 +29,7 @@
 #+end_src
 *** Tabs
 #+begin_src emacs-lisp
-(add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
+;; (add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
 #+end_src
 *** Rainbow Delimiters
 #+begin_src emacs-lisp
@@ -72,7 +72,7 @@
 #+end_src
 *** Word Wrap and Visual Mode
 #+begin_src emacs-lisp
-(+global-word-wrap-mode)
+;; (+global-word-wrap-mode)
 #+end_src
 + I couldn't figure out why visual-line-mode wasn't forcing editing commands to act on visual lines rather than logical lines, so I changed the keys myself.
 #+begin_src emacs-lisp
@@ -300,7 +300,8 @@
 *** lsp
 + Disable auto formatting with lsp to prevent interference with tools like prettier
   #+begin_src emacs-lisp
-  (setq +format-with-lsp nil)
+  (after! lsp-mode
+    (setq +format-with-lsp nil))
   #+end_src
 + Make sure certain language servers are always available
   #+begin_src emacs-lisp
@@ -421,25 +422,26 @@
     ("^\\*Man"          :ignore t)))
 #+end_src
 *** tabs
+Commeting out for now
 #+begin_src emacs-lisp
-(after! centaur-tabs
-  (centaur-tabs-group-by-projectile-project)
-  (setq centaur-tabs-style "bar"
-        centaur-tabs-set-bar 'under
-        centaur-tabs-label-fixed-length 12))
-(add-hook! ('cfw:calendar-mode-hook
-            'mu4e-main-mode-hook
-            'mu4e-headers-mode-hook
-            'mu4e-view-mode-hook
-            'org-msg-edit-mode-hook
-            'org-agenda-mode-hook
-            'magit-select-mode-hook
-            'magit-log-select-mode-hook
-            'magit-log-mode-hook
-            'git-commit-mode-hook
-            'magit-diff-mode-hook
-            '+doom-dashboard-mode-hook)
-           #'centaur-tabs-local-mode)
+;; (after! centaur-tabs
+;;   (centaur-tabs-group-by-projectile-project)
+;;   (setq centaur-tabs-style "bar"
+;;         centaur-tabs-set-bar 'under
+;;         centaur-tabs-label-fixed-length 12))
+;; (add-hook! ('cfw:calendar-mode-hook
+;;             'mu4e-main-mode-hook
+;;             'mu4e-headers-mode-hook
+;;             'mu4e-view-mode-hook
+;;             'org-msg-edit-mode-hook
+;;             'org-agenda-mode-hook
+;;             'magit-select-mode-hook
+;;             'magit-log-select-mode-hook
+;;             'magit-log-mode-hook
+;;             'git-commit-mode-hook
+;;             'magit-diff-mode-hook
+;;             '+doom-dashboard-mode-hook)
+;;            #'centaur-tabs-local-mode)
 #+end_src
 
 #+RESULTS:

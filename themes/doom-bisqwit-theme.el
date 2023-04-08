@@ -357,6 +357,7 @@ determine the exact padding."
    ;; rjsx mode
    (rjsx-text :foreground fg :slant 'italic)
    (rjsx-tag :foreground green)
+   (rjsx-tag-bracket-face :foreground (doom-blend green grey 0.15))
 
    ;; solaire-mode
    (solaire-mode-line-face
