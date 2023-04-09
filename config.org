@@ -12,9 +12,7 @@
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
       doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
-      doom-serif-font (font-spec :family "Times New Roman" :size 18 :weight 'light)
-      mixed-pitch-face 'fixed-pitch-serif)
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light))
 #+end_src
 *** Window Borders
 #+begin_src emacs-lisp
@@ -239,9 +237,20 @@
 *** company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay              0.0
+  (setq company-idle-delay              nil
         company-minimum-prefix-length   0)
   (setq company-show-quick-access       t))
+#+end_src
+*** copilot
+#+begin_src emacs-lisp
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
 ** Checkers
 *** spell
@@ -518,7 +527,7 @@ Commeting out for now
    diary-file "~/Sync/projects/org/calendars/birthdays-anniversaries.org"
    org-startup-indented nil
    org-startup-folded 'show2levels
-   org-ellipsis " ▾"
+   org-ellipsis " ↘"
    org-log-into-drawer "LOGBOOK"))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
 ;; (add-hook! 'org-mode-hook #'mixed-pitch-mode)
