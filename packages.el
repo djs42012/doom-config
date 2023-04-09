@@ -24,8 +24,7 @@
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 (package! closql :pin "0a7226331ff1f96142199915c0ac7940bac4afdd")
 (package! screenshot :recipe (:host github :repo "tecosaur/screenshot"))
-
-
+(package! gptel)
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':

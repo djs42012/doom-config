@@ -56,7 +56,7 @@
 #+end_src
 *** Printing
 #+begin_src emacs-lisp
-(setq! printer-name "HP_Neverstop_Laser_MFP_120x")
+(setq! printer-name "hp-neverstop")
 #+end_src
 
 *** Character Deletion
@@ -202,6 +202,14 @@
 *** Auth
 #+begin_src emacs-lisp
 (setq auth-sources '("~/.authinfo.gpg"))
+
+(defun my/lookup-password (&rest keys)
+  "Find a password from auth-sources and return its value as a string"
+  (let ((result (apply #'auth-source-search keys)))
+    (if result
+        (funcall (plist-get (car result) :secret))
+        nil)))
+
 #+end_src
 *** Lookup Providers
 #+begin_src emacs-lisp
@@ -526,6 +534,7 @@ Commeting out for now
    ;; workaround to get diary date formats into cfw-cal
    diary-file "~/Sync/projects/org/calendars/birthdays-anniversaries.org"
    org-startup-indented nil
+   org-hide-emphasis-markers t
    org-startup-folded 'show2levels
    org-ellipsis " ↘"
    org-log-into-drawer "LOGBOOK"))
@@ -1506,4 +1515,13 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
         command-log-mode-auto-show t
         command-log-mode-window-font-size 1))
   #+end_src
-
+** chatgpt
+#+begin_src emacs-lisp
+;; (use-package! gptel
+;;  :config
+;;  (setq! gptel-api-key (my/lookup-password :host "openai.com")
+;;         gptel-default-mode 'org-mode))
+(after! gptel
+  (setq! gptel-api-key (my/lookup-password :host "openai.com")
+        gptel-default-mode 'org-mode))
+#+end_src
