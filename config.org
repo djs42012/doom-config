@@ -58,7 +58,6 @@
 #+begin_src emacs-lisp
 (setq! printer-name "hp-neverstop")
 #+end_src
-
 *** Character Deletion
 + Prevent text deleted with =x= from entering kill ring
 #+begin_src emacs-lisp
@@ -202,14 +201,12 @@
 *** Auth
 #+begin_src emacs-lisp
 (setq auth-sources '("~/.authinfo.gpg"))
-
 (defun my/lookup-password (&rest keys)
   "Find a password from auth-sources and return its value as a string"
   (let ((result (apply #'auth-source-search keys)))
     (if result
         (funcall (plist-get (car result) :secret))
         nil)))
-
 #+end_src
 *** Lookup Providers
 #+begin_src emacs-lisp
@@ -280,7 +277,6 @@
   (if (string-equal dired-listing-switches "-hl -v --group-directories-first")
       (setq dired-listing-switches "-ahl -v --group-directories-first")
     (setq dired-listing-switches "-hl -v --group-directories-first")))
-
 (after! dirvish
   (setq dirvish-attributes '(vc-state
                              subtree-state
@@ -426,10 +422,8 @@
    ;; highlight-indent-guides-auto-top-character-face-perc       0
    ;; highlight-indent-guides-auto-stack-character-face-perc     0
    highlight-indent-guides-method 'bitmap
-
    ))
 #+end_src
-
 *** popup
 + Keep certain windows hanging around longer than Doom's defaults
 #+begin_src emacs-lisp
@@ -460,9 +454,7 @@ Commeting out for now
 ;;             '+doom-dashboard-mode-hook)
 ;;            #'centaur-tabs-local-mode)
 #+end_src
-
 #+RESULTS:
-
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
@@ -497,7 +489,6 @@ Commeting out for now
 ;; (after! persp-mode
 ;;   (setq persp-emacsclient-init-frame-behaviour-override "main"))
 #+end_src
-
 ** Editor
 *** Format
 #+begin_src emacs-lisp
@@ -1006,6 +997,36 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 \\usepackage{booktabs}"))
 #+end_src
 * Email (mu4e)
+** 1.10 fix
+#+begin_src emacs-lisp
+(use-package! mu4e
+  :defer t
+  :init
+  ;; fix for mu4e 1.10.0 and evil-collection
+  ;; https://github.com/emacs-evil/evil-collection/issues/695
+  (defun mu4e--main-action-str (name func)
+    "This seems to be needed until evil-collection supports the latest
+  version of mu4e."
+    "mu4e-main-action")
+  (require 'mu4e)
+  (remove-hook 'mu4e-main-mode-hook 'evil-collection-mu4e-update-main-view)
+  :config
+    (add-to-list 'display-buffer-alist
+                 '("^\\*mu4e" nil))
+    (advice-add '+mu4e-view-select-mime-part-action :override
+                #'fix/+mu4e-view-select-mime-part-action)
+    (evil-make-overriding-map mu4e-view-mode-map 'normal)
+    (evil-define-key 'normal mu4e-view-mode-map "q" 'mu4e-view-quit))
+(defun fix/+mu4e-view-select-mime-part-action ()
+  "Select a MIME part, and perform an action on it."
+  (interactive)
+  (let ((labeledparts (+mu4e-part-selectors (mu4e--view-gather-mime-parts))))
+    (if labeledparts
+        (mu4e-view-mime-part-action
+         (cadr (assoc (completing-read "Select part: " (mapcar #'car labeledparts))
+                      labeledparts)))
+      (user-error (mu4e-format "No parts found")))))
+#+end_src
 ** Load Path
 + Make sure we can find mu4e
   #+begin_src emacs-lisp
@@ -1089,7 +1110,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                          (reply-to-html . (utf-8 html)))))
   (add-hook! 'org-msg-mode-hook #'my/org-msg-set-default-alternatives))
 #+end_src
-
 ** Colorization
 + Reduce html coloring in messages for improved readability
   #+begin_src emacs-lisp
@@ -1212,245 +1232,126 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   )))))
 #+end_src
 ** Dashboard
-+ I've gone to some length to clone and edit the functions responsible for rendering mu4e's dashboard in order to make it more visually appealing. In most cases I am just removing the radio buttons and replacing them with emojis, though I do change some of anchor points and heading names used to render the display.
-*** "Basic" Region
-+ Here I just add some emojis to the existing prompts in the "Basic" section
 #+begin_src emacs-lisp
-(after! mu4e
-  (setq evil-collection-mu4e-new-region-basic
-        #("	👉 Jump to some maildir [J]\n	🔎 Enter a search query [s]\n	🚀 Compose a new message [C]\n" 0 3
-          (keymap
-           (keymap
-            (13)
-            (mouse-2)))
-          3 4
-          (mouse-face highlight keymap
-                      (keymap
-                       (13)
-                       (mouse-2)))
-          4 5
-          (mouse-face highlight keymap
-                      (keymap
-                       (13)
-                       (mouse-2))
-                      face mu4e-highlight-face)
-          5 25
-          (mouse-face highlight keymap
-                      (keymap
-                       (13)
-                       (mouse-2)))
-          25 26
-          (keymap
-           (keymap
-            (13)
-            (mouse-2)))
-          26 37
-          (keymap
-           (keymap
-            (13 . mu4e-search)
-            (mouse-2 . mu4e-search)))
-          37 38
-          (mouse-face highlight keymap
-                      (keymap
-                       (13 . mu4e-search)
-                       (mouse-2 . mu4e-search)))
-          38 39
-          (mouse-face highlight keymap
-                      (keymap
-                       (13 . mu4e-search)
-                       (mouse-2 . mu4e-search))
-                      face mu4e-highlight-face)
-          39 51
-          (mouse-face highlight keymap
-                      (keymap
-                       (13 . mu4e-search)
-                       (mouse-2 . mu4e-search)))
-          51 52
-          (keymap
-           (keymap
-            (13 . mu4e-search)
-            (mouse-2 . mu4e-search)))
-          52 55
-          (keymap
-           (keymap
-            (13 . mu4e-compose-new)
-            (mouse-2 . mu4e-compose-new)))
-          55 56
-          (mouse-face highlight keymap
-                      (keymap
-                       (13 . mu4e-compose-new)
-                       (mouse-2 . mu4e-compose-new)))
-          56 57
-          (mouse-face highlight keymap
-                      (keymap
-                       (13 . mu4e-compose-new)
-                       (mouse-2 . mu4e-compose-new))
-                      face mu4e-highlight-face)
-          57 78
-          (mouse-face highlight keymap
-                      (keymap
-                       (13 . mu4e-compose-new)
-                       (mouse-2 . mu4e-compose-new)))
-          78 79
-          (keymap
-           (keymap
-            (13 . mu4e-compose-new)
-            (mouse-2 . mu4e-compose-new))))))
-#+end_src
-*** "Misc" Region
-+ Here I override the functions responsible for drawing the "Misc" region in order to prettify it to my liking
-#+begin_src emacs-lisp
-(after! mu4e
-  (defadvice! djs-evil-collection-mu4e-new-region-misc ()
-    "Customize the mu4e misc heading"
-    :override #'evil-collection-mu4e-new-region-misc
-    (concat
-     (evil-collection-mu4e--main-action-str "\t 🔀 Switch focus [[;]]\n" 'mu4e-context-switch)
-     (evil-collection-mu4e--main-action-str "\t ♻ Update email & database [[u]]\n"
-                                            'mu4e-update-mail-and-index)
-     ;; show the queue functions if `smtpmail-queue-dir' is defined
-     (if (file-directory-p smtpmail-queue-dir)
-         (evil-collection-mu4e--main-view-queue)
-       "")
-     "\n"
-     (evil-collection-mu4e--main-action-str "\t 🗞 News [[N]]\n" 'mu4e-news)
-     (evil-collection-mu4e--main-action-str "\t 📓 About mu4e [[A]]\n" 'mu4e-about)
-     (evil-collection-mu4e--main-action-str "\t ❓ Help [[H]]\n" 'mu4e-display-manual)
-     (evil-collection-mu4e--main-action-str "\t 🚫 Quit [[q]]\n" 'mu4e-quit))))
-#+end_src
-*** "Bookmarks" Region
-#+begin_src emacs-lisp
-(after! mu4e
-  (defadvice! djs-mu4e--main-bookmarks ()
-    "Customize the mu4e bookmarks heading"
-    :override #'mu4e--main-bookmarks
-    (cl-loop with bmks = (mu4e-bookmarks)
-             with longest = (mu4e--longest-of-maildirs-and-bookmarks)
-             with queries = (mu4e-last-query-results)
-             for bm in bmks
-             for key = (string (plist-get bm :key))
-             for name = (plist-get bm :name)
-             for query = (funcall (or mu4e-query-rewrite-function #'identity)
-                                  (plist-get bm :query))
-             for qcounts = (and (stringp query)
-                                (cl-loop for q in queries
-                                         when (string=
-                                               (decode-coding-string
-                                                (plist-get q :query) 'utf-8 t)
-                                               query)
-                                         collect q))
-             for unread = (and qcounts (plist-get (car qcounts) :unread))
-             when (not (plist-get bm :hide))
-             when (not (and mu4e-main-hide-fully-read (eq unread 0)))
-             concat (concat
-                     ;; menu entry
-                     (mu4e--main-action-str
-                      (concat "\t" name  " [[b" key "]]"))
-                     ;; append all/unread numbers, if available.
-                     (if qcounts
-                         (let ((unread (plist-get (car qcounts) :unread))
-                               (count  (plist-get (car qcounts) :count)))
-                           (format
-                            "%s (%s/%s)"
-                            (make-string (- longest (string-width name)) ? )
-                            (propertize (number-to-string unread)
-                                        'face 'mu4e-header-key-face)
-                            count))
-                       "")
-                     "\n"))))
-#+end_src
-*** "Main" Redraw Function
-+ Here I customize the strings that denote the beginning of some of the regions to be drawn, and then define redefine ~mu4e--key-val~ to remove even more of those pesky radio buttons that used to get rendered by =*='s.
-+ Finally, I prettify a couple more items on the page by overriding ~mu4e--main-redraw-buffer~ and modify the structure of the page to remove a couple of unwanted items by overriding ~evil-collection-mu4e-update-main-view~
-#+begin_src emacs-lisp
-(after! mu4e
-  (setq evil-collection-mu4e-begin-region-basic "Navigation\n")
-  (setq evil-collection-mu4e-begin-region-misc "Actions\n")
-  (defun djs-mu4e--key-val (key val &optional unit)
-    "Custom mu4e--key-val function"
-    (concat
-     "\t "
-     (propertize (format "%-20s" key) 'face 'mu4e-header-title-face)
-     ": "
-     (propertize val 'face 'mu4e-header-key-face)
-     (if unit
-         (propertize (concat " " unit) 'face 'mu4e-header-title-face)
-       "")
-     "\n")))
-#+end_src
-#+begin_src emacs-lisp
-(after! mu4e
-  (defadvice! djs-mu4e--main-redraw-buffer ()
-    "Customize the mu4e main buffer"
-    :override #'mu4e--main-redraw-buffer
-    (with-current-buffer mu4e-main-buffer-name
-      (let ((inhibit-read-only t)
-            (pos (point))
-            (addrs (mu4e-personal-addresses)))
-        (erase-buffer)
-        (insert
-         (propertize "📨 mu4e - version " 'face 'mu4e-title-face)
-         (propertize  mu4e-mu-version 'face 'mu4e-title-face)
-         "\n\n"
-         (propertize "Navigation\n\n" 'face 'mu4e-title-face)
-         (mu4e--main-action-str
-          "\t* [j]ump to some maildir\n" #'mu4e~headers-jump-to-maildir)
-         (mu4e--main-action-str
-          "\t* enter a [s]earch query\n" #'mu4e-search)
-         (mu4e--main-action-str
-          "\t* [C]ompose a new message\n" #'mu4e-compose-new)
-         "\n"
-         (propertize "Bookmarks\n\n" 'face 'mu4e-title-face)
-         (mu4e--main-bookmarks)
-         "\n"
-         (mu4e--main-maildirs)
-         "\n"
-         (propertize "Actions\n\n" 'face 'mu4e-title-face)
-         (mu4e--main-action-str "\t* [;]Switch context\n"
-                                (lambda()(interactive)
-                                  (mu4e-context-switch)(revert-buffer)))
-         (mu4e--main-action-str "\t* [U]pdate email & database\n"
-                                'mu4e-update-mail-and-index)
-         ;; show the queue functions if `smtpmail-queue-dir' is defined
-         (if (file-directory-p smtpmail-queue-dir)
-             (mu4e--main-view-queue)
-           "")
-         "\n"
-         (mu4e--main-action-str "\t* [N]ews\n" #'mu4e-news)
-         (mu4e--main-action-str "\t* [A]bout mu4e\n" #'mu4e-about)
-         (mu4e--main-action-str "\t* [H]elp\n" #'mu4e-display-manual)
-         (mu4e--main-action-str "\t* [q]uit\n" #'mu4e-quit)
-         "\n"
-         (propertize "Info\n\n" 'face 'mu4e-title-face)
-         (djs-mu4e--key-val "🕰 Last updated" (current-time-string (plist-get mu4e-index-update-status :tstamp)))
-         (djs-mu4e--key-val "↪ Database path" (mu4e-database-path))
-         (djs-mu4e--key-val "📧 Maildir" (mu4e-root-maildir))
-         (djs-mu4e--key-val "💾 In store"
-                            (format "%d" (plist-get mu4e--server-props :doccount))
-                            "messages")
-         (if mu4e-main-hide-personal-addresses ""
-           (djs-mu4e--key-val "🏘 Personal addresses"
-                              (if addrs (mapconcat #'identity addrs ", "  ) "none"))))
-        (if mu4e-main-hide-personal-addresses ""
-          (unless (mu4e-personal-address-p user-mail-address)
-            (mu4e-message (concat
-                           "Tip: `user-mail-address' ('%s') is not part "
-                           "of mu's addresses; add it with 'mu init
+(defadvice! my/mu4e--main-redraw ()
+  "customize the mu4e main menu"
+  :override #'mu4e--main-redraw
+  (when-let* ((buffer (get-buffer mu4e-main-buffer-name))
+              (buffer (and (buffer-live-p buffer) buffer)))
+    (with-current-buffer buffer
+        (let* ((inhibit-read-only t)
+               (pos (point))
+               (addrs (mu4e-personal-addresses))
+               (max-length (seq-reduce (lambda (a b)
+                                         (max a (length (plist-get b :name))))
+                                       (mu4e-query-items) 0)))
+          (mu4e-main-mode)
+          (erase-buffer)
+          (insert
+           "📨 "
+           (propertize "mu4e" 'face 'mu4e-header-key-face)
+           (propertize " - mu for emacs version " 'face 'mu4e-title-face)
+           (propertize  mu4e-mu-version 'face 'mu4e-header-key-face)
+           "\n\n"
+           (propertize "  Quick Commands\n\n" 'face 'mu4e-title-face)
+           (mu4e--main-action
+            "\t👉 [@]jump to some maildir\n" #'mu4e-search-maildir nil "J") (mu4e--main-action
+            "\t🔎 enter a [@]search query\n" #'mu4e-search nil "s")
+           (mu4e--main-action
+            "\t🚀 [@]Compose a new message\n" #'mu4e-compose-new nil "C")
+           "\n"
+           (propertize "  Bookmarks\n\n" 'face 'mu4e-title-face)
+           (mu4e--main-items 'bookmarks max-length)
+           "\n"
+           (propertize "  Misc\n\n" 'face 'mu4e-title-face)
+           (mu4e--main-action "\t🔀 [@]Switch context\n"
+                              #'mu4e-context-switch nil ";")
+           (mu4e--main-action "\t♻ [@]Update email & database\n"
+                                  #'mu4e-update-mail-and-index nil "U")
+           ;; show the queue functions if `smtpmail-queue-dir' is defined
+           (if (file-directory-p smtpmail-queue-dir)
+               (mu4e--main-view-queue)
+             "")
+           "\n"
+           (mu4e--main-action "\t🗞 [@]News\n" #'mu4e-news nil "N")
+           (mu4e--main-action "\t📚 [@]About mu4e\n" #'mu4e-about nil "A")
+           (mu4e--main-action "\t❓ [@]Help\n" #'mu4e-display-manual nil "H")
+           (mu4e--main-action "\t🚫 [@]quit\n" #'mu4e-quit nil "q")
+           "\n"
+           (propertize "  Info\n\n" 'face 'mu4e-title-face)
+           (mu4e--key-val "🕰 last updated"
+                          (current-time-string
+                           (plist-get mu4e-index-update-status :tstamp)))
+           (mu4e--key-val "↪ database-path" (mu4e-database-path))
+           (mu4e--key-val "📧 maildir" (mu4e-root-maildir))
+           (mu4e--key-val "💾 in store"
+                          (format "%d" (plist-get mu4e--server-props :doccount))
+                          "messages")
+           (if mu4e-main-hide-personal-addresses ""
+             (mu4e--key-val "personal addresses"
+                            (if addrs (mapconcat #'identity addrs ", "  ) "none"))))
+          (if mu4e-main-hide-personal-addresses ""
+            (unless (mu4e-personal-address-p user-mail-address)
+              (mu4e-message (concat
+                             "Tip: `user-mail-address' ('%s') is not part "
+                             "of mu's addresses; add it with 'mu init
                         --my-address='") user-mail-address)))
-        (mu4e-main-mode)
-        (goto-char pos)))))
-#+end_src
-#+begin_src emacs-lisp
-(after! mu4e
-  (defadvice! djs-evil-collection-mu4e-update-main-view ()
-    "Custom update mu4e main view"
-    :override #'evil-collection-mu4e-update-main-view
-    (evil-collection-mu4e-replace-region evil-collection-mu4e-new-region-basic
-                                         evil-collection-mu4e-begin-region-basic
-                                         evil-collection-mu4e-end-region-basic)
-    (evil-collection-mu4e-replace-region (evil-collection-mu4e-new-region-misc)
-                                         evil-collection-mu4e-begin-region-misc
-                                         evil-collection-mu4e-end-region-misc)))
+          (goto-char pos))))
+  )
+(defadvice! my/mu4e--key-val (key val &optional unit)
+  "Show a KEY / VAL pair without radios, with optional UNIT."
+  :override #'mu4e--key-val
+  (concat
+   "\t"
+   (propertize (format "%-20s" key) 'face 'mu4e-header-title-face)
+   ": "
+   (propertize val 'face 'mu4e-header-key-face)
+   (if unit
+       (propertize (concat " " unit) 'face 'mu4e-header-title-face)
+     "")
+   "\n"))
+(defadvice! my/mu4e--main-items (item-type max-length)
+"Change the rendering order of items in the mu4e--main-items"
+:override #'mu4e--main-items
+  (mapconcat
+   (lambda (item)
+     (cl-destructuring-bind
+         (&key hide name key favorite query &allow-other-keys) item
+       ;; hide items explicitly hidden, without key or wrong category.
+       (if hide
+           ""
+         (let ((item-info
+                ;; note, we have a function for the binding,
+                ;; and perhaps a different one for the lambda.
+                (cond
+                 ((eq item-type 'maildirs)
+                  (list #'mu4e-search-maildir #'mu4e-search
+                        query))
+                 ((eq item-type 'bookmarks)
+                  (list #'mu4e-search-bookmark #'mu4e-search-bookmark
+                        (mu4e-get-bookmark-query key)))
+                 (t
+                  (mu4e-error "Invalid item-type %s" item-type)))))
+           (concat
+            (mu4e--main-action
+             ;; main title
+             (format "\t %s [@] "
+                     (propertize
+                      name
+                      'face (if favorite 'mu4e-header-key-face nil)
+                      'help-echo query))
+             ;; function to call when activated
+             (lambda () (interactive)
+               (funcall (nth 1 item-info)
+                        (nth 2 item-info)))
+             ;; custom key binding string
+             (concat (mu4e-key-description (nth 0 item-info)) (string key)))
+            ;; counts
+            (format "%s%s\n"
+                    (make-string (- max-length (string-width name)) ?\s)
+                    (mu4e--query-item-display-counts item)))))))
+   ;; only items which have a single-character :key
+   (mu4e-filter-single-key (mu4e-query-items item-type)) ""))
 #+end_src
 * Other packages
 ** cfw:calendar
