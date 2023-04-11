@@ -558,13 +558,13 @@ Commeting out for now
                              ("[~]" :foreground "#a9a5aa")
                              ("SHOP" :foreground "#c586c0")
                              ("IDEA" :foreground "#93e079")))
-    (defun my/org-modern-set-star-based-on-theme ()
-      "set the value of org-modern-star based on the current theme"
-      (if (or (eq doom-theme 'doom-bisqwit)
-              (eq doom-theme 'doom-tibetan))
-          (setq org-modern-star '("⚘" "✿" "❁" "✾" "❀" "✤"))
-        (setq org-modern-star 'nil)))
-    (add-hook! 'doom-load-theme-hook #'my/org-modern-set-star-based-on-theme)
+    ;; (defun my/org-modern-set-star-based-on-theme ()
+    ;;   "set the value of org-modern-star based on the current theme"
+    ;;   (if (or (eq doom-theme 'doom-bisqwit)
+    ;;           (eq doom-theme 'doom-tibetan))
+    ;;       (setq org-modern-star '("⚘" "✿" "❁" "✾" "❀" "✤"))
+    ;;     (setq org-modern-star 'nil)))
+    ;; (add-hook! 'doom-load-theme-hook #'my/org-modern-set-star-based-on-theme)
     (add-hook! 'org-modern-mode-hook #'hl-todo-mode))
 #+end_src
 *** fancy-priorities
@@ -1353,6 +1353,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
    ;; only items which have a single-character :key
    (mu4e-filter-single-key (mu4e-query-items item-type)) ""))
 #+end_src
+
 * Other packages
 ** cfw:calendar
 *** Default Calendar Behavior
@@ -1383,6 +1384,10 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
     (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
     (cfw:ical-create-source "PGA" "~/.doom.d/pga-tour.ics" "#569cd6"))))
 #+end_src
+
+#+RESULTS:
+: djs-my-personal-calendar
+
 *** Helper Functions
 + To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of foreground and background colors for events
 #+begin_src emacs-lisp
