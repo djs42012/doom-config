@@ -115,11 +115,11 @@ determine the exact padding."
    (doom-modeline-bar :background bg)
 
    ;; calendar
-   ((calendar-month-header &override) :foreground cyan :weight 'bold)
+   ((calendar-month-header &override) :foreground magenta :weight 'bold)
    ((calendar-weekday-header &override) :foreground blue :weight 'bold)
    ((calendar-weekend-header &override) :foreground red :weight 'bold)
    ((cfw:face-grid &override) :foreground fg)
-   ((cfw:face-title &override) :foreground cyan)
+   ((cfw:face-title &override) :foreground magenta)
    ((cfw:face-today-title &override) :background green)
    ((cfw:face-toolbar-button-on &override) :foreground bright-yellow)
    ((cfw:face-toolbar &override) :foreground bg :background bg)
@@ -154,7 +154,7 @@ determine the exact padding."
 
    ;; Doom
    ((doom-dashboard-menu-title &override) :foreground fg :slant 'italic)
-   ((doom-dashboard-menu-desc &override) :foreground violet)
+   ((doom-dashboard-menu-desc &override) :foreground magenta)
    ((doom-dashboard-footer-icon &override) :foreground red)
    ((doom-themes-org-hash-tag &override) :foreground green :box nil)
 
@@ -205,7 +205,7 @@ determine the exact padding."
    ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground fg-alt)
    ((info-menu-star &override) :foreground fg)
    ((info-menu-header &override) :inherit 'variable-pitch :weight 'bold :foreground blue)
-   ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground cyan )
+   ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground magenta )
    ((info-title-3 &override) :inherit 'info-title-4  )
    ((info-title-2 &override) :inherit 'info-title-3  )
    ((info-title-1 &override) :inherit 'info-title-2  )
@@ -228,10 +228,10 @@ determine the exact padding."
 
    ;; magit
    ((git-commit-summary &override) :foreground green)
-   ((magit-diff-file-heading           &override) :foreground cyan    :background bg-alt :bold bold)
+   ((magit-diff-file-heading           &override) :foreground magenta    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading           &override) :foreground orange    :background bg-alt :bold bold)
    ((magit-diff-hunk-heading-highlight &override) :foreground orange :background bg-alt :bold bold)
-   ((magit-header-line &override) :foreground cyan :background bg  :box `(:line-width -1 :color ,fg))
+   ((magit-header-line &override) :foreground magenta :background bg  :box `(:line-width -1 :color ,fg))
    ((magit-section-highlight &override) :background base1)
    (magit-blame-heading     :foreground orange :background bg-alt)
    (magit-diff-removed :foreground (doom-darken red 0.5) :background bg)
@@ -260,16 +260,16 @@ determine the exact padding."
    (markdown-html-tag-delimiter-face     :inherit 'web-mode-html-tag-bracket-face)
    (markdown-header-face     :inherit 'bold :foreground red)
    ((markdown-code-face &override)       :background base1)
-   (markdown-header-face :foreground cyan :weight 'bold)
-   ((markdown-header-face-1  &override) :foreground cyan   :weight 'bold)
-   ((markdown-header-face-2  &override) :foreground magenta  :weight 'bold)
+   (markdown-header-face :foreground magenta :weight 'bold)
+   ((markdown-header-face-1  &override) :foreground magenta   :weight 'bold)
+   ((markdown-header-face-2  &override) :foreground cyan  :weight 'bold)
    ((markdown-header-face-3  &override) :foreground yellow  :weight 'bold)
    ((markdown-header-face-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
    ((markdown-header-face-5  &override) :foreground (doom-lighten green 0.25)      :weight 'bold)
-   ((markdown-header-face-6  &override) :foreground (doom-lighten cyan 0.25)    :weight 'bold)
-   (markdown-bold-face :foreground cyan :weight 'bold)
+   ((markdown-header-face-6  &override) :foreground (doom-lighten magenta 0.25)    :weight 'bold)
+   (markdown-bold-face :foreground magenta :weight 'bold)
    (markdown-italic-face :foreground red :slant 'italic)
-   (markdown-header-face :foreground cyan :weight 'bold)
+   (markdown-header-face :foreground magenta :weight 'bold)
    (markdown-inline-code-face :foreground bright-yellow)
    (mmm-default-submode-face :background base0)
 
@@ -339,13 +339,14 @@ determine the exact padding."
    (org-modern-statistics  :foreground nil)
 
    ;; outline
-   ((outline-1  &override) :foreground cyan   :weight 'bold)
-   ((outline-2  &override) :foreground magenta  :weight 'bold)
+   ((outline-1  &override) :foreground magenta   :weight 'bold)
+   ((outline-2  &override) :foreground cyan  :weight 'bold)
    ((outline-3  &override) :foreground yellow  :weight 'bold)
-   ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
+
+((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
    ((outline-5  &override) :foreground (doom-lighten green 0.25)      :weight 'bold)
-   ((outline-6  &override) :foreground (doom-lighten cyan 0.25)    :weight 'bold)
-   ((outline-7  &override) :foreground (doom-lighten magenta 0.25)    :weight 'bold)
+   ((outline-6  &override) :foreground (doom-lighten magenta 0.25)    :weight 'bold)
+   ((outline-7  &override) :foreground (doom-lighten cyan 0.25)    :weight 'bold)
    ((outline-8  &override) :foreground (doom-lighten yellow 0.25)      :weight 'bold)
 
    ;; rainbow-delimiters
@@ -374,7 +375,7 @@ determine the exact padding."
    ((swiper-line-face    &override) :background dark-blue :foreground fg)
 
    ;; treemacs
-   ((treemacs-root-face &override)  :foreground cyan :weight 'bold )
+   ((treemacs-root-face &override)  :foreground magenta :weight 'bold )
    ((treemacs-file-face &override)  :foreground fg :weight 'bold)
    ((treemacs-git-unmodified-face &override)  :foreground fg :weight 'bold)
    ((treemacs-git-modified-face &override)  :foreground orange :weight 'bold)
@@ -384,7 +385,7 @@ determine the exact padding."
    ((treemacs-git-added-face &override)  :foreground green :weight 'bold)
    ((treemacs-directory-face &override)  :foreground fg :weight 'bold)
    ((doom-themes-treemacs-file-face &override) :inherit 'font-lock-doc-face :foreground blue :weight 'bold )
-   ((doom-themes-treemacs-root-face &override) :inherit 'font-lock-doc-face :foreground cyan :weight 'bold )
+   ((doom-themes-treemacs-root-face &override) :inherit 'font-lock-doc-face :foreground magenta :weight 'bold )
 
    ;;vertico
    (vertico-current :foreground fg :background base1 :weight 'bold)
