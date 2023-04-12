@@ -163,6 +163,7 @@
        :desc "Calendar"          "c"            #'djs-my-personal-calendar
        :desc "Treemacs peek mode" "p"           #'djs-treemacs/toggle
        :desc "Treemacs toggle" "P"              #'+treemacs/toggle
+       :desc "ChatGPT" "C"              #'gptel
        :desc "Dirvish"          "e"            #'dirvish))
 (map! :n "[ w" #'evil-window-prev
       :n "] w" #'evil-window-next
@@ -376,7 +377,10 @@
          :action +vterm/here)
         ("Open Mail" :icon
          (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
-         :action =mu4e)))
+         :action =mu4e)
+        ("Open ChatGPT" :icon
+         (all-the-icons-octicon "light-bulb" :face 'doom-dashboard-menu-title)
+         :action gptel)))
 #+end_src
 *** hl-todo
 :PROPERTIES:
@@ -1429,5 +1433,5 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ;;         gptel-default-mode 'org-mode))
 (after! gptel
   (setq! gptel-api-key (my/lookup-password :host "openai.com")
-        gptel-default-mode 'org-mode))
+         gptel-default-mode 'org-mode))
 #+end_src
