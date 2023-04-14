@@ -205,7 +205,7 @@ determine the exact padding."
    ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground fg-alt)
    ((info-menu-star &override) :foreground fg)
    ((info-menu-header &override) :inherit 'variable-pitch :weight 'bold :foreground blue)
-   ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground cyan )
+   ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground magenta )
    ((info-title-3 &override) :inherit 'info-title-4  )
    ((info-title-2 &override) :inherit 'info-title-3  )
    ((info-title-1 &override) :inherit 'info-title-2  )
@@ -342,13 +342,11 @@ determine the exact padding."
    ((outline-1  &override) :foreground cyan   :weight 'bold)
    ((outline-2  &override) :foreground yellow  :weight 'bold)
    ((outline-3  &override) :foreground magenta  :weight 'bold)
-
-((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
+   ((outline-4  &override) :foreground (doom-lighten violet 0.25)    :weight 'bold)
    ((outline-5  &override) :foreground (doom-lighten green 0.25)      :weight 'bold)
    ((outline-6  &override) :foreground (doom-lighten cyan 0.25)    :weight 'bold)
    ((outline-7  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold)
    ((outline-8  &override) :foreground (doom-lighten magenta 0.25)      :weight 'bold)
-
    ;; rainbow-delimiters
    ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw-alt)
    ((rainbow-delimiters-depth-2-face &override) :foreground magenta)
@@ -375,7 +373,7 @@ determine the exact padding."
    ((swiper-line-face    &override) :background dark-blue :foreground fg)
 
    ;; treemacs
-   ((treemacs-root-face &override)  :foreground cyan :weight 'bold )
+   ((treemacs-root-face &override)  :foreground magenta :weight 'bold )
    ((treemacs-file-face &override)  :foreground fg :weight 'bold)
    ((treemacs-git-unmodified-face &override)  :foreground fg :weight 'bold)
    ((treemacs-git-modified-face &override)  :foreground orange :weight 'bold)
