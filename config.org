@@ -364,21 +364,21 @@
 *** doom-dashboard
 #+begin_src emacs-lisp
 (setq +doom-dashboard-menu-sections
-      '(("Open Agenda" :icon
+      '(("Agenda" :icon
          (all-the-icons-octicon "checklist" :face 'doom-dashboard-menu-title)
          :when (fboundp 'org-launch-custom-agenda)
          :action org-launch-custom-agenda)
-        ("Open Calendar" :icon
+        ("Calendar" :icon
          (all-the-icons-octicon "calendar" :face 'doom-dashboard-menu-title)
          :when (fboundp 'djs-my-personal-calendar)
          :action djs-my-personal-calendar)
-        ("Open Terminal" :icon
+        ("Terminal" :icon
          (all-the-icons-octicon "terminal" :face 'doom-dashboard-menu-title)
          :action +vterm/here)
-        ("Open Mail" :icon
+        ("Mail" :icon
          (all-the-icons-octicon "mail" :face 'doom-dashboard-menu-title)
          :action =mu4e)
-        ("Open ChatGPT" :icon
+        ("ChatGPT" :icon
          (all-the-icons-octicon "light-bulb" :face 'doom-dashboard-menu-title)
          :action gptel)))
 #+end_src
