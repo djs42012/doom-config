@@ -93,8 +93,8 @@ determine the exact padding."
    ((link &override) :foreground blue)
    (show-paren-match :background base3)
    (cursor :foreground bg :background fg)
-   (lazy-highlight :background dark-cyan :foreground bg)
-   (evil-ex-search :background dark-cyan :foreground bg)
+   (lazy-highlight :background base0 :foreground magenta)
+   (evil-ex-search :background (doom-blend magenta base0 0.05) :foreground magenta)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
@@ -165,8 +165,8 @@ determine the exact padding."
    (ediff-current-diff-Ancestor :foreground teal  :background (doom-lighten teal 0.8))
 
    ;; evil snipe
-   ((evil-snipe-first-match-face &override) :foreground magenta :background bg :underline t)
-   ((evil-snipe-matches-face &override) :foreground magenta :background bg :underline t)
+   ((evil-snipe-first-match-face &override) :foreground magenta :background (doom-blend magenta base0 0.05))
+   ((evil-snipe-matches-face &override) :foreground magenta :background (doom-blend magenta base0 0.05))
 
    ;; fringe
    (fringe :foreground fg)
@@ -209,7 +209,7 @@ determine the exact padding."
    ((info-title-3 &override) :inherit 'info-title-4  )
    ((info-title-2 &override) :inherit 'info-title-3  )
    ((info-title-1 &override) :inherit 'info-title-2  )
-   ((Info-quoted &override) :inherit 'fixed-pitch-serif :foreground bright-yellow :background bg)
+   ((Info-quoted &override)  :inherit 'fixed-pitch :foreground green :background base0)
 
    ;; ivy
    ((ivy-minibuffer-match-face-1 &override) :foreground (doom-lighten base5 0.70))
@@ -325,6 +325,7 @@ determine the exact padding."
    ((org-agenda-date-weekend &override) :foreground blue)
    ((org-time-grid &override) :foreground fg)
    ((org-agenda-current-time &override) :foreground bright-yellow)
+   ((org-verbatim &override) :foreground green :background base0)
 
    ;; org-modern
    (org-modern-label :inherit 'org-todo :foreground bright-yellow :weight 'bold)
