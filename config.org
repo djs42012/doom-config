@@ -147,6 +147,7 @@
 ;; TODO combine map! calls
 (map! :leader
       :desc "Doom Splash"        "k"            #'+doom-dashboard/open
+      :desc "Org Agenda"        "j"             #'org-launch-custom-agenda
       :desc "Kill buffer"        "\\"           #'kill-current-buffer
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Auto complete at point" "-"        #'+company/complete
@@ -197,6 +198,7 @@
       :n "C-<up>" #'Info-prev
       :n "<left>" #'Info-history-back
       :n "<right>" #'Info-history-forward)
+(map! :map evil-normal-state-map "C-f" #'+default/search-buffer)
 (map! :g "C-s" #'save-buffer)
 #+end_src
 *** Auth
@@ -239,14 +241,15 @@
     (buffer-string)))
 #+end_src
 *** Flush lines
-
 #+begin_src emacs-lisp
 (defun remove-empty-lines ()
   "Remove all empty lines in the current buffer"
   (interactive)
-  (when (eq major-mode 'org-mode)
-    (org-show-all)) ; fully expand headings in org-mode buffers
-  (flush-lines "^$"))
+  (save-excursion
+    (goto-char (point-min))
+    (when (eq major-mode 'org-mode)
+      (org-show-all)) ; fully expand headings in org-mode buffers
+    (flush-lines "^$")))
 #+end_src
 * Modules
 ** Completion
@@ -276,7 +279,12 @@
   (setq flyspell-duplicate-distance 0))
 #+end_src
 ** Emacs
-*** dired/dirvish
+** dired/dirvish
+Prevent hordes of dired buffers from piling up over time
+#+begin_src emacs-lisp
+(after! dired
+  (setq dired-kill-when-opening-new-dired-buffer t))
+#+end_src
 #+begin_src emacs-lisp
 ;; TODO Look into enabling dirvish through Doom's modules
 (dirvish-override-dired-mode)
@@ -373,6 +381,12 @@
 ** UI
 *** doom-dashboard
 #+begin_src emacs-lisp
+(defadvice! close-doom-windows-after-gptel (&rest /)
+  :after #'gptel
+  (let ((doom-window (get-buffer-window "*doom*")))
+    (when (and doom-window (memq doom-window (window-list)))
+      (delete-window doom-window))))
+
 (setq +doom-dashboard-menu-sections
       '(("Agenda" :icon
          (all-the-icons-octicon "checklist" :face 'doom-dashboard-menu-title)
@@ -1440,5 +1454,9 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ;;         gptel-default-mode 'org-mode))
 (after! gptel
   (setq! gptel-api-key (my/lookup-password :host "openai.com")
-         gptel-default-mode 'org-mode))
+         gptel-default-mode 'org-mode
+         gptel-prompt-prefix-alist  '((markdown-mode . "### ")
+                                     (org-mode . "* ")
+                                     (text-mode . "### "))
+         ))
 #+end_src

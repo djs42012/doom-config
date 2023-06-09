@@ -103,6 +103,8 @@ determine the exact padding."
    ((help-key-binding &override) :foreground magenta :background bg :)
    ((minibuffer-prompt &override) :foreground blue)
    ((vertical-border &override) :foreground violet :background violet)
+   ((pulse-highlight-face &override) :background base0 :foreground magenta)
+   ((pulse-highlight-start-face &override) :background base0 :foreground magenta)
 
    ;; modeline
    (mode-line
@@ -125,7 +127,7 @@ determine the exact padding."
    ((cfw:face-toolbar &override) :foreground bg :background bg)
    ((cfw:face-saturday &override) :foreground red)
    ((cfw:face-sunday &override) :foreground red)
-   ((org-date-selected &override) :background highlight :foreground bg :weight 'bold)
+   ((org-date-selected &override) :background region :foreground green :weight 'bold :height 1.2)
 
    ;; centaur-tabs
    ((centaur-tabs-selected &override) :background base3 :underline green :foreground fg :weight 'bold)
@@ -348,6 +350,11 @@ determine the exact padding."
    ((outline-6  &override) :foreground (doom-lighten cyan 0.25)    :weight 'bold)
    ((outline-7  &override) :foreground (doom-lighten yellow 0.25)    :weight 'bold)
    ((outline-8  &override) :foreground (doom-lighten magenta 0.25)      :weight 'bold)
+
+   ;;pulse-highlight
+   (pulse-highlight-face :background(doom-blend magenta base0 0.05) :foreground magenta)
+   (pulse-highlight-start-face :background(doom-blend magenta base0 0.05) :foreground magenta)
+
    ;; rainbow-delimiters
    ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw-alt)
    ((rainbow-delimiters-depth-2-face &override) :foreground magenta)
