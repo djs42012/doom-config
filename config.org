@@ -256,7 +256,8 @@
 *** company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay              nil
+  (setq company-idle-delay              0
+        company-tooltip-idle-delay      0
         company-minimum-prefix-length   0)
   (setq company-show-quick-access       t))
 #+end_src
@@ -386,7 +387,6 @@ Prevent hordes of dired buffers from piling up over time
   (let ((doom-window (get-buffer-window "*doom*")))
     (when (and doom-window (memq doom-window (window-list)))
       (delete-window doom-window))))
-
 (setq +doom-dashboard-menu-sections
       '(("Agenda" :icon
          (all-the-icons-octicon "checklist" :face 'doom-dashboard-menu-title)
@@ -569,6 +569,64 @@ Commeting out for now
     (let (org-log-done org-log-states)   ; turn off logging
       (org-todo (if (= n-not-done 0) "DONE" "[ ]"))))
   (add-hook 'org-after-todo-statistics-hook #'org-summary-todo))
+#+end_src
++ Let us mark items as done, prompting for the completion date [[https://emacs.stackexchange.com/questions/9433/how-to-make-org-prompt-for-a-timestamp-when-changing-state-of-a-todo/9451#9451][(credit this Stack Overflow post)]]
+  #+begin_src emacs-lisp
+(after! org
+  (defun org-todo-with-date (&optional arg)
+    "Set completetion state and prompt for date completed"
+    (interactive "P")
+    (if (eq major-mode 'org-agenda-mode)
+        (org-agenda-todo-with-date arg)
+      (cl-letf* ((org-read-date-prefer-future nil)
+                 (my-current-time (org-read-date t t nil "when:" nil nil nil))
+                 ((symbol-function #'org-current-effective-time)
+                  #'(lambda () my-current-time)))
+        (org-todo arg))))
+  (defun org-agenda-todo-with-date (&optional arg)
+    "Like `org-agenda-todo' but prompt for the completion date."
+    (interactive "P")
+    (cl-letf* ((org-read-date-prefer-future nil)
+               (my-current-time (org-read-date t t nil "when:" nil nil nil))
+               ((symbol-function #'org-current-effective-time)
+                #'(lambda () my-current-time)))
+      (org-agenda-todo arg))))
+  #+end_src
++ Let us refile only a region within a tree (credit this [[https://stackoverflow.com/questions/25256304/in-emacs-org-mode-how-to-refile-highlighted-text-under-an-org-heading][Stack Overflow]] post)
+#+begin_src emacs-lisp
+(after! org
+  (defvar org-refile-region-format "\n%s\n")
+  (defvar org-refile-region-position 'top
+    "Where to refile a region. Use 'bottom to refile at the
+end of the subtree. ")
+  (defun org-refile-region (beg end copy)
+    "Refile the active region.
+If no region is active, refile the current paragraph.
+With prefix arg C-u, copy region instad of killing it."
+    (interactive "r\nP")
+    ;; mark paragraph if no region is set
+    (unless (use-region-p)
+      (setq beg (save-excursion
+                  (backward-paragraph)
+                  (skip-chars-forward "\n\t ")
+                  (point))
+            end (save-excursion
+                  (forward-paragraph)
+                  (skip-chars-backward "\n\t ")
+                  (point))))
+    (let* ((target (save-excursion (org-refile-get-location)))
+           (file (nth 1 target))
+           (pos (nth 3 target))
+           (text (buffer-substring-no-properties beg end)))
+      (unless copy (kill-region beg end))
+      (deactivate-mark)
+      (with-current-buffer (find-file-noselect file)
+        (save-excursion
+          (goto-char pos)
+          (if (eql org-refile-region-position 'bottom)
+              (org-end-of-subtree)
+            (org-end-of-meta-data))
+          (insert (format org-refile-region-format text)))))))
 #+end_src
 *** org-modern
 #+begin_src emacs-lisp
