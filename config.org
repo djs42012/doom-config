@@ -1,3 +1,4 @@
+#+TITLE: CONFIG
 #+STARTUP: show2levels
 #+OPTIONS: eval:nil
 * General Settings
@@ -154,7 +155,7 @@
       :desc "Rename file" "R"                   #'doom/move-this-file
       (:prefix ("t" . "toggle")
                (:when (modulep! :completion company)
-                 :desc "Auto-completion"          "p"    #'+company/toggle-auto-completion)
+                 :desc "Auto-completion"          "p"   #'+company/toggle-auto-completion)
                :desc "Command-logging"          "c"     #'command-log-mode
                :desc "Rainbow mode"          "R"        #'rainbow-mode
                :desc "Writegood mode"          "G"      #'writegood-mode)
@@ -164,8 +165,10 @@
        :desc "Calendar"          "c"            #'djs-my-personal-calendar
        :desc "Treemacs peek mode" "p"           #'djs-treemacs/toggle
        :desc "Treemacs toggle" "P"              #'+treemacs/toggle
-       :desc "ChatGPT" "C"              #'gptel
-       :desc "Dirvish"          "e"            #'dirvish))
+       :desc "ChatGPT" "C"                      #'gptel
+       :desc "Dirvish"          "e"             #'dirvish)
+      (:prefix ("s" . "search" )
+       :desc "fd file" "f"                      #'my/+vertico-consult-fd))
 (map! :n "[ w" #'evil-window-prev
       :n "] w" #'evil-window-next
       :n "[ TAB" #'+workspace/switch-left
@@ -177,6 +180,8 @@
       :n "C-/" #'evil-ex-search-forward)
 (map! :map #'mu4e-view-mode-map
       :g "p" #'my/mu4e-view-save-attachments
+      :g "k" #'evil-previous-visual-line
+      :g "h" #'evil-backward-char
       :n "C-=" #'text-scale-increase
       :n "C--" #'text-scale-decrease
       :n "C-_" #'mu4e-headers-split-view-shrink)
@@ -223,6 +228,12 @@
         ("Arch Wiki"         "https://wiki.archlinux.org/index.php?search=%s&title=Special%3ASearch&wprov=acrw1")
         ("AUR"               "https://aur.archlinux.org/packages?O=0&K=%s")))
 #+end_src
+*** Smartparens
+#+begin_src emacs-lisp
+(after! smartparens
+  (sp-local-pair 'org-mode "~" "~")
+  (sp-local-pair 'org-mode "=" "="))
+#+end_src
 ** Helper Functions
 *** Kill Buffer and Close Window
 #+begin_src emacs-lisp
@@ -251,6 +262,26 @@
       (org-show-all)) ; fully expand headings in org-mode buffers
     (flush-lines "^$")))
 #+end_src
+*** Orderless find any file
++ Prompt for directory
+ #+begin_src emacs-lisp
+(defun my/consult-fd-choose-directory ()
+  "Call `+vertico/consult-fd` with a universal prefix argument"
+  (interactive)
+  (let ((current-prefix-arg '(4))) ; Set the universal prefix argument
+    (call-interactively '+vertico/consult-fd)))
+#+end_src
++ Search from root directory
+  #+begin_src emacs-lisp
+(defun my/+vertico-consult-fd ()
+  "Call `+vertico/consult-fd`from / directory.
+If called with a universal argument choose a instead."
+  (interactive)
+  (if current-prefix-arg
+      (my/consult-fd-choose-directory)
+    (+vertico/consult-fd "/")))
+
+  #+end_src
 * Modules
 ** Completion
 *** company
@@ -272,6 +303,12 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
+*** vertico/consult
++ TODO Figure out why ~~+vertico-consult-fd-args~ seem not to affect ~+vertico/consult-fd~ results, and I have to resort to changing ~consult-find-args~ to achieve the desired result instead. Am I even using ~fd~ anymore?
+#+begin_src emacs-lisp
+(setq! consult-find-args  "find .")
+#+end_src
+
 ** Checkers
 *** spell
 #+begin_src emacs-lisp
@@ -1516,5 +1553,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          gptel-prompt-prefix-alist  '((markdown-mode . "### ")
                                      (org-mode . "* ")
                                      (text-mode . "### "))
+         ;; gptel-model "gpt-4"
          ))
 #+end_src
