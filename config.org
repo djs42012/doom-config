@@ -1543,16 +1543,24 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   #+end_src
 ** chatgpt
 #+begin_src emacs-lisp
-;; (use-package! gptel
-;;  :config
-;;  (setq! gptel-api-key (my/lookup-password :host "openai.com")
-;;         gptel-default-mode 'org-mode))
 (after! gptel
   (setq! gptel-api-key (my/lookup-password :host "openai.com")
          gptel-default-mode 'org-mode
          gptel-prompt-prefix-alist  '((markdown-mode . "### ")
-                                     (org-mode . "* ")
-                                     (text-mode . "### "))
+                                      (org-mode . "* ")
+                                      (text-mode . "### "))
          ;; gptel-model "gpt-4"
          ))
+
+(after! gptel
+  (defun my/use-gpt-4-macro ()
+    "lauch gpt-4"
+    (interactive)
+    (fset 'launch-gpt-4
+          (kmacro-lambda-form [?  ?u ?\C-c return ?m ?4 return ?\C-g] 0 "%d"))
+    (launch-gpt-4))
+  (defadvice! launch-gptel-into-gpt-4 (&rest /)
+    :after #'gptel
+    (my/use-gpt-4-macro)
+    ))
 #+end_src
