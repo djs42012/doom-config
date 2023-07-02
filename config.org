@@ -283,6 +283,12 @@ If called with a universal argument choose a instead."
 
   #+end_src
 * Modules
+** app
+*** everywhere
+#+begin_src emacs-lisp
+(after! emacs-everywhere
+  (setq! emacs-everywhere-major-mode-function 'org-mode))
+#+end_src
 ** Completion
 *** company
 #+begin_src emacs-lisp
