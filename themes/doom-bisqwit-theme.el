@@ -91,10 +91,13 @@ determine the exact padding."
   (((hl-line &override) :background base1)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((link &override) :foreground blue)
-   (show-paren-match :background base3)
+   (show-paren-match :foreground base3)
    (cursor :foreground bg :background fg)
-   (lazy-highlight :background base0 :foreground magenta)
-   (evil-ex-search :background (doom-blend magenta base0 0.05) :foreground magenta)
+   (evil-ex-search :background (doom-blend blue base0 0.05) :foreground blue :underline t)
+   (isearch-group-1 :background (doom-blend violet base0 0.05) :foreground violet :underline t)
+   (isearch-group-2 :background (doom-blend green base0 0.05) :foreground green :underline t)
+   (lazy-highlight :background (doom-blend magenta base0 0.05) :foreground magenta :underline t)
+   (evil-ex-lazy-highlight :background (doom-blend magenta base0 0.05) :foreground magenta :underline t)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
@@ -167,7 +170,7 @@ determine the exact padding."
    (ediff-current-diff-Ancestor :foreground teal  :background (doom-lighten teal 0.8))
 
    ;; evil snipe
-   ((evil-snipe-first-match-face &override) :foreground magenta :background (doom-blend magenta base0 0.05))
+   ((evil-snipe-first-match-face &override) :foreground blue :background (doom-blend magenta base0 0.05))
    ((evil-snipe-matches-face &override) :foreground magenta :background (doom-blend magenta base0 0.05))
 
    ;; fringe
@@ -339,6 +342,7 @@ determine the exact padding."
    ((org-modern-date-active &override)  :foreground bright-yellow :background nil)
    ((org-modern-date-inactive &override)  :foreground fg-alt :background nil)
    ((org-modern-priority &override) :background nil)
+   ((org-modern-block-name &override) :foreground bright-yellow)
    (org-modern-statistics  :foreground nil)
 
    ;; outline
