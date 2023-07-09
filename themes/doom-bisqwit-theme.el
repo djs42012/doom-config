@@ -57,6 +57,7 @@ determine the exact padding."
    (violet          '("#915bff" "#875fff" "purple"       ))
    (cyan            '("#569cd6" "#5fafd7" "brightcyan"   ))
    (dark-cyan       '("#3d90b6" "#5f87af" "brightcyan"   ))
+   (dark-blue       '("#000c24" "#5f87af" "brightcyan"   ))
    (light-cyan      '("#9cdcfe" "#afd7ff" "brightcyan"   ))
    (turquoise       '("#00d7ff" "#00d7ff" "brightblue"   ))
    (grey            '("#5B6268" "#525252" "brightblack"  ))
@@ -93,8 +94,8 @@ determine the exact padding."
    ((link &override) :foreground blue)
    (show-paren-match :background base3)
    (cursor :foreground bg :background fg)
-   (lazy-highlight :background base0 :foreground magenta)
-   (evil-ex-search :background (doom-blend magenta base0 0.05) :foreground magenta)
+   (lazy-highlight :background magenta :foreground dark-blue )
+   (( evil-ex-search &override) :background magenta  :foreground dark-blue)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
@@ -167,8 +168,8 @@ determine the exact padding."
    (ediff-current-diff-Ancestor :foreground teal  :background (doom-lighten teal 0.8))
 
    ;; evil snipe
-   ((evil-snipe-first-match-face &override) :foreground magenta :background (doom-blend magenta base0 0.05))
-   ((evil-snipe-matches-face &override) :foreground magenta :background (doom-blend magenta base0 0.05))
+   ((evil-snipe-first-match-face &override)  :background magenta :foreground dark-blue :weight 'bold)
+   ((evil-snipe-matches-face &override)  :background magenta :foreground dark-blue)
 
    ;; fringe
    (fringe :foreground fg)
