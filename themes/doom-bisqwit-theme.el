@@ -92,10 +92,13 @@ determine the exact padding."
   (((hl-line &override) :background base1)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((link &override) :foreground blue)
-   (show-paren-match :background base3)
+   (show-paren-match :foreground base3)
    (cursor :foreground bg :background fg)
    (lazy-highlight :background magenta :foreground dark-blue )
    (( evil-ex-search &override) :background magenta  :foreground dark-blue)
+   (isearch-group-1 :background (doom-blend violet base0 0.05) :foreground violet :underline t)
+   (isearch-group-2 :background (doom-blend green base0 0.05) :foreground green :underline t)
+   (evil-ex-lazy-highlight :background (doom-blend magenta base0 0.05) :foreground magenta :underline t)
    (line-number-current-line :foreground bright-yellow :weight 'bold)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
@@ -340,6 +343,7 @@ determine the exact padding."
    ((org-modern-date-active &override)  :foreground bright-yellow :background nil)
    ((org-modern-date-inactive &override)  :foreground fg-alt :background nil)
    ((org-modern-priority &override) :background nil)
+   ((org-modern-block-name &override) :foreground bright-yellow)
    (org-modern-statistics  :foreground nil)
 
    ;; outline

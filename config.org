@@ -57,7 +57,7 @@
 #+end_src
 *** Printing
 #+begin_src emacs-lisp
-(setq! printer-name "hp-neverstop")
+(setq printer-name "hp-neverstop")
 #+end_src
 *** Character Deletion
 + Prevent text deleted with =x= from entering kill ring
@@ -287,13 +287,13 @@ If called with a universal argument choose a instead."
 *** everywhere
 #+begin_src emacs-lisp
 (after! emacs-everywhere
-  (setq! emacs-everywhere-major-mode-function 'org-mode))
+  (setq emacs-everywhere-major-mode-function #'org-mode))
 #+end_src
 ** Completion
 *** company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay              0
+  (setq company-idle-delay              nil
         company-tooltip-idle-delay      0
         company-minimum-prefix-length   0)
   (setq company-show-quick-access       t))
@@ -312,7 +312,7 @@ If called with a universal argument choose a instead."
 *** vertico/consult
 + TODO Figure out why ~~+vertico-consult-fd-args~ seem not to affect ~+vertico/consult-fd~ results, and I have to resort to changing ~consult-find-args~ to achieve the desired result instead. Am I even using ~fd~ anymore?
 #+begin_src emacs-lisp
-(setq! consult-find-args  "find .")
+(setq consult-find-args  "find .")
 #+end_src
 
 ** Checkers
@@ -358,7 +358,7 @@ Prevent hordes of dired buffers from piling up over time
 *** biblio (citar)
 #+begin_src emacs-lisp
 (after! citar
-  (setq! citar-bibliography '("~/Sync/Refs/My Library.bib")
+  (setq citar-bibliography '("~/Sync/Refs/My Library.bib")
          citar-org-roam-subdir "literature-notes"
          citar-notes-paths '("~/Sync/projects/org/roam/literature-notes")
          citar-symbol-separator "  "
@@ -1550,7 +1550,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ** chatgpt
 #+begin_src emacs-lisp
 (after! gptel
-  (setq! gptel-api-key (my/lookup-password :host "openai.com")
+  (setq gptel-api-key (my/lookup-password :host "openai.com")
          gptel-default-mode 'org-mode
          gptel-prompt-prefix-alist  '((markdown-mode . "### ")
                                       (org-mode . "* ")
