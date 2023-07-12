@@ -1226,12 +1226,12 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
     "Face for personal mail.")
   (defface mu4e-work-mail-face '((t (:foreground "#2257a0")))
     "Face for work mail.")
-  (defface mu4e-gmail-mail-face '((t (:foreground "#c16b6b")))
+  (defface mu4e-old-mail-face '((t (:foreground "#c16b6b")))
     "Face for personal mail.")
   (setq
    +mu4e-header--maildir-colors '(("poa" . mu4e-work-mail-face)
                                   ("personal" . mu4e-personal-mail-face)
-                                  ("gmail" . mu4e-gmail-mail-face))))
+                                  ("old" . mu4e-old-mail-face))))
 #+end_src
 ** Bookmarks
 + Set our custom search queries for mu4e's homepage
@@ -1239,17 +1239,17 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (after! mu4e
   (setq mu4e-bookmarks
         '((:name "📧 All Mail"
-           :query "maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox AND NOT flag:trashed"
+           :query "maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/old/Inbox AND NOT flag:trashed"
            :key 97)
           (:name "⁉ Unread Messages"
-           :query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/gmail/Inbox) AND flag:unread AND NOT flag:trashed"
+           :query "(maildir:/personal/Inbox OR maildir:/poa/Inbox OR maildir:/old/Inbox) AND flag:unread AND NOT flag:trashed"
            :key 117)
           (:name "🔥 Spam"
-           :query "maildir:/personal/\[Gmail\]/Spam OR maildir:/poa/\"Junk Email\" OR maildir:/gmail/\[Gmail\]/Spam AND NOT flag:trashed"
+           :query "maildir:/personal/\[Gmail\]/Spam OR maildir:/poa/\"Junk Email\" OR maildir:/old/\[Gmail\]/Spam AND NOT flag:trashed"
            :key 115
            )
           (:name "🗑 Deleted Items"
-           :query "maildir:/personal/\[Gmail\]/Trash OR maildir:/poa/\"Deleted Items\" OR maildir:/gmail/\[Gmail\]/Trash"
+           :query "maildir:/personal/\[Gmail\]/Trash OR maildir:/poa/\"Deleted Items\" OR maildir:/old/\[Gmail\]/Trash"
            :hide-unread t
            :key 100)
           (:name "🚩 Flagged"
@@ -1257,7 +1257,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
            :hide-unread t
            :key 102)
           (:name "✈ Sent"
-           :query "maildir:/personal/\[Gmail\]/\"Sent Mail\" OR maildir:/gmail/\[Gmail\]/\"Sent Mail\" OR maildir:/poa/\"Sent Items\" AND NOT flag:trashed"
+           :query "maildir:/personal/\[Gmail\]/\"Sent Mail\" OR maildir:/old/\[Gmail\]/\"Sent Mail\" OR maildir:/poa/\"Sent Items\" AND NOT flag:trashed"
            :hide-unread t
            :key 116))))
   #+end_src
@@ -1290,17 +1290,18 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                                "catchall@djs.gg"
                                                "david@djs.money"
                                                "catchall@djs.money"))))
-         ;; gmail
+         ;; (old) gmail
+         ;; renamed to prevent mu4e from knowing it's a gmail account and handing delete commands differently
          (make-mu4e-context
-          :name "gmail"
+          :name "old"
           :match-func
           (lambda (msg)
             (when msg
-              (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
-          :vars '((mu4e-sent-folder       . "/gmail/[Gmail]/Sent Mail")
-                  (mu4e-drafts-folder     . "/gmail/[Gmail]/Drafts")
-                  (mu4e-trash-folder      . "/gmail/[Gmail]/Trash")
-                  (mu4e-refile-folder     . "/gmail/[Gmail]/All Mail")
+              (string-prefix-p "/old" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder       . "/old/[Gmail]/Sent Mail")
+                  (mu4e-drafts-folder     . "/old/[Gmail]/Drafts")
+                  (mu4e-trash-folder      . "/old/[Gmail]/Trash")
+                  (mu4e-refile-folder     . "/old/[Gmail]/All Mail")
                   (smtpmail-smtp-user     . "dsharfi@gmail.com")
                   (smtpmail-smtp-server   . "smtp.gmail.com")
                   (smtpmail-auth-credentials . "~/.authinfo.gpg")
