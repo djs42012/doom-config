@@ -180,8 +180,6 @@
       :n "C-/" #'evil-ex-search-forward)
 (map! :map #'mu4e-view-mode-map
       :g "p" #'my/mu4e-view-save-attachments
-      :g "k" #'evil-previous-visual-line
-      :g "h" #'evil-backward-char
       :n "C-=" #'text-scale-increase
       :n "C--" #'text-scale-decrease
       :n "C-_" #'mu4e-headers-split-view-shrink)
@@ -1126,36 +1124,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 \\usepackage{booktabs}"))
 #+end_src
 * Email (mu4e)
-** 1.10 fix
-#+begin_src emacs-lisp
-(use-package! mu4e
-  :defer t
-  :init
-  ;; fix for mu4e 1.10.0 and evil-collection
-  ;; https://github.com/emacs-evil/evil-collection/issues/695
-  (defun mu4e--main-action-str (name func)
-    "This seems to be needed until evil-collection supports the latest
-  version of mu4e."
-    "mu4e-main-action")
-  (require 'mu4e)
-  (remove-hook 'mu4e-main-mode-hook 'evil-collection-mu4e-update-main-view)
-  :config
-    (add-to-list 'display-buffer-alist
-                 '("^\\*mu4e" nil))
-    (advice-add '+mu4e-view-select-mime-part-action :override
-                #'fix/+mu4e-view-select-mime-part-action)
-    (evil-make-overriding-map mu4e-view-mode-map 'normal)
-    (evil-define-key 'normal mu4e-view-mode-map "q" 'mu4e-view-quit))
-(defun fix/+mu4e-view-select-mime-part-action ()
-  "Select a MIME part, and perform an action on it."
-  (interactive)
-  (let ((labeledparts (+mu4e-part-selectors (mu4e--view-gather-mime-parts))))
-    (if labeledparts
-        (mu4e-view-mime-part-action
-         (cadr (assoc (completing-read "Select part: " (mapcar #'car labeledparts))
-                      labeledparts)))
-      (user-error (mu4e-format "No parts found")))))
-#+end_src
 ** Load Path
 + Make sure we can find mu4e
   #+begin_src emacs-lisp
