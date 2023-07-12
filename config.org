@@ -1198,6 +1198,24 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                file)))))
         (mu4e-message "No attached files found")))))
 #+end_src
+*** Do Not Flag Messages Moved to Trash Directory with =T= flag
+[[  https://github.com/djcb/mu/issues/1136#issuecomment-1066303788
+][Source]]
+#+begin_src emacs-lisp
+(after! mu4e
+  (setf (alist-get 'trash mu4e-marks)
+      (list :char '("d" . "▼")
+            :prompt "dtrash"
+            :dyn-target (lambda (target msg)
+                          (mu4e-get-trash-folder msg))
+            :action (lambda (docid msg target)
+                      ;; Here's the main difference to the regular trash mark,
+                      ;; no +T before -N so the message is not marked as
+                      ;; IMAP-deleted:
+                      (mu4e--server-move docid (mu4e--mark-check-target target) "-N")))))
+#+end_src
+
+
 ** Composing
 + I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
 #+begin_src emacs-lisp
