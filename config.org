@@ -43,7 +43,8 @@
          mode
          '(("[;:,.#]" . 'heavy-punctuation-face))))
       '(emacs-lisp-mode
-        c-mode lua-mode
+        c-mode
+        lua-mode
         rjsx-mode
         typescript-mode
         web-mode
@@ -277,8 +278,7 @@ If called with a universal argument choose a instead."
   (interactive)
   (if current-prefix-arg
       (my/consult-fd-choose-directory)
-    (+vertico/consult-fd "/")))
-
+    (+vertico/consult-fd "~/")))
   #+end_src
 * Modules
 ** app
@@ -312,7 +312,6 @@ If called with a universal argument choose a instead."
 #+begin_src emacs-lisp
 (setq consult-find-args  "find .")
 #+end_src
-
 ** Checkers
 *** spell
 #+begin_src emacs-lisp
@@ -1214,8 +1213,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                       ;; IMAP-deleted:
                       (mu4e--server-move docid (mu4e--mark-check-target target) "-N")))))
 #+end_src
-
-
 ** Composing
 + I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
 #+begin_src emacs-lisp
@@ -1546,7 +1543,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                       (text-mode . "### "))
          ;; gptel-model "gpt-4"
          ))
-
 (after! gptel
   (defun my/use-gpt-4-macro ()
     "lauch gpt-4"
