@@ -349,7 +349,7 @@ Prevent hordes of dired buffers from piling up over time
                                 ("README"
                                  (regex . "README")))
         dirvish-default-layout '(0 0.20 0.67 )
-        dired-listing-switches "-hl -v --group-directories-first"))
+        dired-listing-switches "-ahl -v --group-directories-first"))
 #+end_src
 ** Tools
 *** biblio (citar)
@@ -1198,8 +1198,9 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
         (mu4e-message "No attached files found")))))
 #+end_src
 *** Do Not Flag Messages Moved to Trash Directory with =T= flag
-[[  https://github.com/djcb/mu/issues/1136#issuecomment-1066303788
-][Source]]
++ [[https://groups.google.com/g/mu-discuss/c/m4ORymDlf0E][See this discussion on delete vs trash flags in mu4e]]
++ Code from [[https://github.com/djcb/mu/issues/1136#issuecomment-1066303788
+][this Github issue]]
 #+begin_src emacs-lisp
 (after! mu4e
   (setf (alist-get 'trash mu4e-marks)
