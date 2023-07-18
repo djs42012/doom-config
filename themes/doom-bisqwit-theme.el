@@ -143,14 +143,17 @@ determine the exact padding."
    ((centaur-tabs-modified-marker-unselected &override) :foreground orange :background base0)
 
    ;; company
-   ;; ((company-tooltip-common &override) :weight 'normal :foreground blue)
-   ;; ((company-tooltip-selection &override) :background base2 )
-   ;; ((company-scrollbar-fg &override)   :background red)
-   ;; ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
-   ;; ((company-tooltip &override) :background base0)
+   ((company-tooltip-common &override) :weight 'normal :foreground blue)
+   ((company-tooltip-selection &override) :background base1 )
+   ((company-scrollbar-fg &override)   :background red)
+   ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
+   ((company-tooltip &override) :background base0)
+   (company-tooltip-scrollbar-thumb :background red)
+   (company-tooltip-scrollbar-track :background base0)
 
    ;;lsp-brige/acm
    (acm-frame-select-face :background base1 :foreground yellow)
+
 
    ;; css-mode / scss-mode
    (css-proprietary-property :foreground orange)
