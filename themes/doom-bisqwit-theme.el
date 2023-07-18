@@ -143,11 +143,14 @@ determine the exact padding."
    ((centaur-tabs-modified-marker-unselected &override) :foreground orange :background base0)
 
    ;; company
-   ((company-tooltip-common &override) :weight 'normal :foreground blue)
-   ((company-tooltip-selection &override) :background base2 )
-   ((company-scrollbar-fg &override)   :background red)
-   ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
-   ((company-tooltip &override) :background base0)
+   ;; ((company-tooltip-common &override) :weight 'normal :foreground blue)
+   ;; ((company-tooltip-selection &override) :background base2 )
+   ;; ((company-scrollbar-fg &override)   :background red)
+   ;; ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
+   ;; ((company-tooltip &override) :background base0)
+
+   ;;lsp-brige/acm
+   (acm-frame-select-face :background base1 :foreground yellow)
 
    ;; css-mode / scss-mode
    (css-proprietary-property :foreground orange)
@@ -226,10 +229,10 @@ determine the exact padding."
    ((js2-object-property &override) :foreground cyan)
 
    ;;;; lsp-mode
-   (lsp-ui-doc-background      :background base0)
-   (lsp-face-highlight-read    :background bg)
-   (lsp-face-highlight-textual :inherit 'region)
-   (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
+   ;; (lsp-ui-doc-background      :background base0)
+   ;; (lsp-face-highlight-read    :background bg)
+   ;; (lsp-face-highlight-textual :inherit 'region)
+   ;; (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
 
 
    ;; magit

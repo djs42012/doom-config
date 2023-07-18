@@ -18,7 +18,7 @@
 (package! command-log-mode)
 (package! dirvish)
 (package! org-modern)
-(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! evil-escape)
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
@@ -28,6 +28,7 @@
 (package! evil-collection
   :recipe (:repo "emacs-evil/evil-collection" :branch "master"))
 (package! nano-theme :recipe (:host github :repo "rougier/nano-theme"))
+(package! lsp-bridge :recipe (:host github :repo "manateelazycat/lsp-bridge"))
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
