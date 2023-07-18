@@ -26,10 +26,6 @@
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
 (setq display-line-numbers-type nil)
 #+end_src
-*** Tabs
-#+begin_src emacs-lisp
-;; (add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
-#+end_src
 *** Rainbow Delimiters
 #+begin_src emacs-lisp
 (setq rainbow-delimiters-max-face-count 3)
@@ -405,40 +401,6 @@ Prevent hordes of dired buffers from piling up over time
                            (preview . "${author editor} (${year issued date}) ${title}, ${journal journaltitle publisher container-title collection-title}.\n")
                            (note . "${author} - ${title}"))))
 #+end_src
-# *** lsp
-# + Disable auto formatting with lsp to prevent interference with tools like prettier
-#   #+begin_src emacs-lisp
-#   (after! lsp-mode
-#     (setq +format-with-lsp nil))
-#   #+end_src
-# + Make sure certain language servers are always available
-#   #+begin_src emacs-lisp
-# (after! lsp-mode
-#   (lsp-ensure-server 'ts-ls)
-#   (lsp-ensure-server 'bash-ls)
-#   (lsp-ensure-server 'emmet-ls)
-#   (lsp-ensure-server 'html-ls)
-#   (lsp-ensure-server 'dockerfile-ls)
-#   (lsp-ensure-server 'yamlls)
-#   (lsp-ensure-server 'json-ls)
-#   (lsp-ensure-server 'eslint)
-#   (lsp-ensure-server 'css-ls)
-#   (lsp-ensure-server 'clangd)
-#   (lsp-ensure-server 'tailwindcss)
-#   (lsp-ensure-server 'lua-language-server))
-#   #+end_src
-# + Enable linting for tailwindcss
-#   #+begin_src emacs-lisp
-# (use-package! lsp-tailwindcss
-#   :init
-#   (setq lsp-tailwindcss-add-on-mode t))
-#   #+end_src
-# + Match major modes to file extensions
-#   #+begin_src emacs-lisp
-# (with-eval-after-load 'lsp-mode (add-to-list 'lsp-language-id-configuration
-#                                              '(web-mode . "scss"))
-#                       (add-to-list 'lsp-disabled-clients 'flow-ls))
-# #+end_src
 *** rgb
 + Prevent ordinary words (e.g "red", "blue", etc.) from highlight in rainbow mode
 #+begin_src emacs-lisp
@@ -511,22 +473,6 @@ Prevent hordes of dired buffers from piling up over time
           ("REVIEW" . "#6ae4b9")
           ("DEPRECATED" . "#bfd9ff"))))
 #+end_src
-*** Indent guides
-#+begin_src emacs-lisp
-(after! highlight-indent-guides
-  (setq
-   ;; highlight-indent-guides-auto-odd-face-perc                 0
-   ;; highlight-indent-guides-auto-even-face-perc                0
-   ;; highlight-indent-guides-auto-top-odd-face-perc             0
-   ;; highlight-indent-guides-auto-top-even-face-perc            0
-   ;; highlight-indent-guides-auto-character-face-perc           0
-   ;; highlight-indent-guides-auto-stack-odd-face-perc           0
-   ;; highlight-indent-guides-auto-stack-even-face-perc          0
-   ;; highlight-indent-guides-auto-top-character-face-perc       0
-   ;; highlight-indent-guides-auto-stack-character-face-perc     0
-   highlight-indent-guides-method 'bitmap
-   ))
-#+end_src
 *** popup
 + Keep certain windows hanging around longer than Doom's defaults
 #+begin_src emacs-lisp
@@ -535,29 +481,6 @@ Prevent hordes of dired buffers from piling up over time
     ("^\\*info\\*"      :ignore t)
     ("^\\*Man"          :ignore t)))
 #+end_src
-*** tabs
-Commeting out for now
-#+begin_src emacs-lisp
-;; (after! centaur-tabs
-;;   (centaur-tabs-group-by-projectile-project)
-;;   (setq centaur-tabs-style "bar"
-;;         centaur-tabs-set-bar 'under
-;;         centaur-tabs-label-fixed-length 12))
-;; (add-hook! ('cfw:calendar-mode-hook
-;;             'mu4e-main-mode-hook
-;;             'mu4e-headers-mode-hook
-;;             'mu4e-view-mode-hook
-;;             'org-msg-edit-mode-hook
-;;             'org-agenda-mode-hook
-;;             'magit-select-mode-hook
-;;             'magit-log-select-mode-hook
-;;             'magit-log-mode-hook
-;;             'git-commit-mode-hook
-;;             'magit-diff-mode-hook
-;;             '+doom-dashboard-mode-hook)
-;;            #'centaur-tabs-local-mode)
-#+end_src
-#+RESULTS:
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
@@ -599,15 +522,6 @@ Commeting out for now
   (append +format-on-save-enabled-modes '(org-mode)))
 #+end_src
 * Lang
-# ** web
-# + Set the file extensions to open in ~web-mode~
-# #+begin_src emacs-lisp
-# (add-hook! 'web-mode-hook
-#            #'rainbow-delimiters-mode-enable)
-# (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-# (add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
-# (add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
-# #+end_src
 ** lua
 + Enable rainbow delimiters mode (not sure why this isn't default)
 #+begin_src emacs-lisp
@@ -1151,14 +1065,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (add-hook! 'org-agenda-mode-hook #'org-save-all-org-buffers)
 #+end_src
 ** exports
-*** LaTeX exports
-+ TODO This isn't working with ~#+ATTR_LATEX: :booktabs t~
-#+begin_src emacs-lisp
-(after! org
-  (add-to-list 'org-latex-default-packages-alist '("" "booktabs"))
-  (setq org-format-latex-header "\\documentclass{article}
-\\usepackage{booktabs}"))
-#+end_src
 * Email (mu4e)
 ** Load Path
 + Make sure we can find mu4e
