@@ -297,7 +297,7 @@ Enable or disable `company-mode' accordingly."
     (if (or (eq company-idle-delay nil)
             (not company-mode))
         (progn
-          (setq company-idle-delay 0)
+          (setq company-idle-delay .5)
           (company-mode 1)
           (message "company-mode enabled"))
       (progn
