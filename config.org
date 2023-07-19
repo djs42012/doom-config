@@ -150,8 +150,8 @@
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Rename file" "R"                   #'doom/move-this-file
       (:prefix ("t" . "toggle")
-       :desc "LSP Bridge"          "p"          #'lsp-bridge-mode
-       :desc "Comapany Delay"          "P"      #'my/toggle-company-idle-delay
+       :desc "LSP Bridge"          "P"          #'lsp-bridge-mode
+       :desc "Comapany Mode"        "p"      #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
        :desc "Rainbow mode"          "R"        #'rainbow-mode
        :desc "Writegood mode"          "G"      #'writegood-mode)
@@ -308,25 +308,25 @@ Enable or disable `company-mode' accordingly."
 (after! eshell
   (add-hook! 'eshell-mode-hook #'my/toggle-company-idle-delay))
 #+end_src
-*** lsp-bridge
-+ Not sure why we have to go through all oof this extra fuss to update some keybindings and faces but we do ([[https://github-com.translate.goog/manateelazycat/lsp-bridge/issues/516?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp][Source: Github]])
-#+begin_src emacs-lisp
-(add-to-list 'load-path "~/.config/emacs/.local/straight/repos/lsp-bridge")
-(with-eval-after-load 'lsp-bridge
-  (message "==> set evil keys")
-  (evil-define-key 'insert acm-mode-map (kbd "C-j") #'acm-select-next)
-  (evil-define-key 'insert acm-mode-map (kbd "C-k") #'acm-select-prev)
-  (evil-define-key 'insert acm-mode-map (kbd "C-S-j") #'acm-select-next-page)
-  (evil-define-key 'insert acm-mode-map (kbd "C-S-k") #'acm-select-prev-page)
-  (add-hook 'acm-mode-hook #'evil-normalize-keymaps )
-  (add-hook 'acm-mode-hook
-            (lambda ()
-              (custom-set-faces!
-                '(acm-frame-select-face :background "#272727"))))
-  (setq lsp-bridge-enable-org-babel t
-        lsp-bridge-org-babel-lang-list  nil))
-(add-hook! ('typescript-mode-hook 'sh-mode-hook 'lua-mode-hook 'json-mode-hook 'conf-mode-hook) #'lsp-bridge-mode)
-#+end_src
+# *** lsp-bridge
+# + Not sure why we have to go through all oof this extra fuss to update some keybindings and faces but we do ([[https://github-com.translate.goog/manateelazycat/lsp-bridge/issues/516?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp][Source: Github]])
+# #+begin_src emacs-lisp
+# (add-to-list 'load-path "~/.config/emacs/.local/straight/repos/lsp-bridge")
+# (with-eval-after-load 'lsp-bridge
+#   (message "==> set evil keys")
+#   (evil-define-key 'insert acm-mode-map (kbd "C-j") #'acm-select-next)
+#   (evil-define-key 'insert acm-mode-map (kbd "C-k") #'acm-select-prev)
+#   (evil-define-key 'insert acm-mode-map (kbd "C-S-j") #'acm-select-next-page)
+#   (evil-define-key 'insert acm-mode-map (kbd "C-S-k") #'acm-select-prev-page)
+#   (add-hook 'acm-mode-hook #'evil-normalize-keymaps )
+#   (add-hook 'acm-mode-hook
+#             (lambda ()
+#               (custom-set-faces!
+#                 '(acm-frame-select-face :background "#272727"))))
+#   (setq lsp-bridge-enable-org-babel t
+#         lsp-bridge-org-babel-lang-list  nil))
+# (add-hook! ('typescript-mode-hook 'sh-mode-hook 'lua-mode-hook 'json-mode-hook 'conf-mode-hook) #'lsp-bridge-mode)
+# #+end_src
 *** copilot
 #+begin_src emacs-lisp
 ;; accept completion from copilot and fallback to company
@@ -383,6 +383,27 @@ Prevent hordes of dired buffers from piling up over time
         dired-listing-switches "-ahl -v --group-directories-first"))
 #+end_src
 ** Tools
+*** lsp
++ Disable auto formatting with lsp to prevent interference with tools like prettier
+  #+begin_src emacs-lisp
+  (after! lsp-mode
+    (setq +format-with-lsp nil))
+  #+end_src
++ Make sure certain language servers are always available
+  #+begin_src emacs-lisp
+(after! lsp-mode
+  (lsp-ensure-server 'ts-ls)
+  (lsp-ensure-server 'bash-ls)
+  (lsp-ensure-server 'emmet-ls)
+  (lsp-ensure-server 'html-ls)
+  (lsp-ensure-server 'dockerfile-ls)
+  (lsp-ensure-server 'yamlls)
+  (lsp-ensure-server 'json-ls)
+  (lsp-ensure-server 'eslint)
+  (lsp-ensure-server 'css-ls)
+  (lsp-ensure-server 'clangd)
+  (lsp-ensure-server 'lua-language-server))
+  #+end_src
 *** biblio (citar)
 #+begin_src emacs-lisp
 (after! citar

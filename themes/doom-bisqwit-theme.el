@@ -232,10 +232,10 @@ determine the exact padding."
    ((js2-object-property &override) :foreground cyan)
 
    ;;;; lsp-mode
-   ;; (lsp-ui-doc-background      :background base0)
-   ;; (lsp-face-highlight-read    :background bg)
-   ;; (lsp-face-highlight-textual :inherit 'region)
-   ;; (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
+   (lsp-ui-doc-background      :background base0)
+   (lsp-face-highlight-read    :background bg)
+   (lsp-face-highlight-textual :inherit 'region)
+   (lsp-face-highlight-write   :inherit 'lsp-face-highlight-read)
 
 
    ;; magit
