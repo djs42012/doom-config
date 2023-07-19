@@ -311,6 +311,7 @@ Enable or disable `company-mode' accordingly."
 #+begin_src emacs-lisp
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
+  :defer t
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("<tab>" . 'copilot-accept-completion)
@@ -382,7 +383,15 @@ Prevent hordes of dired buffers from piling up over time
   (lsp-ensure-server 'eslint)
   (lsp-ensure-server 'css-ls)
   (lsp-ensure-server 'clangd)
+  (lsp-ensure-server 'tailwindcss)
   (lsp-ensure-server 'lua-language-server))
+  #+end_src
++ Enable linting for tailwindcss
+  #+begin_src emacs-lisp
+(use-package! lsp-tailwindcss
+  :defer t
+  :init
+  (setq lsp-tailwindcss-add-on-mode t))
   #+end_src
 + Match major modes to file extensions
   #+begin_src emacs-lisp
