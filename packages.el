@@ -28,10 +28,10 @@
 (package! evil-collection
   :recipe (:repo "emacs-evil/evil-collection" :branch "master"))
 (package! nano-theme :recipe (:host github :repo "rougier/nano-theme"))
-;; (package! lsp-bridge :recipe (:host github :repo "manateelazycat/lsp-bridge"))
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"
            :branch "master"))
+(package! company-box)
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':

@@ -92,7 +92,7 @@ determine the exact padding."
   (((hl-line &override) :background base1)
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((link &override) :foreground blue)
-   (show-paren-match :foreground base3)
+   (show-paren-match :background magenta  :foreground dark-blue)
    (cursor :foreground bg :background fg)
    (lazy-highlight :background magenta :foreground dark-blue )
    (( evil-ex-search &override) :background magenta  :foreground dark-blue)
@@ -143,17 +143,16 @@ determine the exact padding."
    ((centaur-tabs-modified-marker-unselected &override) :foreground orange :background base0)
 
    ;; company
-   ((company-tooltip-common &override) :weight 'normal :foreground blue)
+   ((company-tooltip-common &override) :weight 'normal :foreground green)
    ((company-tooltip-selection &override) :background base1 )
    ((company-scrollbar-fg &override)   :background red)
    ((company-tooltip-annotation &override) :foreground violet :distant-foreground bg)
-   ((company-tooltip &override) :background base0)
+   ((company-tooltip &override) :background (doom-darken base0 0.50))
    (company-tooltip-scrollbar-thumb :background red)
    (company-tooltip-scrollbar-track :background base0)
 
-   ;;lsp-brige/acm
-   (acm-frame-select-face :background base1 :foreground yellow)
-
+   ;; company-box
+   (company-box-scrollbar  :background red)
 
    ;; css-mode / scss-mode
    (css-proprietary-property :foreground orange)
