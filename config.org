@@ -145,7 +145,6 @@
 ;; TODO combine map! calls
 (map! :leader
       :desc "Doom Splash"        "k"            #'+doom-dashboard/open
-      :desc "Org Agenda"        "j"             #'org-launch-custom-agenda
       :desc "Kill buffer"        "\\"           #'kill-current-buffer
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Rename file" "R"                   #'doom/move-this-file
