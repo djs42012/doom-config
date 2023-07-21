@@ -570,7 +570,8 @@ Prevent hordes of dired buffers from piling up over time
    org-startup-folded 'show2levels
    org-ellipsis " ↘"
    org-default-priority 68
-   org-log-into-drawer "LOGBOOK"))
+   org-log-into-drawer "LOGBOOK"
+   org-duration-format (quote h:mm)))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
 ;; (add-hook! 'org-mode-hook #'mixed-pitch-mode)
 #+end_src
