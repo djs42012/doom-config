@@ -171,7 +171,9 @@
       :n "M-+" #'mu4e-headers-mark-all-unread-read
       :n "t" #'djs-capture-msg-to-agenda
       :n "z t" #'evil-scroll-line-to-top
-      :n "C-/" #'evil-ex-search-forward)
+      :n "C-/" #'evil-ex-search-forward
+      ;; TODO rebind to "S"
+      :n "C-s" #'mu4e-headers-mark-for-spam)
 (map! :map #'mu4e-view-mode-map
       :g "p" #'my/mu4e-view-save-attachments
       :n "C-=" #'text-scale-increase
@@ -296,7 +298,7 @@ Enable or disable `company-mode' accordingly."
     (if (or (eq company-idle-delay nil)
             (not company-mode))
         (progn
-          (setq company-idle-delay .5)
+          (setq company-idle-delay .2)
           (company-mode 1)
           (message "company-mode enabled"))
       (progn
@@ -1180,6 +1182,38 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                       ;; IMAP-deleted:
                       (mu4e--server-move docid (mu4e--mark-check-target target) "-N")))))
 #+end_src
+*** Mark messages as spam and move to ~mu4e-spam-folder~
++ Adapted from [[https://gist.github.com/Mic92/d455715242c8909cc8302aadd4745fcf][Mic92's Github gist]]
+#+begin_src emacs-lisp
+(after! mu4e
+  (add-to-list 'mu4e-marks
+               '(spam
+                 :char       "S"
+                 :prompt     "Spam"
+                 :dyn-target (lambda (target msg) (my/mu4e--get-folder 'mu4e-spam-folder msg))
+                 :action (lambda (docid msg target)
+                      (mu4e--server-move docid (mu4e--mark-check-target target) "+S-u-N"))))
+  (mu4e~headers-defun-mark-for spam)
+
+  (defun my/mu4e--get-folder (foldervar msg)
+    "Extend mu4e--get-folder to include mu4e-spam-folder"
+    (unless (member foldervar
+                    '(mu4e-sent-folder mu4e-drafts-folder
+                      mu4e-trash-folder
+                      mu4e-refile-folder
+                      mu4e-spam-folder))
+      (mu4e-error "Folder must be one of mu4e-(sent|drafts|trash|refile|spam)-folder"))
+    ;; get the value with the vars for the relevants context let-bound
+    (with-mu4e-context-vars (mu4e-context-determine msg nil)
+        (let* ((folder (symbol-value foldervar))
+               (val
+                (cond
+                 ((stringp   folder) folder)
+                 ((functionp folder) (funcall folder msg))
+                 (t (mu4e-error "Unsupported type for %S" folder)))))
+          (or val (mu4e-error "%S evaluates to nil" foldervar))))))
+#+end_src
+
 ** Composing
 + I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
 #+begin_src emacs-lisp
@@ -1260,6 +1294,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
           :vars '((mu4e-sent-folder       . "/personal/[Gmail]/Sent Mail")
                   (mu4e-drafts-folder     . "/personal/[Gmail]/Drafts")
                   (mu4e-trash-folder      . "/personal/[Gmail]/Trash")
+                  (mu4e-spam-folder      . "/personal/[Gmail]/Spam")
                   (mu4e-refile-folder     . "/personal/[Gmail]/All Mail")
                   (smtpmail-smtp-user     . "david@djs.gg")
                   (smtpmail-smtp-server   . "smtp.gmail.com")
@@ -1284,6 +1319,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (mu4e-drafts-folder     . "/old/[Gmail]/Drafts")
                   (mu4e-trash-folder      . "/old/[Gmail]/Trash")
                   (mu4e-refile-folder     . "/old/[Gmail]/All Mail")
+                  (mu4e-spam-folder      .  "/old/[Gmail]/Spam")
                   (smtpmail-smtp-user     . "dsharfi@gmail.com")
                   (smtpmail-smtp-server   . "smtp.gmail.com")
                   (smtpmail-auth-credentials . "~/.authinfo.gpg")
@@ -1304,6 +1340,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (mu4e-trash-folder      . "/poa/Deleted Items")
                   (mu4e-refile-folder  . "/poa/Inbox")
                   (mu4e-sent-folder  . "/poa/Sent Items")
+                  (mu4e-spam-folder  . "/poa/Junk Email")
                   (smtpmail-smtp-user     . "dsharfi@plusoneair.com")
                   (smtpmail-smtp-server . "smtp.office365.com")
                   (smtpmail-smtp-service . 587)
