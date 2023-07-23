@@ -498,6 +498,30 @@ Prevent hordes of dired buffers from piling up over time
     ("^\\*info\\*"      :ignore t)
     ("^\\*Man"          :ignore t)))
 #+end_src
+*** tabs
+#+begin_src emacs-lisp
+(after! centaur-tabs
+  (centaur-tabs-group-by-projectile-project)
+  (setq centaur-tabs-style "bar"
+        centaur-tabs-set-bar 'under
+        centaur-tabs-label-fixed-length 12))
+(add-hook! ('cfw:calendar-mode-hook
+            'mu4e-main-mode-hook
+            'mu4e-headers-mode-hook
+            'mu4e-view-mode-hook
+            'org-msg-edit-mode-hook
+            'org-agenda-mode-hook
+            'magit-select-mode-hook
+            'magit-log-select-mode-hook
+            'magit-log-mode-hook
+            'git-commit-mode-hook
+            'magit-diff-mode-hook
+            '+doom-dashboard-mode-hook)
+           #'centaur-tabs-local-mode)
+(add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
+
+#+end_src
+
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
