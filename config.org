@@ -67,11 +67,9 @@
 #+end_src
 *** Word Wrap and Visual Mode
 #+begin_src emacs-lisp
-;; (+global-word-wrap-mode)
+(+global-word-wrap-mode)
 #+end_src
-+ I couldn't figure out why visual-line-mode wasn't forcing editing commands to act on visual lines rather than logical lines, so I changed the keys myself.
 #+begin_src emacs-lisp
-;; TODO Properly configure visual-line-mode
 (after! evil
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
@@ -1212,11 +1210,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (after! mu4e
   (add-to-list 'mu4e-marks
                '(spam
-                 :char       "S"
+                 :char       "s"
                  :prompt     "Spam"
                  :dyn-target (lambda (target msg) (my/mu4e--get-folder 'mu4e-spam-folder msg))
                  :action (lambda (docid msg target)
-                      (mu4e--server-move docid (mu4e--mark-check-target target) "+S-u-N"))))
+                           (mu4e--server-move docid (mu4e--mark-check-target target) "+S-u-N"))))
   (mu4e~headers-defun-mark-for spam)
 
   (defun my/mu4e--get-folder (foldervar msg)
