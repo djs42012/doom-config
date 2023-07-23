@@ -197,7 +197,7 @@
       :n "C-<up>" #'Info-prev
       :n "<left>" #'Info-history-back
       :n "<right>" #'Info-history-forward)
-(map! :map evil-normal-state-map "C-f" #'+default/search-buffer)
+(map! :map evil-normal-state-map "C-S-f" #'+default/search-buffer)
 (map! :g "C-s" #'save-buffer)
 #+end_src
 *** Auth
