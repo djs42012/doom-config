@@ -32,6 +32,12 @@
   :recipe (:host github :repo "emacs-lsp/lsp-mode"
            :branch "master"))
 (package! company-box)
+
+;; (package! origamie :recipe (:host github :repo "gregsexton/origami.el"))
+;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
+;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el"))
+
+
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':

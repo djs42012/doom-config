@@ -43,7 +43,7 @@
         lua-mode
         rjsx-mode
         typescript-mode
-        web-mode
+        ;; web-mode
         gfm-mode))
 #+end_src
 ** Behavior
@@ -394,8 +394,8 @@ Prevent hordes of dired buffers from piling up over time
   #+end_src
 + Match major modes to file extensions
   #+begin_src emacs-lisp
-(with-eval-after-load 'lsp-mode (add-to-list 'lsp-language-id-configuration
-                                             '(web-mode . "scss"))
+(with-eval-after-load 'lsp-mode ;; (add-to-list 'lsp-language-id-configuration
+                                ;;              '(web-mode . "scss"))
                       (add-to-list 'lsp-disabled-clients 'flow-ls))
 #+end_src
 *** biblio (citar)
@@ -561,21 +561,32 @@ Prevent hordes of dired buffers from piling up over time
   (append +format-on-save-enabled-modes '(org-mode)))
 #+end_src
 * Lang
-** web
-+ Set the file extensions to open in ~web-mode~
-#+begin_src emacs-lisp
-(add-hook! 'web-mode-hook
-           #'rainbow-delimiters-mode-enable)
-(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
-(add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
-#+end_src
+# ** web
+# + Set the file extensions to open in ~web-mode~
+# #+begin_src emacs-lisp
+# (add-hook! 'web-mode-hook
+#            #'rainbow-delimiters-mode-enable)
+# (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+# (add-to-list 'auto-mode-alist '("\\.css$"  . web-mode))
+# (add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
+#   (setq web-mode-skip-fontification 't)
+# #+end_src
 ** lua
 + Enable rainbow delimiters mode (not sure why this isn't default)
 #+begin_src emacs-lisp
 (add-hook! 'lua-mode-hook
            #'rainbow-delimiters-mode-enable)
 #+end_src
+** typescript
+#+begin_src emacs-lisp
+(add-hook! 'typescript-mode-hook #'rjsx-minor-mode)
+(map! :map typescript-mode-map
+      :nvi "C-c C-j" #'rjsx-jump-tag
+      :nvi "C-c C-r" #'rjsx-rename-tag-at-point
+      :nvi "<" #'rjsx-electric-lt
+      :nvi ">" #'rjsx-electric-gt)
+#+end_src
+
 * Org
 ** org-mode
 *** Paths and Default Settings
