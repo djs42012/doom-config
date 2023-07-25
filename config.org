@@ -431,6 +431,11 @@ Prevent hordes of dired buffers from piling up over time
                ,@rainbow-html-colors-font-lock-keywords
                ,@rainbow-html-rgb-colors-font-lock-keywords))))
 #+end_src
+*** tree-sitter
+#+begin_src emacs-lisp
+(after! tree-sitter
+  (setq +tree-sitter-hl-enabled-modes nil))
+#+end_src
 ** UI
 *** doom-dashboard
 #+begin_src emacs-lisp
