@@ -99,7 +99,7 @@ determine the exact padding."
    (isearch-group-1 :background (doom-blend violet base0 0.05) :foreground violet :underline t)
    (isearch-group-2 :background (doom-blend green base0 0.05) :foreground green :underline t)
    (evil-ex-lazy-highlight :background magenta :foreground dark-blue :underline t)
-   (line-number-current-line :foreground bright-yellow :weight 'bold)
+   (( line-number-current-line &override) :foreground bright-yellow :background base0)
    (tooltip :background base1 :foreground fg )
    ((secondary-selection &override) :background base1)
    ((highlight-quoted-symbol &override) :foreground yellow)

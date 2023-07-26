@@ -24,7 +24,8 @@
 *** Line Numbers and Highlighting
 #+begin_src emacs-lisp
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
-(setq display-line-numbers-type nil)
+(setq display-line-numbers-type 'relative)
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 #+end_src
 *** Rainbow Delimiters
 #+begin_src emacs-lisp
