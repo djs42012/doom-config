@@ -751,6 +751,13 @@ With prefix arg C-u, copy region instad of killing it."
 **** Templates
 #+begin_src emacs-lisp
 (after! org
+  (defun my/format-org-capture-link ()
+    "Format the captured contents to a headling friendly link string."
+    (let ((annotation (substring (substring-no-properties (plist-get org-store-link-plist :initial)) 0 30)))
+      (substring
+       (replace-regexp-in-string " +" " "
+                                 (replace-regexp-in-string "\n" " "
+                                                           annotation))2 -2 )))
   (setq
    org-capture-templates
    ;; Personal Todo Templates
@@ -772,8 +779,8 @@ With prefix arg C-u, copy region instad of killing it."
       entry (file+headline "todo.org" "🏡 Home")
       "* TODO %?"
       :kill-buffer t)
-     ("to" "🖥 Office"
-      entry (file+headline "todo.org" "🖥 Office")
+     ("to" "💻 Office"
+      entry (file+headline "todo.org" "💻 Office")
       "* TODO %?"
       :kill-buffer t)
      ("tm" "⁉ Misc."
@@ -786,24 +793,24 @@ With prefix arg C-u, copy region instad of killing it."
       :kill-buffer t)
      ("n" "📥 Note"
       entry (file+headline "notes.org" "📥 Inbox") ,
-      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a")
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC")
      ;; Default cenralized project templates
      ("g" "🌏 Global Project Files")
      ("gt" "✅ Project todo"
       entry #'+org-capture-central-project-todo-file
-      "* TODO %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      "* TODO %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i\n#+END_SRC"
       :heading "Tasks"
       :prepend nil
       :kill-buffer t)
      ("gn" "✏ Project notes"
       entry #'+org-capture-central-project-notes-file
-      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      "* %?[[file:%F::file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
       :heading "Notes"
       :prepend nil
       :kill-buffer t)
      ("gc" "🏁 Project changelog"
       entry #'+org-capture-central-project-changelog-file
-      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
       :heading "Changelog"
       :prepend nil
       :kill-buffer t)
@@ -811,17 +818,17 @@ With prefix arg C-u, copy region instad of killing it."
      ("l" "🔒 Local Project Files")
      ("lt" "✅ Project-local todo"
       entry (file+headline +org-capture-project-todo-file "Inbox")
-      "* TODO %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      "* TODO %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
       :prepend nil
       :kill-buffer t)
      ("ln" "✏ Project-local notes"
       entry (file+headline +org-capture-project-notes-file "Inbox")
-      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
       :prepend nil
       :kill-buffer t)
      ("lc" "🏁 Project-local changelog"
       entry (file+headline +org-capture-project-changelog-file "Unreleased")
-      "* %?[[%F][%f]] - %U \n** Contents\n%i\n** Link\n %a"
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
       :prepend nil
       :kill-buffer t))))
 #+end_src
@@ -926,12 +933,13 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
         org-roam-dailies-directory "journal/"))
 #+end_src
 *** Capture
++ TODO defun to grab annotation and format
 #+begin_src emacs-lisp
 (after! org-roam
   (setq org-roam-capture-templates
         `(("f" "⏳ Fleeting" plain
-           ,(format "#+title: Fleeting - ${title} - %s\n#+filetags: :fleeting:\n* ${title}\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
-           :target (file "inbox/fleeting_${slug}_%<%Y%m%d%H%M%S>.org")
+           ,(format "#+title: Fleeting - ${title} - %s\n#+filetags: :fleeting:\n*" "%i" "${title}\n%%[%s/template/fleeting.org]" "%T" org-roam-directory)
+           :target (file "inbox/fleeting_${slug}_%<%Y%m%d%H%M%S>.org" )
            :kill-buffer t)
           ("z" "💭 Zettel" plain
            ,(format "#+title: ${title}\n* ${title}\n%%[%s/template/zettel.org]" org-roam-directory)
