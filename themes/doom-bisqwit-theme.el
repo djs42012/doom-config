@@ -390,7 +390,12 @@ determine the exact padding."
    ((swiper-match-face-1 &override) :background fg        :foreground bg)
    ((swiper-line-face    &override) :background dark-blue :foreground fg)
 
-   ;; treemacs
+   ;; tree-sitter
+   ((tree-sitter-hl-face:operator &override) :foreground green)
+   ((tree-sitter-hl-face:tag &override) :foreground green)
+   ((tree-sitter-hl-face:attribute &override) :foreground yellow :weight 'bold)
+   ((tree-sitter-hl-face:number &override) :foreground bright-yellow :weight 'bold)
+
    ((treemacs-root-face &override)  :foreground magenta :weight 'bold )
    ((treemacs-file-face &override)  :foreground fg :weight 'bold)
    ((treemacs-git-unmodified-face &override)  :foreground fg :weight 'bold)
