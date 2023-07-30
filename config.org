@@ -962,24 +962,24 @@ With prefix arg C-u, copy region instad of killing it."
       :kill-buffer t)
      ("n" "📥 Note"
       entry (file+headline "notes.org" "📥 Inbox") ,
-      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC")
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]")
      ;; Default cenralized project templates
      ("g" "🌏 Global Project Files")
      ("gt" "✅ Project todo"
       entry #'+org-capture-central-project-todo-file
-      "* TODO %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i\n#+END_SRC"
+      "* TODO %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]"
       :heading "Tasks"
       :prepend nil
       :kill-buffer t)
      ("gn" "✏ Project notes"
       entry #'+org-capture-central-project-notes-file
-      "* %?[[file:%F::file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
+      "* %?[[file:%F::file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]"
       :heading "Notes"
       :prepend nil
       :kill-buffer t)
      ("gc" "🏁 Project changelog"
       entry #'+org-capture-central-project-changelog-file
-      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]"
       :heading "Changelog"
       :prepend nil
       :kill-buffer t)
@@ -987,17 +987,17 @@ With prefix arg C-u, copy region instad of killing it."
      ("l" "🔒 Local Project Files")
      ("lt" "✅ Project-local todo"
       entry (file+headline +org-capture-project-todo-file "Inbox")
-      "* TODO %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
+      "* TODO %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]"
       :prepend nil
       :kill-buffer t)
      ("ln" "✏ Project-local notes"
       entry (file+headline +org-capture-project-notes-file "Inbox")
-      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]"
       :prepend nil
       :kill-buffer t)
      ("lc" "🏁 Project-local changelog"
       entry (file+headline +org-capture-project-changelog-file "Unreleased")
-      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n#+BEGIN_SRC \n%i#+END_SRC"
+      "* %?[[file:%F::%(my/format-org-capture-link)][%f]] - %U \n\n#+begin_src \n%i#+end_src\n\n[[file:%F::%(my/format-org-capture-link)][visit file]]"
       :prepend nil
       :kill-buffer t))))
 #+end_src
@@ -1423,7 +1423,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                file)))))
         (mu4e-message "No attached files found")))))
 #+end_src
-
 
 *** Do Not Flag Messages Moved to Trash Directory with =T= flag
 + [[https://groups.google.com/g/mu-discuss/c/m4ORymDlf0E][See this discussion on delete vs trash flags in mu4e]]
