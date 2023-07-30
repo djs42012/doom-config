@@ -506,19 +506,12 @@ Prevent hordes of dired buffers from piling up over time
           ("HOLD" .  "#a9a5aa")
           ("SHOP" .  "#c586c0")
           ("IDEA" .  "#93e079")
-          ("NEXT" . "#b6a0ff")
-          ("THEM" . "#f78fe7")
-          ("OKAY" . "#4ae2f0")
-          ("DONT" . "#70b900")
-          ("FAIL" . "#ff8059")
           ("BUG" . "#ff8059")
           ("DONE" . "#5B6268")
           ("NOTE" . "#d3b55f")
-          ("KLUDGE" . "#d0bc00")
           ("HACK" . "#d0bc00")
           ("TEMP" . "#ffcccc")
           ("FIXME" . "#ff9077")
-          ("XXX+" . "#ef8b50")
           ("REVIEW" . "#6ae4b9")
           ("DEPRECATED" . "#bfd9ff"))))
 #+end_src
@@ -526,9 +519,9 @@ Prevent hordes of dired buffers from piling up over time
 + Keep certain windows hanging around longer than Doom's defaults
 #+begin_src emacs-lisp
 (set-popup-rules!
-  '(("^\\*help"         :ignore t)
-    ("^\\*info\\*"      :ignore t)
-    ("^\\*Man"          :ignore t)))
+  '(("^\\*info\\*"                   :ignore t)
+    ("^\\*format-all-errors\\*"      :select t)
+    ("^\\*Man"                       :ignore t)))
 #+end_src
 *** tabs
 #+begin_src emacs-lisp
