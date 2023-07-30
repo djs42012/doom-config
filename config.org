@@ -451,6 +451,8 @@ Prevent hordes of dired buffers from piling up over time
 #+end_src
 + User ~rjsx~ indentation for typescript files (source [[https://merrick.luois.me/posts/better-tsx-support-in-doom-emacs][Merrick Luo's Blog]])
 #+begin_src emacs-lisp
+(after! typescript
+  (setq typescript-indent-level 2))
 (define-derived-mode typescript-tsx-tree-sitter-mode typescript-mode "TypeScript TSX"
   (setq-local indent-line-function 'rjsx-indent-line))
 (add-hook! 'typescript-tsx-tree-sitter-mode-local-vars-hook
