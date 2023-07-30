@@ -1912,7 +1912,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ** org-modern-indent
 
 #+begin_src emacs-lisp
-(add-hook! 'org-mode-hook #'org-modern-indent-mode 90)
+(add-hook! 'org-mode-hook #'org-modern-indent-mode)
 ;; FIXME still have bracket spacing issues
 (set-face-attribute 'fixed-pitch nil :family "Berkeley Mono" :height 1.0) ; or whatever font family
 #+end_src
