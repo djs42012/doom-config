@@ -464,6 +464,18 @@ Prevent hordes of dired buffers from piling up over time
 (add-hook! 'typescript-tsx-mode-hook  #'typescript-tsx-tree-sitter-mode)
 (after! tree-sitter
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-tree-sitter-mode . tsx)))
+;; TODO Figure out this syntax. Currently just replaces entire buffer with output of prettier command
+;; (set-formatter! 'prettier "prettier -w ." :modes '(typescript-tsx-tree-sitter-mode))
+;; (set-formatter!
+;;     'prettier
+;;     '("prettier" "-w" "." )
+;;     :modes
+;;     '(typescript-tsx-tree-sitter-mode))
+;; HACK Just manually add our entry to the hash table
+(after! format-all
+  (puthash 'typescript-tsx-tree-sitter-mode
+           '((prettier closure (t) nil "typescript"))
+           format-all--mode-table))
 #+end_src
 ** UI
 *** doom-dashboard
