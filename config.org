@@ -12,8 +12,8 @@
 *** Theme and Fonts
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
-      doom-font (font-spec :family "Berkeley Mono" :size 24 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "Montserrat" :size 24 :weight 'light))
+      doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
       +doom-dashboard-banner-file "emacs.png")
 #+end_src
@@ -153,6 +153,7 @@
        :desc "Comapany Mode"        "p"      #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
        :desc "Rainbow mode"          "R"        #'rainbow-mode
+       :desc "Indent bars"          "i"        #'indent-bars-mode
        :desc "Writegood mode"          "G"      #'writegood-mode)
       (:prefix ("o" . "open")
        :desc "Org Agenda"         "j"           #'org-launch-custom-agenda
@@ -452,21 +453,16 @@ Prevent hordes of dired buffers from piling up over time
 #+begin_src emacs-lisp
 (define-derived-mode typescript-tsx-tree-sitter-mode typescript-mode "TypeScript TSX"
   (setq-local indent-line-function 'rjsx-indent-line))
-
 (add-hook! 'typescript-tsx-tree-sitter-mode-local-vars-hook
            #'+javascript-init-lsp-or-tide-maybe-h
            #'emmet-mode
            #'tree-sitter-hl-mode)
-
 (add-hook! 'emmet-mode-hook '(lambda ()
                                (add-to-list 'emmet-jsx-major-modes 'typescript-tsx-tree-sitter-mode)))
-
 (add-hook! 'typescript-tsx-mode-hook  #'typescript-tsx-tree-sitter-mode)
-
 (after! tree-sitter
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-tree-sitter-mode . tsx)))
 #+end_src
-
 ** UI
 *** doom-dashboard
 #+begin_src emacs-lisp
@@ -475,12 +471,11 @@ Prevent hordes of dired buffers from piling up over time
   (let ((doom-window (get-buffer-window "*doom*")))
     (when (and doom-window (memq doom-window (window-list)))
       (delete-window doom-window))))
-
 (setq +doom-dashboard-functions
       '(doom-dashboard-widget-banner
         doom-dashboard-widget-shortmenu
-        my/doom-dashboard-widget-footer ))
-
+        my/doom-dashboard-widget-footer
+        doom-dashboard-widget-loaded))
 (setq +doom-dashboard-banner-padding '(0 . 1))
 (setq +doom-dashboard-menu-sections
       '(("Agenda" :icon
@@ -500,7 +495,6 @@ Prevent hordes of dired buffers from piling up over time
         ("ChatGPT" :icon
          (all-the-icons-octicon "light-bulb" :face 'doom-dashboard-menu-title)
          :action gptel)))
-
 (defun my/doom-dashboard-widget-footer ()
     (insert
      "\n\n"
@@ -568,7 +562,6 @@ Prevent hordes of dired buffers from piling up over time
            #'centaur-tabs-local-mode)
 (add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
 #+end_src
-
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
 #+begin_src emacs-lisp
@@ -632,14 +625,12 @@ Prevent hordes of dired buffers from piling up over time
              typescript-tsx-mode-hook
              typescript-tsx-tree-sitter-mode-local-vars-hook)
            #'rjsx-minor-mode)
-
 (map! :map typescript-mode-map
       :nvi "C-c C-j" #'rjsx-jump-tag
       :nvi "C-c C-r" #'rjsx-rename-tag-at-point
       :nvi "<" #'rjsx-electric-lt
       :nvi ">" #'rjsx-electric-gt)
 #+end_src
-
 * Org
 ** org-mode
 *** Paths and Default Settings
@@ -1288,7 +1279,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                  :action (lambda (docid msg target)
                            (mu4e--server-move docid (mu4e--mark-check-target target) "+S-u-N"))))
   (mu4e~headers-defun-mark-for spam)
-
   (defun my/mu4e--get-folder (foldervar msg)
     "Extend mu4e--get-folder to include mu4e-spam-folder"
     (unless (member foldervar
@@ -1307,7 +1297,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                  (t (mu4e-error "Unsupported type for %S" folder)))))
           (or val (mu4e-error "%S evaluates to nil" foldervar))))))
 #+end_src
-
 ** Composing
 + I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
 #+begin_src emacs-lisp
@@ -1641,17 +1630,17 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                       (text-mode . "### "))
          ;; gptel-model "gpt-4"
          ))
-(after! gptel
-  (defun my/use-gpt-4-macro ()
-    "lauch gpt-4"
-    (interactive)
-    (fset 'launch-gpt-4
-          (kmacro-lambda-form [?  ?u ?\C-c return ?m ?4 return ?\C-g] 0 "%d"))
-    (launch-gpt-4))
-  (defadvice! launch-gptel-into-gpt-4 (&rest /)
-    :after #'gptel
-    (my/use-gpt-4-macro)
-    ))
+;; (after! gptel
+;;   (defun my/use-gpt-4-macro ()
+;;     "lauch gpt-4"
+;;     (interactive)
+;;     (fset 'launch-gpt-4
+;;           (kmacro-lambda-form [?  ?u ?\C-c return ?m ?4 return ?\C-g] 0 "%d"))
+;;     (launch-gpt-4))
+;;   (defadvice! launch-gptel-into-gpt-4 (&rest /)
+;;     :after #'gptel
+;;     (my/use-gpt-4-macro)
+;;     ))
 #+end_src
 ** company-box
 + Make some sweet tweaks to match doom defaults (credit [[https://github.com/TheBB/dotemacs/blob/master/init.el#L527-L570][TheBB's config]])
@@ -1693,4 +1682,23 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   (dolist (elt company-box-icons-all-the-icons)
     (setcdr elt (concat (cdr elt) " ")))
   )
+#+end_src
+** indent-bars
+#+begin_src emacs-lisp
+(add-hook! '(typescript-tsx-tree-sitter-mode-local-vars-hook
+             rjsx-mode-hook)
+           #'my/configure-tsx-indent-bars)
+;; HACK disabling ~indent-bars-mode~ still leaves traces of indent bars
+;; in typescript-tsx-tree-sitter-mode. Disabling and reenabling the mode
+;; fixes the issue. Probably something to do with the order of derive modes
+(defun my/configure-tsx-indent-bars ()
+  "Enable and configure indent bars for tsx"
+    (indent-bars-mode 1)
+    (setq indent-bars-spacing-override 2)
+    (indent-bars-mode -1)
+    (indent-bars-mode 1))
+(after! indent-bars
+  (setq indent-bars-color-by-depth nil
+        indent-bars-highlight-current-depth '(:color "#606060")
+        indent-bars-color '( "#272727" )))
 #+end_src

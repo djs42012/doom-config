@@ -32,6 +32,7 @@
   :recipe (:host github :repo "emacs-lsp/lsp-mode"
            :branch "master"))
 (package! company-box)
+(package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
 
 ;; (package! origamie :recipe (:host github :repo "gregsexton/origami.el"))
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
