@@ -304,8 +304,12 @@ Enable or disable `company-mode' accordingly."
         (setq company-idle-delay nil)
         (company-mode -1)
         (message "company-mode disabled")))))
-(after! eshell
-  (add-hook! 'eshell-mode-hook #'my/toggle-company-idle-delay))
+(after! company
+  (add-hook! '(eshell-mode-hook
+               typescript-mode-hook
+               rjsx-mode-hook
+               emacs-lisp-mode-hook)
+             #'my/toggle-company-idle-delay))
 (after! company
   (map! :map company-active-map
         :g "<tab>" nil
@@ -437,10 +441,30 @@ Prevent hordes of dired buffers from piling up over time
                ,@rainbow-html-rgb-colors-font-lock-keywords))))
 #+end_src
 *** tree-sitter
++ Whitelist all modes for ~tree-sitter-hl-mode~
 #+begin_src emacs-lisp
 (after! tree-sitter
   (setq +tree-sitter-hl-enabled-modes t))
 #+end_src
++ User ~rjsx~ indentation for typescript files (source [[https://merrick.luois.me/posts/better-tsx-support-in-doom-emacs][Merrick Luo's Blog]])
+#+begin_src emacs-lisp
+(define-derived-mode typescript-tsx-tree-sitter-mode typescript-mode "TypeScript TSX"
+  (setq-local indent-line-function 'rjsx-indent-line))
+
+(add-hook! 'typescript-tsx-tree-sitter-mode-local-vars-hook
+           #'+javascript-init-lsp-or-tide-maybe-h
+           #'emmet-mode
+           #'tree-sitter-hl-mode)
+
+(add-hook! 'emmet-mode-hook '(lambda ()
+                               (add-to-list 'emmet-jsx-major-modes 'typescript-tsx-tree-sitter-mode)))
+
+(add-hook! 'typescript-tsx-mode-hook  #'typescript-tsx-tree-sitter-mode)
+
+(after! tree-sitter
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-tree-sitter-mode . tsx)))
+#+end_src
+
 ** UI
 *** doom-dashboard
 #+begin_src emacs-lisp
@@ -588,17 +612,13 @@ Prevent hordes of dired buffers from piling up over time
            #'rainbow-delimiters-mode-enable)
 #+end_src
 ** typescript
-// TODO combine macros
 #+begin_src emacs-lisp
-(add-hook! 'typescript-mode-hook #'rjsx-minor-mode)
-(add-hook! 'typescript-tsx-mode-hook #'rjsx-minor-mode)
-(map! :map typescript-mode-map
-      :nvi "C-c C-j" #'rjsx-jump-tag
-      :nvi "C-c C-r" #'rjsx-rename-tag-at-point
-      :nvi "<" #'rjsx-electric-lt
-      :nvi ">" #'rjsx-electric-gt)
+(add-hook! '(typescript-mode-hook
+             typescript-tsx-mode-hook
+             typescript-tsx-tree-sitter-mode-local-vars-hook)
+           #'rjsx-minor-mode)
 
-(map! :map typescript-tsx-mode-map
+(map! :map typescript-mode-map
       :nvi "C-c C-j" #'rjsx-jump-tag
       :nvi "C-c C-r" #'rjsx-rename-tag-at-point
       :nvi "<" #'rjsx-electric-lt

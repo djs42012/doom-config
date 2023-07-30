@@ -134,8 +134,8 @@ determine the exact padding."
    ((org-date-selected &override) :background region :foreground green :weight 'bold :height 1.2)
 
    ;; centaur-tabs
-   ((centaur-tabs-selected &override) :background base3 :underline green :foreground fg :weight 'bold)
-   ((centaur-tabs-unselected &override) :background base0 :foreground fg )
+   ((centaur-tabs-selected &override) :background base0 :underline green :foreground fg :weight 'bold)
+   ((centaur-tabs-unselected &override) :background (doom-darken base0 0.25) :foreground fg )
    ((centaur-tabs-active-bar-face &override) :background green)
    ((centaur-tabs-selected-modified &override) :foreground orange :background base3 :weight 'bold)
    ((centaur-tabs-unselected-modified &override) :foreground orange :background base0)
