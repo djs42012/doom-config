@@ -33,7 +33,7 @@
 #+end_src
 *** Special Punctuation Faces
 #+begin_src emacs-lisp
-(defface heavy-punctuation-face '((t (:foreground "#008000")))
+(defface heavy-punctuation-face '((t (:foreground "#00d100")))
   "Face for extra emphasis on a customizable list of symbols.")
 (mapc (lambda (mode)
         (font-lock-add-keywords
