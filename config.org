@@ -13,7 +13,9 @@
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
       doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light))
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
+      +doom-dashboard-banner-dir doom-user-dir
+      +doom-dashboard-banner-file "emacs.png")
 #+end_src
 *** Window Borders
 #+begin_src emacs-lisp
