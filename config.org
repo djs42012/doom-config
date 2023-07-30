@@ -12,9 +12,9 @@
 *** Theme and Fonts
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
-      doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "Montserrat" :size 16 :weight 'light)
-      +doom-dashboard-banner-dir doom-user-dir
+      doom-font (font-spec :family "Berkeley Mono" :size 24 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 24 :weight 'light))
+      +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
       +doom-dashboard-banner-file "emacs.png")
 #+end_src
 *** Window Borders
@@ -475,6 +475,13 @@ Prevent hordes of dired buffers from piling up over time
   (let ((doom-window (get-buffer-window "*doom*")))
     (when (and doom-window (memq doom-window (window-list)))
       (delete-window doom-window))))
+
+(setq +doom-dashboard-functions
+      '(doom-dashboard-widget-banner
+        doom-dashboard-widget-shortmenu
+        my/doom-dashboard-widget-footer ))
+
+(setq +doom-dashboard-banner-padding '(0 . 1))
 (setq +doom-dashboard-menu-sections
       '(("Agenda" :icon
          (all-the-icons-octicon "checklist" :face 'doom-dashboard-menu-title)
@@ -493,6 +500,16 @@ Prevent hordes of dired buffers from piling up over time
         ("ChatGPT" :icon
          (all-the-icons-octicon "light-bulb" :face 'doom-dashboard-menu-title)
          :action gptel)))
+
+(defun my/doom-dashboard-widget-footer ()
+    (insert
+     "\n\n"
+     (propertize
+      (+doom-dashboard--center
+       +doom-dashboard--width
+       "A man's Emacs is his castle...")
+      'face 'doom-dashboard-loaded)
+     "\n"))
 #+end_src
 *** hl-todo
 :PROPERTIES:
@@ -516,6 +533,10 @@ Prevent hordes of dired buffers from piling up over time
           ("FIXME" . "#ff9077")
           ("REVIEW" . "#6ae4b9")
           ("DEPRECATED" . "#bfd9ff"))))
+#+end_src
+*** nav-flash
+#+begin_src emacs-lisp
+(add-hook! 'evil-jumps-post-jump-hook #'+nav-flash-blink-cursor-maybe-h)
 #+end_src
 *** popup
 + Keep certain windows hanging around longer than Doom's defaults
@@ -546,7 +567,6 @@ Prevent hordes of dired buffers from piling up over time
             '+doom-dashboard-mode-hook)
            #'centaur-tabs-local-mode)
 (add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
-
 #+end_src
 
 *** treemacs
