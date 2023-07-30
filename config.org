@@ -3,37 +3,48 @@
 #+OPTIONS: eval:nil
 * General Settings
 ** Personal Information
+
 #+begin_src emacs-lisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 (setq user-full-name    "DJS"
       user-mail-address "david@djs.gg")
 #+end_src
+
 ** Appearance
 *** Theme and Fonts
+
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
       doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
-      +doom-dashboard-banner-file "emacs.png")
+      +doom-dashboard-banner-file "doom-emacs.png")
 #+end_src
+
 *** Window Borders
+
 #+begin_src emacs-lisp
 (modify-all-frames-parameters
  '((right-divider-width . 1)
    (internal-border-width . 1)))
 #+end_src
+
 *** Line Numbers and Highlighting
+
 #+begin_src emacs-lisp
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
 (setq display-line-numbers-type 'relative)
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 #+end_src
+
 *** Rainbow Delimiters
+
 #+begin_src emacs-lisp
 (setq rainbow-delimiters-max-face-count 3)
 #+end_src
+
 *** Special Punctuation Faces
+
 #+begin_src emacs-lisp
 (defface heavy-punctuation-face '((t (:foreground "#00d100")))
   "Face for extra emphasis on a customizable list of symbols.")
@@ -49,18 +60,24 @@
         web-mode
         gfm-mode))
 #+end_src
+
 ** Behavior
 *** Trash
+
 #+begin_src emacs-lisp
 (setq delete-by-moving-to-trash t
       trash-directory "~/.local/share/Trash/files")
 #+end_src
+
 *** Printing
+
 #+begin_src emacs-lisp
 (setq printer-name "hp-neverstop")
 #+end_src
+
 *** Character Deletion
 + Prevent text deleted with =x= from entering kill ring
+
 #+begin_src emacs-lisp
 (defadvice! djs-evil-delete-char-default-to-black-hole-a (fn beg end &optional type register)
   "Advise `evil-delete-char' to set default REGISTER to the black hole register."
@@ -68,36 +85,50 @@
   (unless register (setq register ?_))
   (funcall fn beg end type register))
 #+end_src
+
 *** Word Wrap and Visual Mode
+
 #+begin_src emacs-lisp
 (+global-word-wrap-mode)
 #+end_src
+
+
 #+begin_src emacs-lisp
 (after! evil
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (setq evil-snipe-spillover-scope 'visible))
 #+end_src
+
 *** evil-escape
+
 #+begin_src emacs-lisp
 (evil-escape-mode)
 #+end_src
+
 *** Scratch Buffer
+
 #+begin_src emacs-lisp
 (setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
 #+end_src
+
 *** New Windows
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
   #+end_src
+
 + Prompt for a buffer when creating a new window
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (defadvice! prompt-for-buffer (&rest _)
   :after '(evil-window-split evil-window-vsplit)
   (consult-buffer))
   #+end_src
+
 *** which-key
+
 #+begin_src emacs-lisp
 (setq which-key-idle-delay .5
       which-key-allow-imprecise-window-fit nil)
@@ -108,7 +139,9 @@
    '(("" . "\\`+?evil[-:]?\\(?:a-\\)?\\(.*\\)") . (nil . " \\1"))
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . " \\1"))))
 #+end_src
+
 *** Marginalia
+
 #+begin_src emacs-lisp
 (after! marginalia
   (setq marginalia-censor-variables nil)
@@ -141,7 +174,9 @@
                     (doom-blend 'red 'orange (- size-index 1)))))
       (propertize (file-size-human-readable size) 'face (list :foreground color)))))
 #+end_src
+
 *** Keybinds
+
 #+begin_src emacs-lisp
 ;; TODO combine map! calls
 (map! :leader
@@ -202,7 +237,9 @@
 (map! :map evil-normal-state-map "C-S-f" #'+default/search-buffer)
 (map! :g "C-s" #'save-buffer)
 #+end_src
+
 *** Auth
+
 #+begin_src emacs-lisp
 (setq auth-sources '("~/.authinfo.gpg"))
 (defun my/lookup-password (&rest keys)
@@ -212,7 +249,9 @@
         (funcall (plist-get (car result) :secret))
         nil)))
 #+end_src
+
 *** Lookup Providers
+
 #+begin_src emacs-lisp
 (setq +lookup-provider-url-alist
       '(("Doom Emacs issues" "https://github.com/hlissner/doom-emacs/issues?q=is%%3Aissue+%s")
@@ -224,14 +263,18 @@
         ("Arch Wiki"         "https://wiki.archlinux.org/index.php?search=%s&title=Special%3ASearch&wprov=acrw1")
         ("AUR"               "https://aur.archlinux.org/packages?O=0&K=%s")))
 #+end_src
+
 *** Smartparens
+
 #+begin_src emacs-lisp
 (after! smartparens
   (sp-local-pair 'org-mode "~" "~")
   (sp-local-pair 'org-mode "=" "="))
 #+end_src
+
 ** Helper Functions
 *** Kill Buffer and Close Window
+
 #+begin_src emacs-lisp
 (defun djs-kill-buffer-and-close-window ()
   "Kill the current buffer and close the window"
@@ -239,7 +282,9 @@
   (kill-current-buffer)
   (+workspace/close-window-or-workspace))
 #+end_src
+
 *** Insert File Contents as String
+
 #+begin_src emacs-lisp
 (defun file-to-string (file)
   "File to string function"
@@ -247,7 +292,9 @@
     (insert-file-contents file)
     (buffer-string)))
 #+end_src
+
 *** Flush lines
+
 #+begin_src emacs-lisp
 (defun remove-empty-lines ()
   "Remove all empty lines in the current buffer"
@@ -258,17 +305,21 @@
       (org-show-all)) ; fully expand headings in org-mode buffers
     (flush-lines "^$")))
 #+end_src
+
 *** Orderless find any file
 + Prompt for directory
- #+begin_src emacs-lisp
+ 
+#+begin_src emacs-lisp
 (defun my/consult-fd-choose-directory ()
   "Call `+vertico/consult-fd` with a universal prefix argument"
   (interactive)
   (let ((current-prefix-arg '(4))) ; Set the universal prefix argument
     (call-interactively '+vertico/consult-fd)))
 #+end_src
+
 + Search from root directory
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (defun my/+vertico-consult-fd ()
   "Call `+vertico/consult-fd`from / directory.
 If called with a universal argument choose a instead."
@@ -277,15 +328,19 @@ If called with a universal argument choose a instead."
       (my/consult-fd-choose-directory)
     (+vertico/consult-fd "~/")))
   #+end_src
+
 * Modules
 ** app
 *** everywhere
+
 #+begin_src emacs-lisp
 (after! emacs-everywhere
   (setq emacs-everywhere-major-mode-function #'org-mode))
 #+end_src
+
 ** Completion
 *** company
+
 #+begin_src emacs-lisp
 (after! company
   (setq company-idle-delay              nil
@@ -318,7 +373,9 @@ Enable or disable `company-mode' accordingly."
         :g "<tab>" nil
         :g "TAB" nil))
 #+end_src
+
 *** copilot
+
 #+begin_src emacs-lisp
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
@@ -330,25 +387,33 @@ Enable or disable `company-mode' accordingly."
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
+
 *** vertico/consult
 + TODO Figure out why ~~+vertico-consult-fd-args~ seem not to affect ~+vertico/consult-fd~ results, and I have to resort to changing ~consult-find-args~ to achieve the desired result instead. Am I even using ~fd~ anymore?
+
 #+begin_src emacs-lisp
 (setq consult-find-args  "find .")
 #+end_src
+
 ** Checkers
 *** spell
+
 #+begin_src emacs-lisp
 ;; TODO figure out what's causing some words to highlight even when spelled correctly
 (after! flyspell
   (setq flyspell-duplicate-distance 0))
 #+end_src
+
 ** Emacs
 ** dired/dirvish
 Prevent hordes of dired buffers from piling up over time
+
 #+begin_src emacs-lisp
 (after! dired
   (setq dired-kill-when-opening-new-dired-buffer t))
 #+end_src
+
+
 #+begin_src emacs-lisp
 ;; TODO Look into enabling dirvish through Doom's modules
 (dirvish-override-dired-mode)
@@ -374,15 +439,19 @@ Prevent hordes of dired buffers from piling up over time
         dirvish-default-layout '(0 0.20 0.67 )
         dired-listing-switches "-ahl -v --group-directories-first"))
 #+end_src
+
 ** Tools
 *** lsp
 + Disable auto formatting with lsp to prevent interference with tools like prettier
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
   (after! lsp-mode
     (setq +format-with-lsp nil))
   #+end_src
+
 + Make sure certain language servers are always available
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! lsp-mode
   (lsp-ensure-server 'ts-ls)
   (lsp-ensure-server 'bash-ls)
@@ -397,20 +466,26 @@ Prevent hordes of dired buffers from piling up over time
   (lsp-ensure-server 'tailwindcss)
   (lsp-ensure-server 'lua-language-server))
   #+end_src
+
 + Enable linting for tailwindcss
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (use-package! lsp-tailwindcss
   :defer t
   :init
   (setq lsp-tailwindcss-add-on-mode t))
   #+end_src
+
 + Match major modes to file extensions
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (with-eval-after-load 'lsp-mode (add-to-list 'lsp-language-id-configuration
                                              '(web-mode . "scss"))
                       (add-to-list 'lsp-disabled-clients 'flow-ls))
 #+end_src
+
 *** biblio (citar)
+
 #+begin_src emacs-lisp
 (after! citar
   (setq citar-bibliography '("~/Sync/Refs/My Library.bib")
@@ -428,8 +503,10 @@ Prevent hordes of dired buffers from piling up over time
                            (preview . "${author editor} (${year issued date}) ${title}, ${journal journaltitle publisher container-title collection-title}.\n")
                            (note . "${author} - ${title}"))))
 #+end_src
+
 *** rgb
 + Prevent ordinary words (e.g "red", "blue", etc.) from highlight in rainbow mode
+
 #+begin_src emacs-lisp
 (add-hook 'rainbow-mode-hook
           (defun rainbow-turn-off-words ()
@@ -443,13 +520,17 @@ Prevent hordes of dired buffers from piling up over time
                ,@rainbow-html-colors-font-lock-keywords
                ,@rainbow-html-rgb-colors-font-lock-keywords))))
 #+end_src
+
 *** tree-sitter
 + Whitelist all modes for ~tree-sitter-hl-mode~
+
 #+begin_src emacs-lisp
 (after! tree-sitter
   (setq +tree-sitter-hl-enabled-modes t))
 #+end_src
+
 + User ~rjsx~ indentation for typescript files (source [[https://merrick.luois.me/posts/better-tsx-support-in-doom-emacs][Merrick Luo's Blog]])
+
 #+begin_src emacs-lisp
 (after! typescript
   (setq typescript-indent-level 2))
@@ -477,8 +558,10 @@ Prevent hordes of dired buffers from piling up over time
            '((prettier closure (t) nil "typescript"))
            format-all--mode-table))
 #+end_src
+
 ** UI
 *** doom-dashboard
+
 #+begin_src emacs-lisp
 (defadvice! close-doom-windows-after-gptel (&rest /)
   :after #'gptel
@@ -519,11 +602,13 @@ Prevent hordes of dired buffers from piling up over time
       'face 'doom-dashboard-loaded)
      "\n"))
 #+end_src
+
 *** hl-todo
 :PROPERTIES:
 :ID:       e52972ac-f793-453d-84ff-191b06cdf813
 :END:
 + Set some preferred colors for highlighting todo items
+
 #+begin_src emacs-lisp
 (after! hl-todo
   (setq  hl-todo-keyword-faces
@@ -542,19 +627,25 @@ Prevent hordes of dired buffers from piling up over time
           ("REVIEW" . "#6ae4b9")
           ("DEPRECATED" . "#bfd9ff"))))
 #+end_src
+
 *** nav-flash
+
 #+begin_src emacs-lisp
 (add-hook! 'evil-jumps-post-jump-hook #'+nav-flash-blink-cursor-maybe-h)
 #+end_src
+
 *** popup
 + Keep certain windows hanging around longer than Doom's defaults
+
 #+begin_src emacs-lisp
 (set-popup-rules!
   '(("^\\*info\\*"                   :ignore t)
     ("^\\*format-all-errors\\*"      :select t)
     ("^\\*Man"                       :ignore t)))
 #+end_src
+
 *** tabs
+
 #+begin_src emacs-lisp
 (after! centaur-tabs
   (centaur-tabs-group-by-projectile-project)
@@ -576,14 +667,18 @@ Prevent hordes of dired buffers from piling up over time
            #'centaur-tabs-local-mode)
 (add-hook! 'doom-after-init-hook #'centaur-tabs-mode)
 #+end_src
+
 *** treemacs
 + TODO Find out why I can't get treemacs files in fixed-pitch
+
 #+begin_src emacs-lisp
 (setq doom-themes-treemacs-theme        'doom-colors
       +treemacs-git-mode                'extended
       doom-themes-treemacs-enable-variable-pitch nil)
 #+end_src
+
 + Sensibly launch treemacs in ~peek-mode~
+
 #+begin_src emacs-lisp
 (defun djs-treemacs-peek-mode ()
   "Custom function to launch treemacs for the current file in peek-mode"
@@ -593,7 +688,9 @@ Prevent hordes of dired buffers from piling up over time
   (treemacs-peek-mode)
   (treemacs-fit-window-width))
 #+end_src
+
 + Clone toggle function to launch in ~peek-mode~
+
 #+begin_src emacs-lisp
 (defun djs-treemacs/toggle ()
   "Initialize or toggle treemacs in peek mode."
@@ -605,20 +702,26 @@ Prevent hordes of dired buffers from piling up over time
            (djs-treemacs-peek-mode)
          (treemacs)))))
 #+end_src
+
 *** Workspaces
+
 #+begin_src emacs-lisp
 ;; (after! persp-mode
 ;;   (setq persp-emacsclient-init-frame-behaviour-override "main"))
 #+end_src
+
 ** Editor
 *** Format
+
 #+begin_src emacs-lisp
 (setq +format-on-save-enabled-modes
   (append +format-on-save-enabled-modes '(org-mode)))
 #+end_src
+
 * Lang
 ** web
 + Set the file extensions to open in ~web-mode~
+
 #+begin_src emacs-lisp
 (add-hook! 'web-mode-hook
            #'rainbow-delimiters-mode-enable)
@@ -627,13 +730,17 @@ Prevent hordes of dired buffers from piling up over time
 (add-to-list 'auto-mode-alist '("\\.scss$" . web-mode))
   (setq web-mode-skip-fontification 't)
 #+end_src
+
 ** lua
 + Enable rainbow delimiters mode (not sure why this isn't default)
+
 #+begin_src emacs-lisp
 (add-hook! 'lua-mode-hook
            #'rainbow-delimiters-mode-enable)
 #+end_src
+
 ** typescript
+
 #+begin_src emacs-lisp
 (add-hook! '(typescript-mode-hook
              typescript-tsx-mode-hook
@@ -645,11 +752,13 @@ Prevent hordes of dired buffers from piling up over time
       :nvi "<" #'rjsx-electric-lt
       :nvi ">" #'rjsx-electric-gt)
 #+end_src
+
 * Org
 ** org-mode
 *** Paths and Default Settings
 + Set default paths and customize ~org-mode-hook~
 + Enable ~auto-revert-mode~ for org buffers to facilitate syncthing more conveniently
+
 #+begin_src emacs-lisp
 (after! org
   (setq
@@ -658,7 +767,7 @@ Prevent hordes of dired buffers from piling up over time
    +org-capture-emails-file "todo.org"
    ;; workaround to get diary date formats into cfw-cal
    diary-file "~/Sync/projects/org/calendars/birthdays-anniversaries.org"
-   org-startup-indented nil
+   ;; org-startup-indented nil
    org-hide-emphasis-markers t
    org-startup-folded 'show2levels
    org-ellipsis " ↘"
@@ -668,8 +777,10 @@ Prevent hordes of dired buffers from piling up over time
 (add-hook! 'org-mode-hook #'auto-revert-mode)
 ;; (add-hook! 'org-mode-hook #'mixed-pitch-mode)
 #+end_src
+
 *** 'TODO' Behavior
 + Automatically complete a parent todo when all subentries are completed.
+
 #+begin_src emacs-lisp
 (after! org
   (defun org-summary-todo (n-done n-not-done)
@@ -678,8 +789,10 @@ Prevent hordes of dired buffers from piling up over time
       (org-todo (if (= n-not-done 0) "DONE" "[ ]"))))
   (add-hook 'org-after-todo-statistics-hook #'org-summary-todo))
 #+end_src
+
 + Let us mark items as done, prompting for the completion date [[https://emacs.stackexchange.com/questions/9433/how-to-make-org-prompt-for-a-timestamp-when-changing-state-of-a-todo/9451#9451][(credit this Stack Overflow post)]]
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! org
   (defun org-todo-with-date (&optional arg)
     "Set completetion state and prompt for date completed"
@@ -700,7 +813,9 @@ Prevent hordes of dired buffers from piling up over time
                 #'(lambda () my-current-time)))
       (org-agenda-todo arg))))
   #+end_src
+
 + Let us refile only a region within a tree (credit this [[https://stackoverflow.com/questions/25256304/in-emacs-org-mode-how-to-refile-highlighted-text-under-an-org-heading][Stack Overflow]] post)
+
 #+begin_src emacs-lisp
 (after! org
   (defvar org-refile-region-format "\n%s\n")
@@ -736,11 +851,19 @@ With prefix arg C-u, copy region instad of killing it."
             (org-end-of-meta-data))
           (insert (format org-refile-region-format text)))))))
 #+end_src
+
 *** org-modern
+
 #+begin_src emacs-lisp
   (global-org-modern-mode)
   (after! org-modern
     (setq
+     org-modern-hide-stars nil
+     org-modern-table nil
+     org-modern-list
+     '(;; (?- . "-")
+       (?* . "•")
+       (?+ . "‣"))
      org-modern-checkbox '((?\s . "TODO"))
      org-modern-todo-faces '(("TODO" :foreground "#fdb900")
                              ("PROG" :foreground "#93e079")
@@ -761,12 +884,16 @@ With prefix arg C-u, copy region instad of killing it."
     ;; (add-hook! 'doom-load-theme-hook #'my/org-modern-set-star-based-on-theme)
     (add-hook! 'org-modern-mode-hook #'hl-todo-mode))
 #+end_src
+
 *** fancy-priorities
+
 #+begin_src emacs-lisp
 (after! org-fancy-priorities
   (setq org-fancy-priorities-list '( "⚠" "‼" "❗" )))
 #+end_src
+
 *** Custom todo-keywords
+
 #+begin_src emacs-lisp
 (after! org
   (setq org-todo-keywords
@@ -787,8 +914,10 @@ With prefix arg C-u, copy region instad of killing it."
                     "|"
                     "DONE(d)"))))
 #+end_src
+
 *** Capture
 **** Templates
+
 #+begin_src emacs-lisp
 (after! org
   (defun my/format-org-capture-link ()
@@ -872,9 +1001,11 @@ With prefix arg C-u, copy region instad of killing it."
       :prepend nil
       :kill-buffer t))))
 #+end_src
+
 **** Email
 + Clone ~+mu4e/capture-msg-to-agenda~ to modify the timestamp behavior and default heading
 + TODO fix universal argument for deadline
+
 #+begin_src emacs-lisp
 (defun djs-capture-msg-to-agenda (arg)
   "Refile a message and add a entry in `+org-capture-emails-file' with no deadline. With one prefix, deadline
@@ -932,9 +1063,11 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
   (with-current-buffer "todo.org"
         (save-buffer)))
 #+end_src
+
 *** Archiving
 + Create a function to archive all completed tasks in a file (from [[https://stackoverflow.com/a/27043756][this]] stack overflow post)
 + TODO find out how to recreate subtree in lambda expression so as not to rely on :ARCHIVE: property
+
 #+begin_src emacs-lisp
 (after! org
   (defun org-archive-done-tasks ()
@@ -946,10 +1079,12 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
        (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
      "/DONE" 'file)))
 #+end_src
+
 #+RESULTS:
 : org-archive-done-tasks
 *** On-save
 + When I save an org file, reload the agenda if it's open
+
 #+begin_src emacs-lisp
 (after! org (defun my/reload-agenda-if-open ()
               "Reload the org agenda if the buffer exists"
@@ -963,8 +1098,10 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
   (add-hook 'after-save-hook #'my/reload-agenda-on-save-org-file)
   (add-hook 'after-revert-hook #'my/reload-agenda-if-open))
 #+end_src
+
 ** org-roam
 *** Paths and Default Settings
+
 #+begin_src emacs-lisp
 (after! org-roam
   (setq +org-roam-auto-backlinks-buffer t
@@ -972,8 +1109,10 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
         org-roam-db-location (concat org-roam-directory ".org-roam.db")
         org-roam-dailies-directory "journal/"))
 #+end_src
+
 *** Capture
 + TODO defun to grab annotation and format
+
 #+begin_src emacs-lisp
 (after! org-roam
   (setq org-roam-capture-templates
@@ -1017,16 +1156,20 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
            :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%A %B %d, %Y>\n#+filetags: :daily:workout:")
            :kill-buffer t))))
 #+end_src
+
 ** org-agenda
 *** Customize Appearance
+
 #+begin_src emacs-lisp
 ;; (add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
 #+end_src
+
 *** Set Agenda Files
 + Grab the most recent ~org-roam~ daily and set the list of agenda files
 + TODO find a cleaner way to set org-agenda-files
 + TODO find a way to populate ~roam-extra:todo-files~ with SQL
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! org-agenda
   ;; Currently deprecated in favor of roam-extra:todo-files
   ;; (defun djs-get-most-recent-daily-node ()
@@ -1053,9 +1196,11 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
           (append org-agenda-files (roam-extra:todo-files))))
   (add-hook! 'org-agenda-mode-hook #'djs-org-agenda-files))
   #+end_src
+
 + Add any org-roam dailies with open TODOs to the agenda ([[https://magnus.therning.org/tag-org-roam.html][Souce: Magnus Therning's blog]])
 + TODO Ask Magnus for an easier way to sort for multiple tags
-    #+begin_src emacs-lisp
+    
+#+begin_src emacs-lisp
 (after! org-roam
   (defun roam-extra:get-filetags ()
     (split-string (or (org-roam-get-keyword "filetags") "")))
@@ -1104,19 +1249,23 @@ tasks."
   (add-hook! 'find-file-hook #'roam-extra:update-todo-tag)
   (add-hook! 'before-save-hook #'roam-extra:update-todo-tag))
     #+end_src
+
 *** Generate Custom Agenda
 + Set default agenda windows
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! org-agenda
   (setq org-agenda-start-day "+0d"
         org-agenda-span 7
         org-agenda-breadcrumbs-separator " ❱ "
         org-agenda-block-separator nil))
   #+end_src
+
 + Create a block agenda with the following sections:
   1) Daily overview that includes all scheduled items
   2) A weekly outlook that shows all scheduled items except those we want hidden via a ~:hide:~ tag (this relies on helper functions defined below)
   3) Additional sections for ~org-roam~ dailies, emails, my "main" todo items, and todo items from ~org-roam~ literature notes. This schema relies on having already declared my ~org-agenda-files~ and strategically tagging the headlines within.
+
 #+begin_src emacs-lisp
 (after! org-agenda
   (setq org-agenda-custom-commands
@@ -1151,9 +1300,11 @@ tasks."
 ;; Hide noisy tag labels in agenda
 (setq org-agenda-hide-tags-regexp "main\\|chore\\|hide\\|shopping\\|daily\\|calendars\\|email\\|daily\\|attach\\|literature\\|todo\\|phone\\|nowarn")
 #+end_src
+
 *** Agenda Helper Functions
 + Functions relied on by ~org-agenda-skip-function~
 + TODO find original source and cite
+
 #+begin_src emacs-lisp
 (after! org-agenda
   (defun my/org-match-at-point-p (match)
@@ -1178,26 +1329,34 @@ skip exactly those headlines that do not match."
                              (or (outline-next-heading) (point-max)))))
         (if (my/org-match-at-point-p match) nil next-headline)))))
 #+end_src
+
 + Function to launch the custom agenda
+
 #+begin_src emacs-lisp
 (defun org-launch-custom-agenda ()
   "Launch the org agenda using the custom command supplied"
   (interactive)
   (org-agenda nil "j"))
 #+end_src
+
 *** Auto Save Org Buffers
 I want to auto save all org buffers every time I load my agenda, so that refreshing the agenda effectively applies any changes I make using the agenda
+
 #+begin_src emacs-lisp
 (add-hook! 'org-agenda-mode-hook #'org-save-all-org-buffers)
 #+end_src
+
 ** exports
 * Email (mu4e)
 ** Load Path
 + Make sure we can find mu4e
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") ;; TODO check if this is really needed
   #+end_src
+
 ** Default Behavior
+
 #+begin_src emacs-lisp
 (after! mu4e
   (require 'mu4e-contrib) ;; TODO check is this is really needed
@@ -1264,10 +1423,13 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                file)))))
         (mu4e-message "No attached files found")))))
 #+end_src
+
+
 *** Do Not Flag Messages Moved to Trash Directory with =T= flag
 + [[https://groups.google.com/g/mu-discuss/c/m4ORymDlf0E][See this discussion on delete vs trash flags in mu4e]]
 + Code from [[https://github.com/djcb/mu/issues/1136#issuecomment-1066303788
 ][this Github issue]]
+
 #+begin_src emacs-lisp
 (after! mu4e
   (setf (alist-get 'trash mu4e-marks)
@@ -1281,8 +1443,10 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                       ;; IMAP-deleted:
                       (mu4e--server-move docid (mu4e--mark-check-target target) "-N")))))
 #+end_src
+
 *** Mark messages as spam and move to ~mu4e-spam-folder~
 + Adapted from [[https://gist.github.com/Mic92/d455715242c8909cc8302aadd4745fcf][Mic92's Github gist]]
+
 #+begin_src emacs-lisp
 (after! mu4e
   (add-to-list 'mu4e-marks
@@ -1311,8 +1475,10 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                  (t (mu4e-error "Unsupported type for %S" folder)))))
           (or val (mu4e-error "%S evaluates to nil" foldervar))))))
 #+end_src
+
 ** Composing
 + I don't know what this didn't work with a normal ~setq~ in and ~after!~ block so we added a hook. For some reason no messages I replied to were sending as html which was messing everything up in my ~mu4e~ config.
+
 #+begin_src emacs-lisp
 (after! org-msg
   (defun my/org-msg-set-default-alternatives ()
@@ -1322,9 +1488,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                          (reply-to-html . (utf-8 html)))))
   (add-hook! 'org-msg-mode-hook #'my/org-msg-set-default-alternatives))
 #+end_src
+
 ** Colorization
 + Reduce html coloring in messages for improved readability
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! mu4e
   (setq mu4e-html2text-command 'mu4e-shr2text
         shr-color-visible-luminance-min 60
@@ -1332,7 +1500,9 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
         shr-use-colors nil)
 (advice-add #'shr-colorize-region :around (defun shr-no-colourise-region (&rest ignore))))
   #+end_src
+
 + Colorize account stripe per context
+
 #+begin_src emacs-lisp
 (after! mu4e
   (defface mu4e-personal-mail-face '((t (:foreground "#dcdcaa")))
@@ -1346,9 +1516,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                   ("personal" . mu4e-personal-mail-face)
                                   ("old" . mu4e-old-mail-face))))
 #+end_src
+
 ** Bookmarks
 + Set our custom search queries for mu4e's homepage
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! mu4e
   (setq mu4e-bookmarks
         '((:name "📧 All Mail"
@@ -1374,9 +1546,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
            :hide-unread t
            :key 116))))
   #+end_src
+
 ** Contexts
 + Create a context for each mail account
 + TODO consider offloading this configuration to a separate file
+
 #+begin_src emacs-lisp
 (after! mu4e
   (setq mu4e-contexts
@@ -1447,7 +1621,9 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
                   )))))
 #+end_src
+
 ** Dashboard
+
 #+begin_src emacs-lisp
 (defadvice! my/mu4e--main-redraw ()
   "customize the mu4e main menu"
@@ -1569,9 +1745,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
    ;; only items which have a single-character :key
    (mu4e-filter-single-key (mu4e-query-items item-type)) ""))
 #+end_src
+
 * Other packages
 ** cfw:calendar
 *** Default Calendar Behavior
+
 #+begin_src emacs-lisp
 (after! cfw:calendar
   ;; Show only desired holidays
@@ -1580,7 +1758,9 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                 holiday-hebrew-holidays
                 holiday-solar-holidays)))
 #+end_src
+
 *** Create a Custom Calendar
+
 #+begin_src emacs-lisp
 (defun djs-my-personal-calendar ()
   (interactive)
@@ -1599,10 +1779,12 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
     (cfw:ical-create-source "Astro" "~/.doom.d/lunar-phases.ics" "#a9a5aa")
     (cfw:ical-create-source "PGA" "~/.doom.d/pga-tour.ics" "#569cd6"))))
 #+end_src
+
 #+RESULTS:
 : djs-my-personal-calendar
 *** Helper Functions
 + To properly color code the calendar I created this modified version of ~cfw:org-create-file-source~ to allow for easy selection of foreground and background colors for events
+
 #+begin_src emacs-lisp
 (defun djs-cfw:org-create-file-source (name file color bgcolor)
   "Create org-element based source with cusomg bg-color "
@@ -1614,8 +1796,10 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
      :data (lambda (begin end)
              (cfw:org-to-calendar file begin end)))))
 #+end_src
+
 ** Info-mode
 + Prefer variable pitch for reading in ~Info-mode~ and fix an annoying little feature where previous nodes would restore my cursor to the bottom of the page when navigating.
+
 #+begin_src emacs-lisp
 (add-hook! 'Info-mode-hook #'variable-pitch-mode)
 (defadvice! djs-Info-goto-top-of-node ()
@@ -1625,16 +1809,20 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   :after #'Info-history-back
   (goto-char (point-min)))
 #+end_src
+
 ** command-log-mode
 + Here I just add some defaults to enable ~command-log-mode~ for all buffers when activated, and to automatically show the log window whenever I activate the mode
-  #+begin_src emacs-lisp
+  
+#+begin_src emacs-lisp
 (after! command-log-mode
   (setq command-log-mode-is-global t
         command-log-mode-open-log-turns-on-mode t
         command-log-mode-auto-show t
         command-log-mode-window-font-size 1))
   #+end_src
+
 ** chatgpt
+
 #+begin_src emacs-lisp
 (after! gptel
   (setq gptel-api-key (my/lookup-password :host "openai.com")
@@ -1656,8 +1844,10 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ;;     (my/use-gpt-4-macro)
 ;;     ))
 #+end_src
+
 ** company-box
 + Make some sweet tweaks to match doom defaults (credit [[https://github.com/TheBB/dotemacs/blob/master/init.el#L527-L570][TheBB's config]])
+
 #+begin_src emacs-lisp
 (require 'company-box)
 (add-hook 'company-mode-hook 'company-box-mode)
@@ -1697,7 +1887,9 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
     (setcdr elt (concat (cdr elt) " ")))
   )
 #+end_src
+
 ** indent-bars
+
 #+begin_src emacs-lisp
 (add-hook! '(typescript-tsx-tree-sitter-mode-local-vars-hook
              rjsx-mode-hook)
@@ -1715,4 +1907,12 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   (setq indent-bars-color-by-depth nil
         indent-bars-highlight-current-depth '(:color "#606060")
         indent-bars-color '( "#272727" )))
+#+end_src
+
+** org-modern-indent
+
+#+begin_src emacs-lisp
+(add-hook! 'org-mode-hook #'org-modern-indent-mode 90)
+;; FIXME still have bracket spacing issues
+(set-face-attribute 'fixed-pitch nil :family "Berkeley Mono" :height 1.0) ; or whatever font family
 #+end_src
