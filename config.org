@@ -184,6 +184,7 @@
       :desc "Kill buffer"        "\\"           #'kill-current-buffer
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Rename file" "R"                   #'doom/move-this-file
+      :desc "Consult jump project" ","                   #'consult-jump-project
       (:prefix ("t" . "toggle")
        :desc "Comapany Mode"        "p"      #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
@@ -390,9 +391,16 @@ Enable or disable `company-mode' accordingly."
 
 *** vertico/consult
 + TODO Figure out why ~~+vertico-consult-fd-args~ seem not to affect ~+vertico/consult-fd~ results, and I have to resort to changing ~consult-find-args~ to achieve the desired result instead. Am I even using ~fd~ anymore?
-
 #+begin_src emacs-lisp
 (setq consult-find-args  "find .")
+#+end_src
+
++ Remove consult buffer and file selections that I'd rather find by other means like iBuffer or ~consult-recent-file~
+#+begin_src emacs-lisp
+(after! consult
+  (setq consult-buffer-filter '("\\*")
+        ;; consult-project-buffer-sources '(consult--source-project-buffer)
+        ))
 #+end_src
 
 ** Checkers
@@ -858,12 +866,6 @@ With prefix arg C-u, copy region instad of killing it."
   (global-org-modern-mode)
   (after! org-modern
     (setq
-     org-modern-hide-stars nil
-     org-modern-table nil
-     org-modern-list
-     '(;; (?- . "-")
-       (?* . "•")
-       (?+ . "‣"))
      org-modern-checkbox '((?\s . "TODO"))
      org-modern-todo-faces '(("TODO" :foreground "#fdb900")
                              ("PROG" :foreground "#93e079")
@@ -1914,4 +1916,15 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (add-hook! 'org-mode-hook #'org-modern-indent-mode)
 ;; FIXME still have bracket spacing issues
 (set-face-attribute 'fixed-pitch nil :family "Berkeley Mono" :height 1.0) ; or whatever font family
+#+end_src
+
+** mlscroll
+
+#+begin_src emacs-lisp
+(use-package mlscroll
+  :ensure t
+  :config
+  (setq mlscroll-in-color "#c16b6b"
+        mlscroll-out-color "#131313")
+  (mlscroll-mode 1))
 #+end_src
