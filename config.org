@@ -37,6 +37,23 @@
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 #+end_src
 
+**** Line Numbers and indent-bars
+
+#+begin_src emacs-lisp
+(defun my/toggle-indent-bars-and-line-numbers ()
+  "Toggle indent bars and line numbers."
+  (interactive)
+  (if (not (bound-and-true-p display-line-numbers-mode))
+      (progn
+        (display-line-numbers-mode 1)
+        (setq display-line-numbers 'relative))
+    (display-line-numbers-mode -1))
+  (if (not (bound-and-true-p indent-bars-mode))
+      (indent-bars-mode 1)
+    (indent-bars-mode -1)))
+
+#+end_src
+
 *** Rainbow Delimiters
 
 #+begin_src emacs-lisp
@@ -59,6 +76,26 @@
         typescript-mode
         web-mode
         gfm-mode))
+#+end_src
+
+*** column-fill
+
+#+begin_src emacs-lisp
+(defun my/toggle-visual-fill-column-mode ()
+  "Toggle column fill mode and center text."
+  (interactive)
+  (if (bound-and-true-p visual-fill-column-mode)
+      (progn
+        (visual-fill-column-mode -1))
+    (progn
+      (visual-fill-column-mode)
+      (setq visual-fill-column-center-text t))))
+
+(add-hook! '(org-mode-hook
+             typescript-tsx-tree-sitter-mode-local-vars-hook
+             rjsx-mode-hook
+             emacs-lisp-mode-hook)
+           #'my/toggle-visual-fill-column-mode)
 #+end_src
 
 ** Behavior
@@ -184,13 +221,15 @@
       :desc "Kill buffer"        "\\"           #'kill-current-buffer
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Rename file" "R"                   #'doom/move-this-file
-      :desc "Consult jump project" ","                   #'consult-jump-project
+      :desc "Consult jump project" ","          #'consult-jump-project
       (:prefix ("t" . "toggle")
-       :desc "Comapany Mode"        "p"      #'my/toggle-company-idle-delay
+       :desc "Comapany Mode"        "p"         #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
        :desc "Rainbow mode"          "R"        #'rainbow-mode
-       :desc "Indent bars"          "i"        #'indent-bars-mode
-       :desc "Writegood mode"          "G"      #'writegood-mode)
+       :desc "Indent bars"          "i"         #'indent-bars-mode
+       :desc "Writegood mode"          "G"      #'writegood-mode
+       :desc "visual fill colunmn mode"     "f" #'my/toggle-visual-fill-column-mode
+       :desc "line numbers and indent bars" "L" #'my/toggle-indent-bars-and-line-numbers)
       (:prefix ("o" . "open")
        :desc "Org Agenda"         "j"           #'org-launch-custom-agenda
        :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
