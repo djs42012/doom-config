@@ -714,8 +714,8 @@ Prevent hordes of dired buffers from piling up over time
 *** Workspaces
 
 #+begin_src emacs-lisp
-;; (after! persp-mode
-;;   (setq persp-emacsclient-init-frame-behaviour-override "main"))
+(after! persp-mode
+  (setq persp-emacsclient-init-frame-behaviour-override -1))
 #+end_src
 
 ** Editor
