@@ -212,11 +212,6 @@
       :n "C-/" #'evil-ex-search-forward
       ;; TODO rebind to "S"
       :n "C-s" #'mu4e-headers-mark-for-spam)
-(map! :map #'mu4e-view-mode-map
-      :g "p" #'my/mu4e-view-save-attachments
-      :n "C-=" #'text-scale-increase
-      :n "C--" #'text-scale-decrease
-      :n "C-_" #'mu4e-headers-split-view-shrink)
 (map! :map #'org-agenda-mode-map
       :g "C-=" #'text-scale-increase
       :g "C--" #'text-scale-decrease)
@@ -1358,6 +1353,16 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   #+end_src
 
 ** Default Behavior
+
+#+begin_src emacs-lisp
+(with-eval-after-load 'mu4e
+  (map! :map #'mu4e-view-mode-map
+        :g "p" #'my/mu4e-view-save-attachments
+        :n "C-=" #'text-scale-increase
+        :n "C--" #'text-scale-decrease
+        :n "C-_" #'mu4e-headers-split-view-shrink))
+#+end_src
+
 
 #+begin_src emacs-lisp
 (after! mu4e
