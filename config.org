@@ -409,6 +409,20 @@ Enable or disable `company-mode' accordingly."
         :g "TAB" nil))
 #+end_src
 
+#+begin_src emacs-lisp
+;; TODO figure out how to get this working in a hook
+(defun my/set-company-js-backends ()
+  (interactive)
+  (setq-local company-backends
+              '((:separate company-capf company-files ))))
+
+;; (add-hook! '(rjsx-mode-hook
+;;              typescript-mode-hook
+;;              typescript-tsx-mode-hook
+;;              typescript-tsx-tree-sitter-mode-local-vars-hook)
+;;            #'my/set-company-js-backends)
+#+end_src
+
 *** copilot
 
 #+begin_src emacs-lisp
