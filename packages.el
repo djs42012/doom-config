@@ -31,7 +31,6 @@
 (package! lsp-mode
   :recipe (:host github :repo "emacs-lsp/lsp-mode"
            :branch "master"))
-(package! company-box)
 (package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
 (package! org-modern-indent :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 (package! mlscroll)
