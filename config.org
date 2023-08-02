@@ -397,12 +397,12 @@ Enable or disable `company-mode' accordingly."
         (setq company-idle-delay nil)
         (company-mode -1)
         (message "company-mode disabled")))))
-(after! company
-  (add-hook! '(eshell-mode-hook
-               typescript-mode-hook
-               rjsx-mode-hook
-               emacs-lisp-mode-hook)
-             #'my/toggle-company-idle-delay))
+;; (after! company
+;;  (add-hook! '(eshell-mode-hook
+;;               typescript-mode-hook
+;;               rjsx-mode-hook
+;;               emacs-lisp-mode-hook)
+;;             #'my/toggle-company-idle-delay))
 (after! company
   (map! :map company-active-map
         :g "<tab>" nil
