@@ -28,14 +28,15 @@
 (package! evil-collection
   :recipe (:repo "emacs-evil/evil-collection" :branch "master"))
 (package! nano-theme :recipe (:host github :repo "rougier/nano-theme"))
-(package! lsp-mode
-  :recipe (:host github :repo "emacs-lsp/lsp-mode"
-           :branch "master"))
-(package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
+;; (package! lsp-mode
+;;   :recipe (:host github :repo "emacs-lsp/lsp-mode"
+;;            :branch "master"))
+;; (package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
 (package! org-modern-indent :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 (package! mlscroll)
 (package! consult-jump-project :recipe (:host github :repo "jdtsmith/consult-jump-project" ))
-
+(package! typescript-mode :disable t)
+(package! treesit-auto)
 ;; (package! origamie :recipe (:host github :repo "gregsexton/origami.el"))
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el"))

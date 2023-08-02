@@ -199,16 +199,16 @@ determine the exact padding."
 
    ;; indent guides
    ;; TODO Figure out why this only sometimes works
-   ;; ((highlight-indent-guides-character-face &override) :foreground red)
-   ;; (highlight-indent-guides-character-face :background bg :foreground base0)
-   ;; (highlight-indent-guides-stack-character-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-odd-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-even-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-top-odd-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-top-even-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-stack-odd-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-stack-even-face  :background bg :foreground base0)
-   ;; (highlight-indent-guides-top-character-face  :background bg :foreground base0)
+   ((highlight-indent-guides-character-face &override) :foreground red)
+   (highlight-indent-guides-character-face :background bg :foreground base0)
+   (highlight-indent-guides-stack-character-face  :background bg :foreground base0)
+   (highlight-indent-guides-odd-face  :background bg :foreground base0)
+   (highlight-indent-guides-even-face  :background bg :foreground base0)
+   (highlight-indent-guides-top-odd-face  :background bg :foreground base0)
+   (highlight-indent-guides-top-even-face  :background bg :foreground base0)
+   (highlight-indent-guides-stack-odd-face  :background bg :foreground base0)
+   (highlight-indent-guides-stack-even-face  :background bg :foreground base0)
+   (highlight-indent-guides-top-character-face  :background bg :foreground base0)
 
 
    ;; Info-mode
@@ -338,6 +338,7 @@ determine the exact padding."
    ((org-time-grid &override) :foreground fg)
    ((org-agenda-current-time &override) :foreground bright-yellow)
    ((org-verbatim &override) :foreground green :background base0)
+   ((org-code &override) :foreground bright-yellow)
 
    ;; org-modern
    (org-modern-label :inherit 'org-todo :foreground bright-yellow :weight 'bold)
@@ -397,6 +398,11 @@ determine the exact padding."
    ((tree-sitter-hl-face:tag &override) :foreground green)
    ((tree-sitter-hl-face:attribute &override) :foreground yellow :weight 'bold)
    ((tree-sitter-hl-face:number &override) :foreground bright-yellow :weight 'bold)
+   ;; ((tree-sitter-hl-face:punctuation.delimiter &override) :foreground dark-green)
+
+   ;; tsx
+   ((typescript-ts-jsx-tag-face &override) :foreground green)
+   ((typescript-ts-jsx-attribute-face &override) :foreground yellow)
 
    ((treemacs-root-face &override)  :foreground magenta :weight 'bold )
    ((treemacs-file-face &override)  :foreground fg :weight 'bold)

@@ -18,7 +18,7 @@
       doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
-      +doom-dashboard-banner-file "doom-emacs.png")
+      +doom-dashboard-banner-file "emacs.png")
 #+end_src
 
 *** Window Borders
@@ -35,23 +35,6 @@
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
 (setq display-line-numbers-type 'relative)
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
-#+end_src
-
-**** Line Numbers and indent-bars
-
-#+begin_src emacs-lisp
-(defun my/toggle-indent-bars-and-line-numbers ()
-  "Toggle indent bars and line numbers."
-  (interactive)
-  (if (not (bound-and-true-p display-line-numbers-mode))
-      (progn
-        (display-line-numbers-mode 1)
-        (setq display-line-numbers 'relative))
-    (display-line-numbers-mode -1))
-  (if (not (bound-and-true-p indent-bars-mode))
-      (indent-bars-mode 1)
-    (indent-bars-mode -1)))
-
 #+end_src
 
 *** Rainbow Delimiters
@@ -73,7 +56,8 @@
         c-mode
         lua-mode
         rjsx-mode
-        typescript-mode
+        typescript-ts-mode
+        tsx-ts-mode
         web-mode
         gfm-mode))
 #+end_src
@@ -92,8 +76,8 @@
       (setq visual-fill-column-center-text t))))
 
 (add-hook! '(org-mode-hook
-             typescript-tsx-tree-sitter-mode-local-vars-hook
              rjsx-mode-hook
+             tsx-ts-mode-hook
              emacs-lisp-mode-hook)
            #'my/toggle-visual-fill-column-mode)
 #+end_src
@@ -226,10 +210,10 @@
        :desc "Comapany Mode"        "p"         #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
        :desc "Rainbow mode"          "R"        #'rainbow-mode
-       :desc "Indent bars"          "i"         #'indent-bars-mode
        :desc "Writegood mode"          "G"      #'writegood-mode
-       :desc "visual fill colunmn mode"     "f" #'my/toggle-visual-fill-column-mode
-       :desc "line numbers and indent bars" "L" #'my/toggle-indent-bars-and-line-numbers)
+       ;; :desc "Indent bars"          "i"         #'indent-bars-mode
+       ;; :desc "line numbers and indent bars" "L" #'my/toggle-indent-bars-and-line-numbers
+       :desc "visual fill colunmn mode"     "f" #'my/toggle-visual-fill-column-mode)
       (:prefix ("o" . "open")
        :desc "Org Agenda"         "j"           #'org-launch-custom-agenda
        :desc "Command log"          "l"         #'clm/toggle-command-log-buffer
@@ -383,6 +367,13 @@ If called with a universal argument choose a instead."
         company-minimum-prefix-length   0
         company-show-quick-access       t
         company-global-modes '(eshell-mode elisp-mode))
+
+  (map! :map company-active-map
+        :g "<tab>" nil
+        :g "TAB" nil
+        :g "C-S-j" #'company-next-page
+        :g "C-S-k" #'company-previous-page)
+
   (defun my/toggle-company-idle-delay ()
     "Toggle the value of `company-idle-delay' between 0 and nil.
 Enable or disable `company-mode' accordingly."
@@ -397,30 +388,15 @@ Enable or disable `company-mode' accordingly."
         (setq company-idle-delay nil)
         (company-mode -1)
         (message "company-mode disabled")))))
-;; (after! company
-;;  (add-hook! '(eshell-mode-hook
-;;               typescript-mode-hook
-;;               rjsx-mode-hook
-;;               emacs-lisp-mode-hook)
-;;             #'my/toggle-company-idle-delay))
-(after! company
-  (map! :map company-active-map
-        :g "<tab>" nil
-        :g "TAB" nil))
 #+end_src
 
++ TODO figure out how to get this working in a hook
+
 #+begin_src emacs-lisp
-;; TODO figure out how to get this working in a hook
 (defun my/set-company-js-backends ()
   (interactive)
   (setq-local company-backends
               '((:separate company-capf company-files ))))
-
-;; (add-hook! '(rjsx-mode-hook
-;;              typescript-mode-hook
-;;              typescript-tsx-mode-hook
-;;              typescript-tsx-tree-sitter-mode-local-vars-hook)
-;;            #'my/set-company-js-backends)
 #+end_src
 
 *** copilot
@@ -439,11 +415,13 @@ Enable or disable `company-mode' accordingly."
 
 *** vertico/consult
 + TODO Figure out why ~~+vertico-consult-fd-args~ seem not to affect ~+vertico/consult-fd~ results, and I have to resort to changing ~consult-find-args~ to achieve the desired result instead. Am I even using ~fd~ anymore?
+
 #+begin_src emacs-lisp
 (setq consult-find-args  "find .")
 #+end_src
 
 + Remove consult buffer and file selections that I'd rather find by other means like iBuffer or ~consult-recent-file~
+
 #+begin_src emacs-lisp
 (after! consult
   (setq consult-buffer-filter '("\\*")
@@ -461,7 +439,7 @@ Enable or disable `company-mode' accordingly."
 #+end_src
 
 ** Emacs
-** dired/dirvish
+*** dired/dirvish
 Prevent hordes of dired buffers from piling up over time
 
 #+begin_src emacs-lisp
@@ -574,31 +552,67 @@ Prevent hordes of dired buffers from piling up over time
 #+end_src
 
 *** tree-sitter
-+ Whitelist all modes for ~tree-sitter-hl-mode~
+**** use =treesit-auto=
+#+begin_src emacs-lisp
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))
+#+end_src
+
+**** =tsx-ts-mode=
+***** Set languages to mode and hook into =lsp=
++ TODO See if we can clean this up. It seems like this is a hack. Should =treesit-auto= do this?
 
 #+begin_src emacs-lisp
 (after! tree-sitter
   (setq +tree-sitter-hl-enabled-modes t))
+
+(after! tree-sitter-langs
+  (add-to-list 'tree-sitter-major-mode-language-alist '(tsx-ts-mode . tsx)))
+
+(after! tree-sitter-langs
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-ts-mode . typescript)))
+
+(use-package typescript-ts-mode
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :config
+  (add-hook! '(typescript-ts-mode-hook tsx-ts-mode-hook) #'lsp!))
 #+end_src
 
-+ User ~rjsx~ indentation for typescript files (source [[https://merrick.luois.me/posts/better-tsx-support-in-doom-emacs][Merrick Luo's Blog]])
+***** Configure =emmet-mode=, =rjsx-minor-mode=, and =tree-sitter-hl-mode=
 
 #+begin_src emacs-lisp
-(after! typescript
-  (setq typescript-indent-level 2))
-(define-derived-mode typescript-tsx-tree-sitter-mode typescript-mode "TypeScript TSX"
-  (setq-local indent-line-function 'rjsx-indent-line))
-(add-hook! 'typescript-tsx-tree-sitter-mode-local-vars-hook
-           #'+javascript-init-lsp-or-tide-maybe-h
+(add-hook! 'tsx-ts-mode-hook
            #'emmet-mode
+           #'rjsx-minor-mode
            #'tree-sitter-hl-mode)
+
 (add-hook! 'emmet-mode-hook '(lambda ()
-                               (add-to-list 'emmet-jsx-major-modes 'typescript-tsx-tree-sitter-mode)))
-(add-hook! 'typescript-tsx-mode-hook  #'typescript-tsx-tree-sitter-mode)
-(after! tree-sitter
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-tree-sitter-mode . tsx)))
+                               (add-to-list 'emmet-jsx-major-modes 'tsx-ts-mode)))
+
+(map! :map tsx-ts-mode-map
+      :nvi "C-c C-j" #'rjsx-jump-tag
+      :nvi "C-c C-r" #'rjsx-rename-tag-at-point
+      :nvi "<" #'rjsx-electric-lt
+      :nvi ">" #'rjsx-electric-gt)
+#+end_src
+
+***** Format on save with =format-all=
+  
+#+begin_src emacs-lisp
 (after! format-all
-  (puthash 'typescript-tsx-tree-sitter-mode
+  (puthash 'tsx-ts-mode
+           '((prettier closure (t) nil "typescript"))
+           format-all--mode-table))
+
+(after! format-all
+  (puthash 'typescript-ts-mode
+           '((prettier closure (t) nil "typescript"))
+           format-all--mode-table))
+
+(after! format-all
+  (puthash 'typescript-ts-base-mode
            '((prettier closure (t) nil "typescript"))
            format-all--mode-table))
 #+end_src
@@ -779,22 +793,9 @@ Prevent hordes of dired buffers from piling up over time
 + Enable rainbow delimiters mode (not sure why this isn't default)
 
 #+begin_src emacs-lisp
-(add-hook! 'lua-mode-hook
+(add-hook! '(lua-mode-hook
+             tsx-ts-mode-hook)
            #'rainbow-delimiters-mode-enable)
-#+end_src
-
-** typescript
-
-#+begin_src emacs-lisp
-(add-hook! '(typescript-mode-hook
-             typescript-tsx-mode-hook
-             typescript-tsx-tree-sitter-mode-local-vars-hook)
-           #'rjsx-minor-mode)
-(map! :map typescript-mode-map
-      :nvi "C-c C-j" #'rjsx-jump-tag
-      :nvi "C-c C-r" #'rjsx-rename-tag-at-point
-      :nvi "<" #'rjsx-electric-lt
-      :nvi ">" #'rjsx-electric-gt)
 #+end_src
 
 * Org
@@ -1199,7 +1200,10 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
 *** Customize Appearance
 
 #+begin_src emacs-lisp
-;; (add-hook! 'org-agenda-mode-hook #'mixed-pitch-mode)
+(add-hook! 'org-agenda-mode-hook #'my/disable-word-wrap-mode)
+
+(defun my/disable-word-wrap-mode ()
+  (+word-wrap-mode -1))
 #+end_src
 
 *** Set Agenda Files
@@ -1384,7 +1388,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (add-hook! 'org-agenda-mode-hook #'org-save-all-org-buffers)
 #+end_src
 
-** exports
 * Email (mu4e)
 ** Load Path
 + Make sure we can find mu4e
@@ -1890,70 +1893,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ;;     :after #'gptel
 ;;     (my/use-gpt-4-macro)
 ;;     ))
-#+end_src
-
-** company-box
-+ Make some sweet tweaks to match doom defaults (credit [[https://github.com/TheBB/dotemacs/blob/master/init.el#L527-L570][TheBB's config]])
-
-#+begin_src emacs-lisp
-;; (require 'company-box)
-;; (add-hook 'company-mode-hook 'company-box-mode)
-;; (after! company-box
-;;   (setq company-box-icons-alist 'company-box-icons-all-the-icons
-;;         company-box-backends-colors nil
-;;         ;; These are the Doom Emacs defaults
-;;         company-box-icons-all-the-icons
-;;         `((Unknown       . ,(all-the-icons-material "find_in_page"             :face 'all-the-icons-purple))
-;;           (Text          . ,(all-the-icons-material "text_fields"              :face 'all-the-icons-green))
-;;           (Method        . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-;;           (Function      . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-;;           (Constructor   . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-;;           (Field         . ,(all-the-icons-material "functions"                :face 'all-the-icons-red))
-;;           (Variable      . ,(all-the-icons-material "adjust"                   :face 'all-the-icons-blue))
-;;           (Class         . ,(all-the-icons-material "class"                    :face 'all-the-icons-red))
-;;           (Interface     . ,(all-the-icons-material "settings_input_component" :face 'all-the-icons-red))
-;;           (Module        . ,(all-the-icons-material "view_module"              :face 'all-the-icons-red))
-;;           (Property      . ,(all-the-icons-material "settings"                 :face 'all-the-icons-red))
-;;           (Unit          . ,(all-the-icons-material "straighten"               :face 'all-the-icons-red))
-;;           (Value         . ,(all-the-icons-material "filter_1"                 :face 'all-the-icons-red))
-;;           (Enum          . ,(all-the-icons-material "plus_one"                 :face 'all-the-icons-red))
-;;           (Keyword       . ,(all-the-icons-material "filter_center_focus"      :face 'all-the-icons-red))
-;;           (Snippet       . ,(all-the-icons-material "short_text"               :face 'all-the-icons-red))
-;;           (Color         . ,(all-the-icons-material "color_lens"               :face 'all-the-icons-red))
-;;           (File          . ,(all-the-icons-material "insert_drive_file"        :face 'all-the-icons-red))
-;;           (Reference     . ,(all-the-icons-material "collections_bookmark"     :face 'all-the-icons-red))
-;;           (Folder        . ,(all-the-icons-material "folder"                   :face 'all-the-icons-red))
-;;           (EnumMember    . ,(all-the-icons-material "people"                   :face 'all-the-icons-red))
-;;           (Constant      . ,(all-the-icons-material "pause_circle_filled"      :face 'all-the-icons-red))
-;;           (Struct        . ,(all-the-icons-material "streetview"               :face 'all-the-icons-red))
-;;           (Event         . ,(all-the-icons-material "event"                    :face 'all-the-icons-red))
-;;           (Operator      . ,(all-the-icons-material "control_point"            :face 'all-the-icons-red))
-;;           (TypeParameter . ,(all-the-icons-material "class"                    :face 'all-the-icons-red))
-;;           (Template      . ,(all-the-icons-material "short_text"               :face 'all-the-icons-green))))
-;;   (dolist (elt company-box-icons-all-the-icons)
-;;     (setcdr elt (concat (cdr elt) " ")))
-;;   )
-#+end_src
-
-** indent-bars
-
-#+begin_src emacs-lisp
-(add-hook! '(typescript-tsx-tree-sitter-mode-local-vars-hook
-             rjsx-mode-hook)
-           #'my/configure-tsx-indent-bars)
-;; HACK disabling ~indent-bars-mode~ still leaves traces of indent bars
-;; in typescript-tsx-tree-sitter-mode. Disabling and reenabling the mode
-;; fixes the issue. Probably something to do with the order of derive modes
-(defun my/configure-tsx-indent-bars ()
-  "Enable and configure indent bars for tsx"
-    (indent-bars-mode 1)
-    (setq indent-bars-spacing-override 2)
-    (indent-bars-mode -1)
-    (indent-bars-mode 1))
-(after! indent-bars
-  (setq indent-bars-color-by-depth nil
-        indent-bars-highlight-current-depth '(:color "#606060")
-        indent-bars-color '( "#272727" )))
 #+end_src
 
 ** org-modern-indent
