@@ -547,12 +547,8 @@ Prevent hordes of dired buffers from piling up over time
   (setq citar-bibliography '("~/Sync/Refs/My Library.bib")
          citar-org-roam-subdir "literature-notes"
          citar-notes-paths '("~/Sync/projects/org/roam/literature-notes")
-         citar-symbol-separator "  "
          ;; TODO Read this template from a file (insert-file-contents?)
          citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: :literature: \n* TODOs\n:PROPERTIES:\n:CATEGORY: ${author}\n:END:\n* Notes\n* Takeaways\n* Practices\n* Quotes\n* Thoughts"
-         citar-symbols `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " " )
-                         (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
-                         (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " "))
          ;; TODO Determine if this block is necessary to prevent double insertion of "#+title:"
          citar-templates '((main . "${author editor:30}     ${date year issued:4}     ${title:48}")
                            (suffix . "          ${=key= id:15}    ${=type=:12}    ${tags keywords keywords:*}")

@@ -116,7 +116,7 @@ determine the exact padding."
     :box `(:line-width -1 :color ,fg))
    (mode-line-inactive
     :background bg :foreground grey
-    :box `(:line-width -1 :color ,grey))
+    )
    (mode-line-emphasis :foreground fg)
    (doom-modeline-bar :background bg)
 
