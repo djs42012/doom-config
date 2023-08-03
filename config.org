@@ -73,13 +73,20 @@
         (visual-fill-column-mode -1))
     (progn
       (visual-fill-column-mode)
-      (setq visual-fill-column-center-text t))))
+      (setq visual-fill-column-center-text t)
+      (when (or (derived-mode-p 'emacs-lisp-mode)
+                (derived-mode-p 'org-mode))
+        (setq fill-column 100)))))
 
 (add-hook! '(org-mode-hook
              rjsx-mode-hook
              tsx-ts-mode-hook
              emacs-lisp-mode-hook)
            #'my/toggle-visual-fill-column-mode)
+
+;; TODO only in org?
+;; (after! visual-fill-column
+;;   (setq fill-column 100))
 #+end_src
 
 ** Behavior
@@ -438,6 +445,7 @@ Enable or disable `company-mode' accordingly."
   (setq flyspell-duplicate-distance 0))
 #+end_src
 
+
 ** Emacs
 *** dired/dirvish
 Prevent hordes of dired buffers from piling up over time
@@ -517,6 +525,13 @@ Prevent hordes of dired buffers from piling up over time
                                              '(web-mode . "scss"))
                       (add-to-list 'lsp-disabled-clients 'flow-ls))
 #+end_src
+
++ disable =lsp-ui-mode=
+  #+begin_src emacs-lisp
+
+  (add-hook! 'lsp-ui-mode-hook '(lambda ()
+                                  (lsp-ui-mode -1)))
+  #+end_src
 
 *** biblio (citar)
 

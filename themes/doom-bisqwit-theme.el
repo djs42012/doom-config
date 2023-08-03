@@ -182,11 +182,16 @@ determine the exact padding."
                  ((evil-snipe-first-match-face &override)  :background dark-blue :foreground fg )
                  ((evil-snipe-matches-face &override)  :background dark-magenta :foreground fg)
 
-                 ;; fringe
-                 (fringe :foreground fg)
 
                  ;; embark
                  ((embark-keybinding &override) :foreground magenta)
+
+
+                 ;; fringe
+                 (fringe :foreground fg)
+
+                 ;;flycheck
+                 (flycheck-posframe-face :background base0)
 
                  ;; gnus
                  ((gnus-header-content &override) :foreground green)
