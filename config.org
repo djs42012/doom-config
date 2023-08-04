@@ -445,7 +445,6 @@ Enable or disable `company-mode' accordingly."
   (setq flyspell-duplicate-distance 0))
 #+end_src
 
-
 ** Emacs
 *** dired/dirvish
 Prevent hordes of dired buffers from piling up over time

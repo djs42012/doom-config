@@ -40,8 +40,8 @@ determine the exact padding."
                  (base6           '("#878787" "#767676" "brightblack"  ))
                  (base7           '("#9a9a9a" "#949494" "brightblack"  ))
                  (base8           '("#adadad" "#dfdfdf" "white"        ))
-                 (fg              '("#d4d4d4" "#d0d0d0" "brightwhite"  ))
-                 (fg-alt          '("#c1c1c1" "#afafaf" "brightwhite"  ))
+                 (fg              '("#f4f4f4" "#ffffff" "brightwhite"  ))
+                 (fg-alt          '("#d4d4d4" "#d0d0d0" "brightwhite"  ))
 
 
                  (red             '("#c16b6b" "#af5f5f" "red"          ))
@@ -78,7 +78,7 @@ determine the exact padding."
                  (operators      green)
                  (type           dark-green)
                  (strings        light-cyan)
-                 (variables      fg-alt)
+                 (variables      fg)
                  (numbers        bright-yellow)
                  (region         dark-grey)
                  (error          red)
@@ -238,7 +238,7 @@ determine the exact padding."
                  ((js2-object-property-access &override) :foreground fg)
                  ((js2-object-property &override) :foreground cyan)
 
-   ;;;; lsp-mode
+                 ;;;; lsp-mode
                  (lsp-ui-doc-background      :background base0)
                  (lsp-face-highlight-read :background dark-blue :foreground fg :underline t)
                  (lsp-face-highlight-textual :background dark-blue :foreground fg )
