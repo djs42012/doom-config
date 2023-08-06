@@ -119,8 +119,7 @@ determine the exact padding."
 
                  ;; modeline
                  (mode-line
-                  :background bg :foreground fg
-                  :box `(:line-width -1 :color ,fg))
+                  :background bg :foreground fg)
                  (mode-line-inactive
                   :background bg :foreground grey
                   )
