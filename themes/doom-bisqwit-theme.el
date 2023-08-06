@@ -54,6 +54,7 @@ determine the exact padding."
                  (bright-ylw-alt  '("#d7d700" "#d7d700" "brightyellow" ))
                  (blue            '("#96CBFE" "#87d7ff" "brightblue"   ))
                  (magenta         '("#d4a5d0" "#d7afd7" "magenta"      ))
+                 (bright-magenta  '("#d670d6" "#d75fd7" "magenta"      ))
                  (violet          '("#c5a8ff" "#d7afff" "purple"       ))
                  (dark-magenta    '("#794183" "#d7afff" "purple"       ))
                  (cyan            '("#88bae2" "#87afd7" "brightcyan"   ))
@@ -78,7 +79,7 @@ determine the exact padding."
                  (operators      green)
                  (type           dark-green)
                  (strings        light-cyan)
-                 (variables      fg)
+                 (variables      cyan)
                  (numbers        bright-yellow)
                  (region         dark-grey)
                  (error          red)
@@ -112,6 +113,9 @@ determine the exact padding."
                  ((vertical-border &override) :foreground violet :background violet)
                  ((pulse-highlight-face &override) :background base0 :foreground magenta)
                  ((pulse-highlight-start-face &override) :background base0 :foreground magenta)
+
+                 ;; icons
+                 ( all-the-icons-completion-dir-face :foreground light-cyan )
 
                  ;; modeline
                  (mode-line
@@ -409,6 +413,10 @@ determine the exact padding."
                  ((tree-sitter-hl-face:tag &override) :foreground green)
                  ((tree-sitter-hl-face:attribute &override) :foreground yellow :weight 'bold)
                  ((tree-sitter-hl-face:number &override) :foreground bright-yellow :weight 'bold)
+                 (( tree-sitter-hl-face:type.builtin &override) :foreground fg :slant 'italic)
+                 (( tree-sitter-hl-face:variable.builtin &override) :foreground light-cyan :weight 'bold)
+                 (( tree-sitter-hl-face:function.call &override) :foreground yellow :weight 'bold)
+
                  ;; ((tree-sitter-hl-face:punctuation.delimiter &override) :foreground dark-green)
 
                  ;; tsx
