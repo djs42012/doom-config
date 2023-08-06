@@ -372,6 +372,8 @@ If called with a universal argument choose a instead."
 (after! company
   (setq company-idle-delay              nil
         company-tooltip-idle-delay      0
+        company-tooltip-maximum-width      60
+        company-tooltip-width-grow-only      t
         company-minimum-prefix-length   0
         company-show-quick-access       t
         company-global-modes '(eshell-mode elisp-mode))
