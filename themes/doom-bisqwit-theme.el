@@ -56,11 +56,11 @@ determine the exact padding."
                  (magenta         '("#d4a5d0" "#d7afd7" "magenta"      ))
                  (bright-magenta  '("#d670d6" "#d75fd7" "magenta"      ))
                  (violet          '("#c5a8ff" "#d7afff" "purple"       ))
-                 (dark-magenta    '("#794183" "#d7afff" "purple"       ))
-                 (cyan            '("#88bae2" "#87afd7" "brightcyan"   ))
-                 (dark-cyan       '("#85bcd6" "#5fafd7" "brightcyan"   ))
-                 (dark-blue       '("#0054a5" "#080808" "brightcyan"   ))
                  (light-cyan      '("#9cdcfe" "#afd7ff" "brightcyan"   ))
+                 (cyan            '("#88bae2" "#87afd7" "brightcyan"   ))
+                 (dark-cyan       '("#88bae2" "#87afd7" "brightcyan"   ))
+                 (dark-magenta    '("#794183" "#d7afff" "purple"       ))
+                 (dark-blue       '("#0054a5" "#080808" "brightcyan"   ))
                  (turquoise       '("#00d7ff" "#0087ff" "brightblue"   ))
                  (grey            '("#b9b1b6" "#b2b2b2" "brightblack"  ))
                  (dark-grey       '("#363636" "#3a3a3a" "brightblack"  ))
@@ -72,14 +72,14 @@ determine the exact padding."
                  (comments       red)
                  (vertical-bar   base2)
                  (doc-comments   red)
-                 (constants      cyan)
+                 (constants      light-cyan)
                  (functions      yellow)
                  (keywords       magenta)
                  (methods        yellow)
                  (operators      green)
-                 (type           dark-green)
-                 (strings        light-cyan)
-                 (variables      cyan)
+                 (type           green)
+                 (strings        teal)
+                 (variables      light-cyan)
                  (numbers        bright-yellow)
                  (region         dark-grey)
                  (error          red)
@@ -119,7 +119,8 @@ determine the exact padding."
 
                  ;; modeline
                  (mode-line
-                  :background bg :foreground fg)
+                  :background bg :foreground fg
+                  :box `(:line-width -1 :color ,fg))
                  (mode-line-inactive
                   :background bg :foreground grey
                   )
@@ -223,15 +224,15 @@ determine the exact padding."
 
 
                  ;; Info-mode
-                 ((info-xref &override) :inherit 'link :foreground blue)
+                 ((info-xref &override) :inherit 'link :foreground teal)
                  ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground fg-alt)
                  ((info-menu-star &override) :foreground fg)
                  ((info-menu-header &override) :inherit 'variable-pitch :weight 'bold :foreground blue)
-                 ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground magenta )
-                 ((info-title-3 &override) :inherit 'info-title-4  )
-                 ((info-title-2 &override) :inherit 'info-title-3  )
-                 ((info-title-1 &override) :inherit 'info-title-2  )
-                 ((Info-quoted &override)  :inherit 'fixed-pitch :foreground green :background base0)
+                 ((info-title-4 &override) :inherit 'variable-pitch :weight 'bold :foreground magenta :height 1.1)
+                 ((info-title-3 &override) :inherit 'info-title-4 :height 1.2 )
+                 ((info-title-2 &override) :inherit 'info-title-3 :height 1.3)
+                 ((info-title-1 &override) :inherit 'info-title-2 height 1.5 )
+                 (Info-quoted  :foreground green )
 
                  ;; ivy
                  ((ivy-minibuffer-match-face-1 &override) :foreground (doom-lighten base5 0.70))
@@ -239,7 +240,7 @@ determine the exact padding."
 
                  ;; js2-mode
                  ((js2-object-property-access &override) :foreground fg)
-                 ((js2-object-property &override) :foreground cyan)
+                 ((js2-object-property &override) :foreground light-cyan)
 
                  ;;;; lsp-mode
                  (lsp-ui-doc-background      :background base0)
@@ -332,7 +333,7 @@ determine the exact padding."
                  ((org-special-keyword &override)  :foreground fg-alt)
                  ((org-drawer          &override)  :foreground base5)
                  (org-ellipsis :underline nil :box nil :foreground fg-alt :background bg )
-                 (org-link :inherit 'link :foreground blue)
+                 (org-link :inherit 'link :foreground teal)
                  ((org-block &override) :background bg)
                  ((org-block-begin-line &override) :overline t :foreground bright-yellow :slant 'italic :height 1.0 )
                  ((org-block-end-line &override) :overline nil :underline t :foreground bright-yellow :slant 'italic :height 1.0 )
@@ -410,6 +411,7 @@ determine the exact padding."
                  ;; tree-sitter
                  ((tree-sitter-hl-face:operator &override) :foreground green)
                  ((tree-sitter-hl-face:tag &override) :foreground green)
+                 ((tree-sitter-hl-face:type &override) :foreground green :weight 'bold)
                  ((tree-sitter-hl-face:attribute &override) :foreground yellow :weight 'bold)
                  ((tree-sitter-hl-face:number &override) :foreground bright-yellow :weight 'bold)
                  (( tree-sitter-hl-face:type.builtin &override) :foreground fg :slant 'italic)
