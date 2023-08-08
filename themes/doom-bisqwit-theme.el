@@ -46,6 +46,7 @@ determine the exact padding."
 
                  (red             '("#c16b6b" "#af5f5f" "red"          ))
                  (orange          '("#d8ae5f" "#d7af5f" "brightred"    ))
+                 (orange-alt      '("#FFD2A7" "#FFD2A7" "brightred"    ))
                  (green           '("#93e079" "#87d787" "brightgreen"  ))
                  (dark-green      '("#00d100" "#00d700" "brightgreen"  ))
                  (teal            '("#6ac2c8" "#5fafd7" "brightgreen"  ))
@@ -59,6 +60,7 @@ determine the exact padding."
                  (light-cyan      '("#9cdcfe" "#afd7ff" "brightcyan"   ))
                  (cyan            '("#88bae2" "#87afd7" "brightcyan"   ))
                  (dark-cyan       '("#88bae2" "#87afd7" "brightcyan"   ))
+                 (mid-blue        '("#96a8ff" "#87afd7" "brightcyan"   ))
                  (dark-magenta    '("#794183" "#d7afff" "purple"       ))
                  (dark-blue       '("#0054a5" "#080808" "brightcyan"   ))
                  (turquoise       '("#00d7ff" "#0087ff" "brightblue"   ))
@@ -78,7 +80,7 @@ determine the exact padding."
                  (methods        yellow)
                  (operators      green)
                  (type           green)
-                 (strings        teal)
+                 (strings        mid-blue)
                  (variables      light-cyan)
                  (numbers        bright-yellow)
                  (region         dark-grey)
@@ -224,7 +226,7 @@ determine the exact padding."
 
 
                  ;; Info-mode
-                 ((info-xref &override) :inherit 'link :foreground teal)
+                 ((info-xref &override) :inherit 'link :foreground blue)
                  ((info-xref-visited &override) :inherit '(info-xref link-visited)  :foreground fg-alt)
                  ((info-menu-star &override) :foreground fg)
                  ((info-menu-header &override) :inherit 'variable-pitch :weight 'bold :foreground blue)
@@ -232,7 +234,7 @@ determine the exact padding."
                  ((info-title-3 &override) :inherit 'info-title-4 :height 1.2 )
                  ((info-title-2 &override) :inherit 'info-title-3 :height 1.3)
                  ((info-title-1 &override) :inherit 'info-title-2 height 1.5 )
-                 (Info-quoted  :foreground green )
+                 (Info-quoted  :foreground bright-yellow)
 
                  ;; ivy
                  ((ivy-minibuffer-match-face-1 &override) :foreground (doom-lighten base5 0.70))
@@ -312,7 +314,8 @@ determine the exact padding."
                  (mu4e-header-title-face :foreground cyan)
                  (mu4e-header-title-key :foreground fg)
                  ((mu4e-title-face &override) :inherit 'outline-1)
-                 (message-header-name :foreground blue)
+                 (message-header-name :foreground magenta)
+                 (message-header-subject :foreground violet)
 
                  ;; nav-flash
                  ((nav-flash-face &override) :foreground fg :background region :weight 'bold)
@@ -333,7 +336,7 @@ determine the exact padding."
                  ((org-special-keyword &override)  :foreground fg-alt)
                  ((org-drawer          &override)  :foreground base5)
                  (org-ellipsis :underline nil :box nil :foreground fg-alt :background bg )
-                 (org-link :inherit 'link :foreground teal)
+                 (org-link :inherit 'link :foreground blue)
                  ((org-block &override) :background bg)
                  ((org-block-begin-line &override) :overline t :foreground bright-yellow :slant 'italic :height 1.0 )
                  ((org-block-end-line &override) :overline nil :underline t :foreground bright-yellow :slant 'italic :height 1.0 )
@@ -409,12 +412,14 @@ determine the exact padding."
                  ((swiper-line-face    &override) :background dark-blue :foreground fg)
 
                  ;; tree-sitter
-                 ((tree-sitter-hl-face:operator &override) :foreground green)
+                 ((tree-sitter-hl-face:operator &override) :foreground fg)
                  ((tree-sitter-hl-face:tag &override) :foreground green)
-                 ((tree-sitter-hl-face:type &override) :foreground green :weight 'bold)
+                 ((tree-sitter-hl-face:type &override) :foreground green )
                  ((tree-sitter-hl-face:attribute &override) :foreground yellow :weight 'bold)
+                 ((tree-sitter-hl-face:property &override) :foreground fg :slant 'italic)
                  ((tree-sitter-hl-face:number &override) :foreground bright-yellow :weight 'bold)
                  (( tree-sitter-hl-face:type.builtin &override) :foreground fg :slant 'italic)
+                 (( tree-sitter-hl-face:method.call &override) :foreground fg :slant 'italic :weight 'bold)
                  (( tree-sitter-hl-face:variable.builtin &override) :foreground light-cyan :weight 'bold)
                  (( tree-sitter-hl-face:function.call &override) :foreground yellow :weight 'bold)
 
