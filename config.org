@@ -1914,23 +1914,11 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 #+begin_src emacs-lisp
 (after! gptel
   (setq gptel-api-key (my/lookup-password :host "openai.com")
-         gptel-default-mode 'org-mode
-         gptel-prompt-prefix-alist  '((markdown-mode . "### ")
-                                      (org-mode . "* ")
-                                      (text-mode . "### "))
-         ;; gptel-model "gpt-4"
-         ))
-;; (after! gptel
-;;   (defun my/use-gpt-4-macro ()
-;;     "lauch gpt-4"
-;;     (interactive)
-;;     (fset 'launch-gpt-4
-;;           (kmacro-lambda-form [?  ?u ?\C-c return ?m ?4 return ?\C-g] 0 "%d"))
-;;     (launch-gpt-4))
-;;   (defadvice! launch-gptel-into-gpt-4 (&rest /)
-;;     :after #'gptel
-;;     (my/use-gpt-4-macro)
-;;     ))
+        gptel-default-mode 'org-mode
+        gptel-prompt-prefix-alist  '((markdown-mode . "### ")
+                                     (org-mode . "* ")
+                                     (text-mode . "### ")))
+  (setq-default gptel-model "gpt-4"))
 #+end_src
 
 ** org-modern-indent
@@ -1947,7 +1935,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (use-package mlscroll
   :ensure t
   :config
-  (setq mlscroll-in-color "#c16b6b"
+  (setq mlscroll-in-color "#96a8ff"
         mlscroll-out-color "#131313")
   (mlscroll-mode 1))
 #+end_src
