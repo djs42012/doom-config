@@ -654,7 +654,6 @@ Prevent hordes of dired buffers from piling up over time
         '(company-capf)))
 #+end_src
 
-
 ** UI
 *** doom-dashboard
 
@@ -878,23 +877,26 @@ Prevent hordes of dired buffers from piling up over time
 #+begin_src emacs-lisp
 (after! org
   (defun org-todo-with-date (&optional arg)
-    "Set completetion state and prompt for date completed"
-    (interactive "P")
-    (if (eq major-mode 'org-agenda-mode)
-        (org-agenda-todo-with-date arg)
-      (cl-letf* ((org-read-date-prefer-future nil)
-                 (my-current-time (org-read-date t t nil "when:" nil nil nil))
-                 ((symbol-function #'org-current-effective-time)
-                  #'(lambda () my-current-time)))
-        (org-todo arg))))
-  (defun org-agenda-todo-with-date (&optional arg)
-    "Like `org-agenda-todo' but prompt for the completion date."
     (interactive "P")
     (cl-letf* ((org-read-date-prefer-future nil)
                (my-current-time (org-read-date t t nil "when:" nil nil nil))
-               ((symbol-function #'org-current-effective-time)
-                #'(lambda () my-current-time)))
-      (org-agenda-todo arg))))
+               ((symbol-function 'current-time)
+                #'(lambda () my-current-time))
+               ((symbol-function 'org-today)
+                #'(lambda () (time-to-days my-current-time)))
+               ((symbol-function 'org-current-effective-time)
+                #'(lambda () my-current-time))
+
+               (super-org-entry-put (symbol-function 'org-entry-put))
+               ((symbol-function 'org-entry-put)
+                #'(lambda (pom property value)
+                    (print property)
+                    (if (equal property "LAST_REPEAT")
+                        (let ((my-value (format-time-string (org-time-stamp-format t t) my-current-time)))
+                          (funcall super-org-entry-put pom property my-value))
+                      (funcall super-org-entry-put pom property value)
+                      ))))
+      (if (eq major-mode 'org-agenda-mode) (org-agenda-todo arg) (org-todo arg)))))
   #+end_src
 
 + Let us refile only a region within a tree (credit this [[https://stackoverflow.com/questions/25256304/in-emacs-org-mode-how-to-refile-highlighted-text-under-an-org-heading][Stack Overflow]] post)
