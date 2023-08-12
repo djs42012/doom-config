@@ -316,6 +316,7 @@ determine the exact padding."
                  ((mu4e-title-face &override) :inherit 'outline-1)
                  (message-header-name :foreground magenta)
                  (message-header-subject :foreground violet)
+                 (shr-text :foreground fg :inherit 'fixed-pitch)
 
                  ;; nav-flash
                  ((nav-flash-face &override) :foreground fg :background region :weight 'bold)
