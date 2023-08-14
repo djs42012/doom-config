@@ -356,7 +356,7 @@ determine the exact padding."
                  ((org-agenda-date-weekend &override) :foreground blue)
                  ((org-time-grid &override) :foreground fg)
                  ((org-agenda-current-time &override) :foreground bright-yellow)
-                 ((org-verbatim &override) :foreground green :background base0)
+                 ((org-verbatim &override) :foreground green)
                  ((org-code &override) :foreground bright-yellow)
 
                  ;; org-modern
@@ -460,6 +460,11 @@ determine the exact padding."
                  (wgrep-face :background base1)
                  ;; which-key
                  ((which-key-key-face &override) :inherit 'bold)
+
+                 ;;write-good
+                 ((writegood-passive-voice-face &override) :underline `(:style wave :color ,turquoise))
+                 ((writegood-weasels-face &override) :underline `(:style wave :color ,bright-yellow))
+                 ((writegood-duplicates-face &override) :underline `(:style wave :color ,bright-magenta) )
 
                  ))
      ;;;; Base theme variable overrides-
