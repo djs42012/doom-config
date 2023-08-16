@@ -129,6 +129,12 @@ determine the exact padding."
                  (mode-line-emphasis :foreground fg)
                  (doom-modeline-bar :background bg)
 
+                 ;;avy
+                 (avy-lead-face :background dark-magenta :foreground fg)
+                 (avy-lead-face-0 :background dark-blue :foreground fg)
+                 (avy-lead-face-1 :background dark-blue :foreground fg)
+                 (avy-lead-face-2 :background dark-blue :foreground fg)
+
                  ;; calendar
                  ((calendar-month-header &override) :foreground magenta :weight 'bold)
                  ((calendar-weekday-header &override) :foreground blue :weight 'bold)

@@ -429,7 +429,15 @@ Enable or disable `company-mode' accordingly."
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
 
-*** vertico/consult
+*** vertico
+**** Keybinds
+
+#+begin_src emacs-lisp
+(map! :map #'evil-normal-state-map
+      (:prefix ("g" . "search" )
+       :g "/" #'avy-goto-char-timer))
+#+end_src
+
 + TODO Figure out why ~~+vertico-consult-fd-args~ seem not to affect ~+vertico/consult-fd~ results, and I have to resort to changing ~consult-find-args~ to achieve the desired result instead. Am I even using ~fd~ anymore?
 
 #+begin_src emacs-lisp
@@ -443,6 +451,13 @@ Enable or disable `company-mode' accordingly."
 (setq consult-buffer-filter '("\\*")
 ;; consult-project-buffer-sources '(consult--source-project-buffer)
 ))
+#+end_src
+
+**** Default Behavior
+
+#+begin_src emacs-lisp
+(after! avy
+  (setq avy-all-windows 'all-frames))
 #+end_src
 
 ** Checkers
