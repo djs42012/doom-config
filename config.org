@@ -415,6 +415,13 @@ Enable or disable `company-mode' accordingly."
               '((:separate company-capf company-files ))))
 #+end_src
 
++ Company Box
+
+  #+begin_src emacs-lisp
+  (after! company-box
+    (setq company-box-doc-frame-parameters '((internal-border-width . 1))))
+  #+end_src
+
 *** copilot
 
 #+begin_src emacs-lisp

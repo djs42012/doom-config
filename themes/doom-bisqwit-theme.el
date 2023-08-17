@@ -115,6 +115,7 @@ determine the exact padding."
                  ((vertical-border &override) :foreground violet :background violet)
                  ((pulse-highlight-face &override) :background base0 :foreground magenta)
                  ((pulse-highlight-start-face &override) :background base0 :foreground magenta)
+                 (child-frame-border :background violet)
 
                  ;; icons
                  ( all-the-icons-completion-dir-face :foreground light-cyan )
