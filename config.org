@@ -280,7 +280,13 @@
   (let ((result (apply #'auth-source-search keys)))
     (if result
         (funcall (plist-get (car result) :secret))
-        nil)))
+      nil)))
+(defun my/lookup-username (&rest keys)
+  "Find a login from auth-sources and return its value as a string"
+  (let ((result (apply #'auth-source-search keys)))
+    (if result
+        (plist-get (car result) :user)
+      nil)))
 #+end_src
 
 *** Lookup Providers
@@ -465,6 +471,12 @@ Enable or disable `company-mode' accordingly."
 #+begin_src emacs-lisp
 (after! avy
   (setq avy-all-windows 'all-frames))
+#+end_src
+
+**** Consult
+
+#+begin_src emacs-lisp
+(setq consult-ripgrep-args "rg --null --hidden --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
 #+end_src
 
 ** Checkers
@@ -1962,4 +1974,52 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   (setq mlscroll-in-color "#96a8ff"
         mlscroll-out-color "#131313")
   (mlscroll-mode 1))
+#+end_src
+
+** org-caldav
+
+#+begin_src emacs-lisp
+(after! org-caldav
+  (setq! org-caldav-url 'google
+         org-caldav-calendar-id "david@djs.gg"
+         org-caldav-inbox "~/Sync/projects/org/gcal.org"
+         org-caldav-calendars
+         ;; gcal
+         '((:calendar-id "david@djs.gg" :files ("~/Sync/projects/org/gcal.org")
+            :inbox (file+olp "~/Sync/projects/org/gcal.org" "📥 Inbox" ))
+           ;; org
+           (:calendar-id "c_48c11bffb44b3c632b38ea691b37534fc66531be1e134fcf5a244cc53ad4768f@group.calendar.google.com"
+            :files ("~/Sync/projects/org/appt.org")
+            :inbox (file+olp "~/Sync/projects/org/appt.org" "📥 Inbox" ))
+           ;; travel
+           (:calendar-id "c_ee056740f465b21064ecbf1a87b01fd5c5ceee1ebc1088711ada9fbff7b10663@group.calendar.google.com"
+            :files ("~/Sync/projects/org/calendars/2022-2023.org")
+            :inbox (file+olp "~/Sync/projects/org/calendars/2022-2023.org" "📥 Inbox" ) )
+           ;; chores
+           (:calendar-id "c_7bfefd195373dd9e5d60e7b3014066eda6c8be3764f02f3c57ad3d4eff62a8e4@group.calendar.google.com"
+            :files ("~/Sync/projects/org/chore.org")
+            :inbox (file+olp "~/Sync/projects/org/chore.org" "📥 Inbox" ) )
+           )
+         org-caldav-oauth2-client-id (my/lookup-username :host "org-caldav")
+         org-caldav-oauth2-client-secret (my/lookup-password :host "org-caldav")
+         org-caldav-sync-changes-to-org 'all
+         org-caldav-backup-file "~/Sync/projects/org/org-caldav/caldav-backup.org"
+         org-caldav-save-directory "~/Sync/projects/org/org-caldav/"
+         org-icalendar-include-todo 'all
+         org-caldav-sync-todo t
+         ))
+
+(after! org
+  (setq org-icalendar-timezone "America/New_York"
+        org-icalendar-alarm-time 30))
+        ;; org-icalendar-use-deadline 'event-if-todo))
+
+(setq plstore-cache-passphrase-for-symmetric-encryption t)
+#+end_src
+
+
+#+begin_src emacs-lisp
+;; (when init-file-debug
+;;   (require 'benchmark-init)
+;;   (add-hook 'doom-first-input-hook #'benchmark-init/deactivate))
 #+end_src

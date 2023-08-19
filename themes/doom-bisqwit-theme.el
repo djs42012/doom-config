@@ -11,10 +11,9 @@
 ;;; [2] https://github.com/bisqwit/that_editor
 ;;; [3] https://github.com/Yegiyan/Rabbit-Terminal-Theme-for-Visual-Studio
 ;;; [4] https://github.com/mskorzhinskiy
-
 (require 'doom-themes)
 
-;;
+;;;; Code:
 (defgroup doom-bisqwit-theme nil
   "Options for the `doom-bisqwit' theme."
   :group 'doom-themes)
@@ -345,7 +344,12 @@ determine the exact padding."
                  ((org-drawer          &override)  :foreground base5)
                  (org-ellipsis :underline nil :box nil :foreground fg-alt :background bg )
                  (org-link :inherit 'link :foreground blue)
-                 ((org-block &override) :background bg)
+                 ((org-block &override) :background (doom-darken base0 0.50))
+                 ((org-block-begin-line &override) :overline t :foreground bright-yellow :slant 'italic :height 1.0 )
+                 ((org-block-end-line &override) :overline nil :underline t :foreground bright-yellow :slant 'italic :height 1.0 )
+                 ((org-quote &override) :background bg :extend t)
+                 ((org-table &override) :foreground fg)
+                 ((org-list-dt &override) :foreground blue)
                  ((org-block-begin-line &override) :overline t :foreground bright-yellow :slant 'italic :height 1.0 )
                  ((org-block-end-line &override) :overline nil :underline t :foreground bright-yellow :slant 'italic :height 1.0 )
                  ((org-quote &override) :background bg :extend t)
