@@ -184,6 +184,7 @@ determine the exact padding."
                  ((doom-dashboard-footer-icon &override) :foreground red)
                  ((doom-themes-org-hash-tag &override) :foreground green :box nil)
 
+
                  ;; ediff
                  (ediff-current-diff-A        :foreground red   :background (doom-lighten red 0.8))
                  (ediff-current-diff-B        :foreground green :background (doom-lighten green 0.8))

@@ -34,7 +34,7 @@
 ;; (package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
 (package! org-modern-indent :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 (package! mlscroll)
-(package! consult-jump-project :recipe (:host github :repo "jdtsmith/consult-jump-project" ))
+;; (package! consult-jump-project :recipe (:host github :repo "jdtsmith/consult-jump-project" ))
 (package! typescript-mode :disable t)
 (package! treesit-auto)
 ;; (package! org-gcal)

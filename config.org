@@ -18,7 +18,7 @@
       doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
-      +doom-dashboard-banner-file "emacs.png")
+      +doom-dashboard-banner-file "gnu-color-bisqwit.png")
 #+end_src
 
 *** Window Borders
@@ -219,7 +219,7 @@
       :desc "Kill buffer"        "\\"           #'kill-current-buffer
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Rename file" "R"                   #'doom/move-this-file
-      :desc "Consult jump project" ","          #'consult-jump-project
+      ;; :desc "Consult jump project" ","          #'consult-jump-project
       (:prefix ("t" . "toggle")
        :desc "Comapany Mode"        "p"         #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
@@ -699,9 +699,10 @@ Prevent hordes of dired buffers from piling up over time
       (delete-window doom-window))))
 (setq +doom-dashboard-functions
       '(doom-dashboard-widget-banner
-        doom-dashboard-widget-shortmenu
+        ;; doom-dashboard-widget-shortmenu
         my/doom-dashboard-widget-footer
-        doom-dashboard-widget-loaded))
+        ;; doom-dashboard-widget-loaded
+        ))
 (setq +doom-dashboard-banner-padding '(0 . 1))
 (setq +doom-dashboard-menu-sections
       '(("Agenda" :icon
@@ -727,7 +728,7 @@ Prevent hordes of dired buffers from piling up over time
      (propertize
       (+doom-dashboard--center
        +doom-dashboard--width
-       "A man's Emacs is his castle...")
+       "Welcome Back...")
       'face 'doom-dashboard-loaded)
      "\n"))
 #+end_src
@@ -2005,8 +2006,8 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
          org-caldav-sync-changes-to-org 'all
          org-caldav-backup-file "~/Sync/projects/org/org-caldav/caldav-backup.org"
          org-caldav-save-directory "~/Sync/projects/org/org-caldav/"
-         org-icalendar-include-todo 'all
-         org-caldav-sync-todo t
+         ;; org-icalendar-include-todo 'all
+         ;; org-caldav-sync-todo t
          ))
 
 (after! org
