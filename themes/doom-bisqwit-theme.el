@@ -478,7 +478,8 @@ determine the exact padding."
                  ((writegood-passive-voice-face &override) :underline `(:style wave :color ,turquoise))
                  ((writegood-weasels-face &override) :underline `(:style wave :color ,bright-yellow))
                  ((writegood-duplicates-face &override) :underline `(:style wave :color ,bright-magenta) )
-
+                 (shr-selected-link  :foreground bg :background red)
+                 (git-gutter:unchanged  :foreground bg :background yellow)
                  ))
      ;;;; Base theme variable overrides-
 ;;; doom-bisqwit-theme.el ends here
