@@ -577,7 +577,8 @@ Prevent hordes of dired buffers from piling up over time
   :custom
   (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
    '(("h" "~/"                               "Home")
-     ("C" "~/.config"                       "Config")
+     ("r" "/"                                "Root")
+     ("C" "~/.config"                      "Config")
      ("d" "~/Downloads/"                "Downloads")
      ("o" "~/Sync/projects/org/"              "Org")
      ("c" "~/Sync/projects/org/clients/"  "Clients")
