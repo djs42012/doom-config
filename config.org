@@ -503,6 +503,8 @@ Prevent hordes of dired buffers from piling up over time
 (dirvish-override-dired-mode)
 (remove-hook! 'dired-mode-hook 'diff-hl-dired-mode-unless-remote)
 (map! :map dired-mode-map :ng "q" #'dirvish-quit)
+(setq dired-mouse-drag-files t)                   ; added in Emacs 29
+(setq mouse-drag-and-drop-region-cross-program t) ; added in Emacs 29
 (defun my/dired-toggle-hidden ()
   "toggle hidden files and directories"
   (interactive)
@@ -515,13 +517,74 @@ Prevent hordes of dired buffers from piling up over time
                              all-the-icons
                              collapse
                              git-msg
+                             file-time
                              file-size)
         dirvish-emerge-groups '(("Recent"
                                  (predicate . recent-files-2h))
                                 ("README"
                                  (regex . "README")))
         dirvish-default-layout '(0 0.20 0.67 )
-        dired-listing-switches "-ahl -v --group-directories-first"))
+        dired-listing-switches "-ahl -v --group-directories-first"
+        dirvish-show-media-properties t
+        dirvish-reuse-session nil
+        dirvish-emerge-groups `(("Recent" (predicate . recent-files-2h))
+                                ("README" (regex . "README"))
+                                ("Org" (extensions  "org"))
+                                ("LaTeX"  (extensions "tex" "bib"))
+                                ("PDF"    (extensions "pdf"))
+                                ("Videos" (extensions  ,@dirvish-video-exts))
+                                ("Audio" (extensions  ,@dirvish-audio-exts))
+                                ("Images" (extensions  ,@dirvish-image-exts))
+                                ("Word" (extensions  "doc" "docx"))
+                                ("Excel" (extensions  "xls" "xlsx"))
+                                ("Powerpoint" (extensions  "ppt" "pptx"))
+                                ("Archive" (extensions  "tar" "tar.gz" "zip" "rar" "7z"))
+                                ("Hidden" (regex .  "^\\..*"))
+                                ("Directories" (predicate . directories ))
+                                ("Files" (predicate . files ))
+                                ("Executables" (predicate . executables ))
+                                ))
+  (map! :map #'evil-normal-state-map
+        (:prefix ("g" . "search" )
+         :g "S" #'dirvish-quick-access))
+
+  (map! :map #'dired-mode-map
+        :n "s" #'dirvish-quick-access
+        :n "TAB" #' dirvish-emerge-toggle-current-group
+        :n "C-j" #'dirvish-emerge-next-group
+        :n "C-k" #'dirvish-emerge-previous-group)
+  (dirvish-define-preview exa (file)
+    "Use `exa' to generate directory preview."
+    :require ("exa") ; tell Dirvish to check if we have the executable
+    (when (file-directory-p file) ; we only interest in directories here
+      `(shell . ("exa" "-alH" "--color=always" "--icons"
+                 "--group-directories-first" ,file))))
+
+  (add-to-list 'dirvish-preview-dispatchers 'exa)
+  ;; HACK Start the "Hidden" emerge group folded
+  (defun my/dirvish-toggle-hidden-emerge-group ()
+    "Toggle Hidden emerge group"
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^[[:space:]]*Hidden[[:space:]]*$" nil t)
+        (call-interactively 'dirvish-emerge-toggle-current-group))))
+  (add-hook! 'dirvish-setup-hook '(dirvish-emerge-mode
+                                   my/dirvish-toggle-hidden-emerge-group)))
+(use-package dirvish
+  :custom
+  (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
+   '(("h" "~/"                               "Home")
+     ("C" "~/.config"                       "Config")
+     ("d" "~/Downloads/"                "Downloads")
+     ("o" "~/Sync/projects/org/"              "Org")
+     ("c" "~/Sync/projects/org/clients/"  "Clients")
+     ("s" "~/Sync"                           "Sync")
+     ("g" "~/Github"                       "Github")
+     ("p" "~/Pictures"                   "Pictures")
+     ("v" "~/Videos"                       "Videos")
+     ("m" "/mnt/media/"                     "Media")
+     ("t" "~/.local/share/Trash/files/"     "Trash"))))
 #+end_src
 
 ** Tools
@@ -2013,7 +2076,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 (after! org
   (setq org-icalendar-timezone "America/New_York"
         org-icalendar-alarm-time 30))
-        ;; org-icalendar-use-deadline 'event-if-todo))
+;; org-icalendar-use-deadline 'event-if-todo))
 
 (setq plstore-cache-passphrase-for-symmetric-encryption t)
 #+end_src

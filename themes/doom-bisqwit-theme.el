@@ -177,6 +177,7 @@ determine the exact padding."
                  ;; dired/dirvish
                  ((diredfl-dir-name &override) :foreground blue)
                  ((dirvish-hl-line &override) :background base1)
+                 (dirvish-emerge-group-title :inherit 'vertico-group-title)
 
                  ;; Doom
                  ((doom-dashboard-menu-title &override) :foreground fg :slant 'italic)
