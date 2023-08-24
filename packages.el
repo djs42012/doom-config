@@ -40,6 +40,7 @@
 ;; (package! org-gcal)
 (package! org-caldav)
 (package! oauth2)
+(package! nerd-icons)
 ;; (package! origamie :recipe (:host github :repo "gregsexton/origami.el"))
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el"))
