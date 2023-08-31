@@ -631,12 +631,12 @@ Prevent hordes of dired buffers from piling up over time
                       (add-to-list 'lsp-disabled-clients 'flow-ls))
 #+end_src
 
-+ disable =lsp-ui-mode=
-  #+begin_src emacs-lisp
-
-  (add-hook! 'lsp-ui-mode-hook '(lambda ()
-                                  (lsp-ui-mode -1)))
-  #+end_src
+# + disable =lsp-ui-mode= ;; caused max-lisp-eval-depth bug
+#   #+begin_src emacs-lisp
+# (lsp-ui-mode)
+#   (add-hook! 'lsp-ui-mode-hook '(lambda ()
+#                                   (lsp-ui-mode -1)))
+#   #+end_src
 
 *** biblio (citar)
 
