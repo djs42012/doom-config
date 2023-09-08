@@ -15,8 +15,8 @@
 
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
-      doom-font (font-spec :family "Berkeley Mono" :size 14 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
+      doom-font (font-spec :family "PragmataProMonoLiga Nerd Font" :size 24 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 24 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
       +doom-dashboard-banner-file "gnu-color-bisqwit.png")
 #+end_src
@@ -1823,7 +1823,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (smtpmail-smtp-service . 587)
                   (smtpmail-stream-type . starttls)
                   (user-mail-address . "dsharfi@plusoneair.com")
-                  (org-msg-greeting-fmt . ,(file-to-string "~/Sync/Templates/poa-signature.txt"))
+                  (org-msg-greeting-fmt . ,(file-to-string "~/Sync/templates/poa-signature.txt"))
                  (+mu4e-personal-addresses . ("dsharfi@plusoneair.com"))
                   )))))
 #+end_src
