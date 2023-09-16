@@ -15,8 +15,8 @@
 
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-bisqwit
-      doom-font (font-spec :family "PragmataProMonoLiga Nerd Font" :size 24 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "Montserrat" :size 24 :weight 'light)
+      doom-font (font-spec :family "PragmataPro Mono Liga" :size 14 :weight 'light)
+      doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
       +doom-dashboard-banner-file "gnu-color-bisqwit.png")
 #+end_src
@@ -395,6 +395,8 @@ If called with a universal argument choose a instead."
         :g "TAB" nil
         :g "C-S-j" #'company-next-page
         :g "C-S-k" #'company-previous-page)
+
+(map! :g "C-S-p" #'+company/complete)
 
   (defun my/toggle-company-idle-delay ()
     "Toggle the value of `company-idle-delay' between 0 and nil.
