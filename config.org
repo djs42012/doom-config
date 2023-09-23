@@ -81,14 +81,11 @@
     (progn
       (visual-fill-column-mode)
       (setq visual-fill-column-center-text t)
-      (when (or (derived-mode-p 'emacs-lisp-mode)
-                (derived-mode-p 'org-mode))
-        (setq fill-column 100)))))
+      (setq fill-column 100))))
 
 (add-hook! '(org-mode-hook
-             rjsx-mode-hook
-             tsx-ts-mode-hook
-             emacs-lisp-mode-hook)
+
+             prog-mode-hook)
            #'my/toggle-visual-fill-column-mode)
 
 ;; TODO only in org?
