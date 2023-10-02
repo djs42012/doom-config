@@ -722,20 +722,20 @@ Prevent hordes of dired buffers from piling up over time
 ***** Format on save with =format-all=
   
 #+begin_src emacs-lisp
-(after! format-all
-  (puthash 'tsx-ts-mode
-           '((prettier closure (t) nil "typescript"))
-           format-all--mode-table))
+;; (after! format-all
+;;   (puthash 'tsx-ts-mode
+;;            '((prettier closure (t) nil "typescript"))
+;;            format-all--mode-table))
 
-(after! format-all
-  (puthash 'typescript-ts-mode
-           '((prettier closure (t) nil "typescript"))
-           format-all--mode-table))
+;; (after! format-all
+;;   (puthash 'typescript-ts-mode
+;;            '((prettier closure (t) nil "typescript"))
+;;            format-all--mode-table))
 
-(after! format-all
-  (puthash 'typescript-ts-base-mode
-           '((prettier closure (t) nil "typescript"))
-           format-all--mode-table))
+;; (after! format-all
+;;   (puthash 'typescript-ts-base-mode
+;;            '((prettier closure (t) nil "typescript"))
+;;            format-all--mode-table))
 #+end_src
 
 ***** Set ~company~ backends
@@ -833,7 +833,7 @@ Prevent hordes of dired buffers from piling up over time
 #+begin_src emacs-lisp
 (set-popup-rules!
   '(("^\\*info\\*"                   :ignore t)
-    ("^\\*format-all-errors\\*"      :select t)
+    ;; ("^\\*format-all-errors\\*"      :select t)
     ("^\\*Man"                       :ignore t)))
 #+end_src
 
@@ -907,8 +907,8 @@ Prevent hordes of dired buffers from piling up over time
 *** Format
 
 #+begin_src emacs-lisp
-(setq +format-on-save-enabled-modes
-  (append +format-on-save-enabled-modes '(org-mode)))
+;; (setq +format-on-save-enabled-modes
+;;   (append +format-on-save-enabled-modes '(org-mode)))
 #+end_src
 
 * Lang
