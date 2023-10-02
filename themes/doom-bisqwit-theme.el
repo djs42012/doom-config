@@ -118,6 +118,7 @@ determine the exact padding."
 
                  ;; icons
                  ( all-the-icons-completion-dir-face :foreground light-cyan )
+                 ( nerd-icons-completion-dir-face :foreground light-cyan )
 
                  ;; modeline
                  (mode-line
