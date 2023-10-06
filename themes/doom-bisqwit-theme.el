@@ -59,7 +59,7 @@ determine the exact padding."
                  (light-cyan      '("#9cdcfe" "#afd7ff" "brightcyan"   ))
                  (cyan            '("#88bae2" "#87afd7" "brightcyan"   ))
                  (dark-cyan       '("#88bae2" "#87afd7" "brightcyan"   ))
-                 (mid-blue        '("#96a8ff" "#87afd7" "brightcyan"   ))
+                 (mid-blue        '("#3d90b6" "#87afd7" "brightcyan"   ))
                  (dark-magenta    '("#794183" "#d7afff" "purple"       ))
                  (dark-blue       '("#0054a5" "#080808" "brightcyan"   ))
                  (turquoise       '("#00d7ff" "#0087ff" "brightblue"   ))
@@ -78,9 +78,9 @@ determine the exact padding."
                  (keywords       magenta)
                  (methods        yellow)
                  (operators      green)
-                 (type           green)
+                 (type           fg)
                  (strings        mid-blue)
-                 (variables      light-cyan)
+                 (variables      grey)
                  (numbers        bright-yellow)
                  (region         dark-grey)
                  (error          red)
@@ -403,7 +403,7 @@ determine the exact padding."
 
                  ;; rainbow-delimiters
                  ((rainbow-delimiters-depth-1-face &override) :foreground bright-ylw-alt)
-                 ((rainbow-delimiters-depth-2-face &override) :foreground magenta)
+                 ((rainbow-delimiters-depth-2-face &override) :foreground bright-magenta)
                  ((rainbow-delimiters-depth-3-face &override) :foreground turquoise)
                  ((rainbow-delimiters-depth-4-face &override) :foreground green)
 
@@ -427,15 +427,15 @@ determine the exact padding."
                  ((swiper-line-face    &override) :background dark-blue :foreground fg)
 
                  ;; tree-sitter
-                 ((tree-sitter-hl-face:operator &override) :foreground fg)
+                 ((tree-sitter-hl-face:operator &override) :foreground green)
                  ((tree-sitter-hl-face:tag &override) :foreground green)
-                 ((tree-sitter-hl-face:type &override) :foreground green )
+                 ((tree-sitter-hl-face:type &override) :foreground fg )
                  ((tree-sitter-hl-face:attribute &override) :foreground yellow :weight 'bold)
                  ((tree-sitter-hl-face:property &override) :foreground fg :slant 'italic)
                  ((tree-sitter-hl-face:number &override) :foreground bright-yellow :weight 'bold)
                  (( tree-sitter-hl-face:type.builtin &override) :foreground fg :slant 'italic)
-                 (( tree-sitter-hl-face:method.call &override) :foreground fg :slant 'italic :weight 'bold)
-                 (( tree-sitter-hl-face:variable.builtin &override) :foreground light-cyan :weight 'bold)
+                 (( tree-sitter-hl-face:method.call &override) :foreground yellow :slant 'italic :weight 'bold)
+                 (( tree-sitter-hl-face:variable.builtin &override) :foreground "#4e94ce" :weight 'bold)
                  (( tree-sitter-hl-face:function.call &override) :foreground yellow :weight 'bold)
 
                  ;; ((tree-sitter-hl-face:punctuation.delimiter &override) :foreground dark-green)
