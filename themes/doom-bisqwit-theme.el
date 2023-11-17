@@ -453,6 +453,7 @@ determine the exact padding."
                  ((treemacs-git-renamed-face &override)  :foreground blue :weight 'bold)
                  ((treemacs-git-added-face &override)  :foreground green :weight 'bold)
                  ((treemacs-directory-face &override)  :foreground fg :weight 'bold)
+                 ((treemacs-nerd-icons-file-face &override)  :foreground blue)
                  ((doom-themes-treemacs-file-face &override) :inherit 'font-lock-doc-face :foreground blue :weight 'bold )
                  ((doom-themes-treemacs-root-face &override) :inherit 'font-lock-doc-face :foreground magenta :weight 'bold )
 
