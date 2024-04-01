@@ -513,7 +513,7 @@ Prevent hordes of dired buffers from piling up over time
 (after! dirvish
   (setq dirvish-attributes '(vc-state
                              subtree-state
-                             all-the-icons
+                             nerd-icons
                              collapse
                              git-msg
                              file-time
