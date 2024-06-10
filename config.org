@@ -253,7 +253,8 @@
       :n "C-j" #'outline-next-visible-heading
       :n "C-k" #'outline-previous-visible-heading
       :n "C-S-j" #'org-forward-element
-      :n "C-S-k" #'org-backward-element)
+      :n "C-S-k" #'org-backward-element
+      :n "C-<tab>" #'org-fold-show-subtree)
 (map! :map #'evil-org-mode-map
       :n "C-S-j" #'org-forward-element
       :n "C-S-k" #'org-backward-element)
@@ -952,6 +953,7 @@ Prevent hordes of dired buffers from piling up over time
    org-startup-folded 'show2levels
    org-ellipsis ".."
    org-default-priority 68
+   org-image-actual-width 600
    org-log-into-drawer "LOGBOOK"
    org-duration-format (quote h:mm)))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
