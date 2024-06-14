@@ -954,6 +954,7 @@ Prevent hordes of dired buffers from piling up over time
    org-ellipsis ".."
    org-default-priority 68
    org-image-actual-width 600
+   org-attach-auto-tag nil
    org-log-into-drawer "LOGBOOK"
    org-duration-format (quote h:mm)))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
