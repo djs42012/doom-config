@@ -819,6 +819,7 @@ Prevent hordes of dired buffers from piling up over time
           ("TEMP" . "#ffcccc")
           ("FIXME" . "#ff9077")
           ("REVIEW" . "#6ae4b9")
+          ("EDIT" . "#fdb900")
           ("DEPRECATED" . "#bfd9ff"))))
 #+end_src
 
