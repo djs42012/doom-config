@@ -1133,6 +1133,14 @@ With prefix arg C-u, copy region instad of killing it."
       entry (file+headline "todo.org" "💻 Office")
       "* TODO %?"
       :kill-buffer t)
+     ("tP" "✈ POA"
+      entry (file+headline "todo.org" "✈ POA")
+      "* TODO %?"
+      :kill-buffer t)
+     ("tl" "💻 LTP"
+      entry (file+headline "todo.org" "💻 LTP")
+      "* TODO %?"
+      :kill-buffer t)
      ("tm" "⁉ Misc."
       entry (file+headline "todo.org" "⁉ Inbox")
       "* TODO %?"
