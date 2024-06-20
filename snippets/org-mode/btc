@@ -1,0 +1,12 @@
+* Trades
+# -*- mode: snippet -*-
+# name: btc-template
+# key: btc
+# --
+* <`(format-time-string "%Y-%m-%d %a")`>
+** $BTC
+*** Recap
+  $0
+*** Profile
+*** Outlooks
+** Trades

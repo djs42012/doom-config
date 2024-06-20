@@ -4,5 +4,5 @@
 # condition: t
 # --
 #+begin_src sh
-`%`$0
+$0
 #+end_src
