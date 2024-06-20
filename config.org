@@ -253,7 +253,8 @@
       :n "C-j" #'outline-next-visible-heading
       :n "C-k" #'outline-previous-visible-heading
       :n "C-S-j" #'org-forward-element
-      :n "C-S-k" #'org-backward-element)
+      :n "C-S-k" #'org-backward-element
+      :n "C-<tab>" #'org-fold-show-subtree)
 (map! :map #'evil-org-mode-map
       :n "C-S-j" #'org-forward-element
       :n "C-S-k" #'org-backward-element)
@@ -818,6 +819,7 @@ Prevent hordes of dired buffers from piling up over time
           ("TEMP" . "#ffcccc")
           ("FIXME" . "#ff9077")
           ("REVIEW" . "#6ae4b9")
+          ("EDIT" . "#fdb900")
           ("DEPRECATED" . "#bfd9ff"))))
 #+end_src
 
@@ -952,6 +954,8 @@ Prevent hordes of dired buffers from piling up over time
    org-startup-folded 'show2levels
    org-ellipsis ".."
    org-default-priority 68
+   org-image-actual-width 600
+   org-attach-auto-tag nil
    org-log-into-drawer "LOGBOOK"
    org-duration-format (quote h:mm)))
 (add-hook! 'org-mode-hook #'auto-revert-mode)
@@ -1127,6 +1131,14 @@ With prefix arg C-u, copy region instad of killing it."
       :kill-buffer t)
      ("to" "💻 Office"
       entry (file+headline "todo.org" "💻 Office")
+      "* TODO %?"
+      :kill-buffer t)
+     ("tP" "✈ POA"
+      entry (file+headline "todo.org" "✈ POA")
+      "* TODO %?"
+      :kill-buffer t)
+     ("tl" "💻 LTP"
+      entry (file+headline "todo.org" "💻 LTP")
       "* TODO %?"
       :kill-buffer t)
      ("tm" "⁉ Misc."
