@@ -1,9 +1,9 @@
-* Trades
 # -*- mode: snippet -*-
 # name: btc-template
 # key: btc
 # --
-* <`(format-time-string "%Y-%m-%d %a")`>
+
+* <`(format-time-string "%Y-%m-%d %a" (time-add (current-time) (seconds-to-time 86400)))`>
 ** $BTC
 *** Recap
   $0
