@@ -309,6 +309,15 @@
   (sp-local-pair 'org-mode "=" "="))
 #+end_src
 
+*** Calc
+
+#+begin_src emacs-lisp
+
+(after! calc
+  (setq calc-algebraic-mode t))
+#+end_src
+
+
 ** Helper Functions
 *** Kill Buffer and Close Window
 

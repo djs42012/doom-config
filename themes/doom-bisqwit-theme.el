@@ -59,7 +59,7 @@ determine the exact padding."
                  (light-cyan      '("#9cdcfe" "#afd7ff" "brightcyan"   ))
                  (cyan            '("#88bae2" "#87afd7" "brightcyan"   ))
                  (dark-cyan       '("#88bae2" "#87afd7" "brightcyan"   ))
-                 (mid-blue        '("#3d90b6" "#87afd7" "brightcyan"   ))
+                 (mid-blue        '("#96a8ff" "#87afd7" "brightcyan"   ))
                  (dark-magenta    '("#794183" "#d7afff" "purple"       ))
                  (dark-blue       '("#0054a5" "#080808" "brightcyan"   ))
                  (turquoise       '("#00d7ff" "#0087ff" "brightblue"   ))
