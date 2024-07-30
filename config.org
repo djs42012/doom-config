@@ -217,6 +217,8 @@
       :desc "Close window"       "DEL"          #'djs-kill-buffer-and-close-window
       :desc "Rename file" "R"                   #'doom/move-this-file
       ;; :desc "Consult jump project" ","          #'consult-jump-project
+      (:prefix ("n" . "notes")
+       :desc "Search ChatGPTs"        "g"       #'my/consult-ripgrep-chatgpt)
       (:prefix ("t" . "toggle")
        :desc "Comapany Mode"        "p"         #'my/toggle-company-idle-delay
        :desc "Command-logging"          "c"     #'command-log-mode
@@ -2053,6 +2055,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
   #+end_src
 
 ** chatgpt
+*** Authnetication and Defaults
 
 #+begin_src emacs-lisp
 (after! gptel
@@ -2063,6 +2066,50 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                      (text-mode . "### ")))
   (setq-default gptel-model "gpt-4"))
 #+end_src
+
+*** Autosave buffers
+
+#+begin_src emacs-lisp
+
+(defun my/save-chatgpt-buffer ()
+  (when (and (bound-and-true-p gptel-mode) (not (buffer-file-name)))
+    (let* ((timestamp (format-time-string "%Y-%m-%d-T%H:%M:%S"))
+           (buffer-name (replace-regexp-in-string "[^a-zA-Z ]" "" (downcase (buffer-name))))
+           (clean-buffer-name (replace-regexp-in-string " " "-" buffer-name))
+           (filename (format "~/Sync/projects/org/chatgpt/autosave/%s-%s.org" timestamp clean-buffer-name)))
+      (write-region (point-min) (point-max) filename)
+      (set-visited-file-name filename)
+      (set-buffer-modified-p nil))))
+
+
+(add-hook! 'gptel-mode-hook #'my/save-chatgpt-buffer)
+
+#+end_src
+
+*** Search GPT files
+
+#+begin_src emacs-lisp
+(defun my/consult-ripgrep-chatgpt ()
+  "Use consult-ripgrep to search my chatgpt directory."
+  (interactive)
+  (let ((default-directory "~/Sync/projects/org/chatgpt"))
+    (consult-ripgrep default-directory)))
+
+#+end_src
+
+*** Autosave conversations
+
+#+begin_src emacs-lisp
+
+(defun my/turn-on-auto-save-for-gptel-buffers ()
+  "Enable auto-save for Gptel buffers only."
+  (when (and (bound-and-true-p gptel-mode))
+    (auto-save-visited-mode)))
+
+;; add the hook
+(add-hook 'gptel-mode-hook 'my/turn-on-auto-save-for-gptel-buffers)
+#+end_src
+
 
 ** org-modern-indent
 
