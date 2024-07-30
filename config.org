@@ -265,6 +265,9 @@
       :n "C-<up>" #'Info-prev
       :n "<left>" #'Info-history-back
       :n "<right>" #'Info-history-forward)
+(map! :map #'org-msg-edit-mode-map
+      :i "<tab>" #'org-msg-tab
+      )
 (map! :map evil-normal-state-map "C-S-f" #'+default/search-buffer)
 (map! :g "C-s" #'save-buffer)
 #+end_src
@@ -316,7 +319,6 @@
 (after! calc
   (setq calc-algebraic-mode t))
 #+end_src
-
 
 ** Helper Functions
 *** Kill Buffer and Close Window

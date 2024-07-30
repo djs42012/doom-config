@@ -41,6 +41,9 @@
 (package! org-caldav)
 (package! oauth2)
 (package! nerd-icons)
+(package! org-msg
+  :recipe (:host github :repo "jeremy-compostella/org-msg" :branch "jcompost/mu-1.12-support-with-backward-compatibility")
+  :pin "cc25647")
 ;; (package! origamie :recipe (:host github :repo "gregsexton/origami.el"))
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el"))
