@@ -36,6 +36,8 @@
 ;; (add-to-list 'default-frame-alist '(alpha-background . 100))
 #+end_src
 
+#+RESULTS:
+
 *** Line Numbers and Highlighting
 
 #+begin_src emacs-lisp
@@ -1811,6 +1813,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                   (org-msg-greeting-fmt . "\n-David")
                   (+mu4e-personal-addresses . ("david@djs.gg"
                                                "catchall@djs.gg"
+                                               "ilovecrmnl@djs.gg"
                                                "david@djs.money"
                                                "catchall@djs.money"))))
          ;; (old) gmail
