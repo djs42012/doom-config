@@ -2076,7 +2076,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 
 (defun my/save-chatgpt-buffer ()
   (when (and (bound-and-true-p gptel-mode) (not (buffer-file-name)))
-    (let* ((timestamp (format-time-string "%Y-%m-%d-T%H:%M:%S"))
+    (let* ((timestamp (format-time-string "%Y-%m-%d-T%H-%M-%S"))
            (buffer-name (replace-regexp-in-string "[^a-zA-Z ]" "" (downcase (buffer-name))))
            (clean-buffer-name (replace-regexp-in-string " " "-" buffer-name))
            (filename (format "~/Sync/projects/org/chatgpt/autosave/%s-%s.org" timestamp clean-buffer-name)))
