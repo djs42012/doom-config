@@ -161,7 +161,7 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +tree-sitter)            ; beautiful is better than ugly
+       (python +lsp +tree-sitter +pyenv +pyright)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -181,7 +181,7 @@
        ;;zig               ; C, but simpler
 
        :email
-       (mu4e +gmail +org)
+       (mu4e +gmail +org +mbsync)
        ;;notmuch
        ;;(wanderlust +gmail)
 

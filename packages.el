@@ -41,9 +41,9 @@
 (package! org-caldav)
 (package! oauth2)
 (package! nerd-icons)
-(package! org-msg
-  :recipe (:host github :repo "danielfleischer/org-msg" :branch "1.12")
-  :pin "4dcd70f")
+;; (package! org-msg
+;;   :recipe (:host github :repo "danielfleischer/org-msg" :branch "1.12")
+;;   :pin "4dcd70f")
 ;; (package! origamie :recipe (:host github :repo "gregsexton/origami.el"))
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el"))

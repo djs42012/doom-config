@@ -1597,7 +1597,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 
 #+begin_src emacs-lisp
 (after! mu4e
-  (require 'mu4e-contrib) ;; TODO check is this is really needed
+  ;; (require 'mu4e-contrib) ;; TODO check is this is really needed
   (setq mu4e-main-hide-personal-addresses t
         mu4e-mu-binary "/usr/bin/mu"
         mu4e-get-mail-command "mu index"
@@ -2067,7 +2067,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
         gptel-prompt-prefix-alist  '((markdown-mode . "### ")
                                      (org-mode . "* ")
                                      (text-mode . "### ")))
-  (setq-default gptel-model "gpt-4"))
+  (setq-default gptel-model 'gpt-4o))
 #+end_src
 
 *** Autosave buffers
@@ -2112,7 +2112,6 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
 ;; add the hook
 (add-hook 'gptel-mode-hook 'my/turn-on-auto-save-for-gptel-buffers)
 #+end_src
-
 
 ** org-modern-indent
 
