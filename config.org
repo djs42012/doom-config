@@ -1465,9 +1465,46 @@ tasks."
   1) Daily overview that includes all scheduled items
   2) A weekly outlook that shows all scheduled items except those we want hidden via a ~:hide:~ tag (this relies on helper functions defined below)
   3) Additional sections for ~org-roam~ dailies, emails, my "main" todo items, and todo items from ~org-roam~ literature notes. This schema relies on having already declared my ~org-agenda-files~ and strategically tagging the headlines within.
-
++ Agenda overdue skip function taken from [[https://emacs.stackexchange.com/questions/75469/how-to-get-a-non-intersecting-overdue-next-7-days-agenda][Trevoke]] on stackexchage
 #+begin_src emacs-lisp
 (after! org-agenda
+  (defun timestamp-midnight (timestamp)
+  (let ((decoded (decode-time timestamp)))
+    (setf (nth 0 decoded) 0)
+    (setf (nth 1 decoded) 0)
+    (setf (nth 2 decoded) 0)
+    (apply #'encode-time decoded)))
+  (defun org-agenda-skip-if-scheduled-earlier ()
+  "If this function returns nil, the current match should not be skipped.
+Otherwise, the function must return a position from where the search
+should be continued."
+  (ignore-errors
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (scheduled-seconds (org-time-string-to-seconds (org-entry-get nil "SCHEDULED")))
+          (now (time-to-seconds (timestamp-midnight (current-time)))))
+      (and scheduled-seconds
+           (>= scheduled-seconds now)
+           subtree-end))))
+  (defun org-agenda-skip-if-deadline-later ()
+  "Skip entries with deadlines later than now."
+  (ignore-errors
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (deadline-seconds (org-time-string-to-seconds (org-entry-get nil "DEADLINE")))
+          (now (time-to-seconds (timestamp-midnight (current-time)))))
+      (and deadline-seconds
+           (>= deadline-seconds now)
+           subtree-end))))
+  (defun org-agenda-skip-if-scheduled-or-deadline-later ()
+  "Skip if either scheduled later or has a deadline later."
+  (or (org-agenda-skip-if-scheduled-earlier)
+      (org-agenda-skip-if-deadline-later)))
+
+  (defun my/org-agenda-skip-scheduled-or-deadline-later-or-nowarn ()
+  "Skip if entry is scheduled or has a deadline later than today or matches the 'nowarn' tag."
+  (let ((skip-scheduled-or-deadline (org-agenda-skip-if-scheduled-or-deadline-later))
+        (skip-tag (my/org-agenda-skip-without-match "-nowarn")))  ;; Match 'nowarn' tag with `+nowarn`
+    (or skip-scheduled-or-deadline skip-tag)))
+
   (setq org-agenda-custom-commands
         '(("j" "Main agenda and todo list"
            ;; single day agenda sans chores
@@ -1499,8 +1536,10 @@ tasks."
                         (org-deadline-past-days 999)
                         (org-scheduled-past-days 999)
                         (org-deadline-warning-days 0)
-                        (org-agenda-skip-function
-                         '(my/org-agenda-skip-without-match "-nowarn"))))
+                        (org-agenda-skip-function 'my/org-agenda-skip-scheduled-or-deadline-later-or-nowarn)
+                        ;; (org-agenda-skip-function
+                        ;;  'org-agenda-skip-if-scheduled-earlier)
+                        ))
             ;; all priority todos
             (tags-todo "+PRIORITY=\"A\"|+PRIORITY=\"B\"|+PRIORITY=\"C\""  ((org-agenda-overriding-header "✅ TODO")))
             (agenda "" ((org-agenda-span 9)
