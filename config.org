@@ -1381,31 +1381,20 @@ is today.  With two prefixes, select the deadline. Afterwards save the todo file
 + TODO find a way to populate ~roam-extra:todo-files~ with SQL
   
 #+begin_src emacs-lisp
-(after! org-agenda
-  ;; Currently deprecated in favor of roam-extra:todo-files
-  ;; (defun djs-get-most-recent-daily-node ()
-  ;;   "Fetch the path of the most recent org-roam daily node"
-  ;;   (car
-  ;;    (car
-  ;;     (org-roam-db-query
-  ;;      [:SELECT file
-  ;;       :FROM nodes
-  ;;       :INNER-JOIN tags
-  ;;       :ON (= nodes:id tags:node-id)
-  ;;       :WHERE (= tag "daily")
-  ;;       :ORDER-BY [(desc file)]
-  ;;       :LIMIT 1
-  ;;       ]))))
+(after! org
   (defun djs-org-agenda-files ()
-    "add selected files to org-agenda-files"
+    "Add selected files to `org-agenda-files`."
     (setq org-agenda-files
           '("~/Sync/projects/org"
             "~/Sync/projects/org/calendars"
             ;; "~/Sync/projects/org/roam/literature-notes"
             "~/Sync/projects/org/hide-from-orgzly"))
     (setq org-agenda-files
-          (append org-agenda-files (roam-extra:todo-files))))
-  (add-hook! 'org-agenda-mode-hook #'djs-org-agenda-files))
+          (append org-agenda-files (roam-extra:todo-files)))
+    (setq org-refile-targets '((org-agenda-files :maxlevel . 3))))
+
+  ;; Hook the function into both org and org-agenda mode
+  (add-hook! '(org-mode-hook org-agenda-mode-hook) #'djs-org-agenda-files))
   #+end_src
 
 + Add any org-roam dailies with open TODOs to the agenda ([[https://magnus.therning.org/tag-org-roam.html][Souce: Magnus Therning's blog]])
