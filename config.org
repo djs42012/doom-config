@@ -1541,7 +1541,8 @@ should be continued."
                         ;;  'org-agenda-skip-if-scheduled-earlier)
                         ))
             ;; all priority todos
-            (tags-todo "+PRIORITY=\"A\"|+PRIORITY=\"B\""  ((org-agenda-overriding-header "✅ TODO")))
+            (tags-todo "+PRIORITY=\"A\""  ((org-agenda-overriding-header "✅ TODO - URGENT ✅")))
+            (tags-todo "+PRIORITY=\"B\""  ((org-agenda-overriding-header "✅ TODO - IMPORTANT ✅")))
             (agenda "" ((org-agenda-span 9)
                         (org-agenda-overriding-header "")
                         (org-agenda-start-day "+1d")
@@ -1752,6 +1753,7 @@ I want to auto save all org buffers every time I load my agenda, so that refresh
                                          (reply-to-text . (utf-8 html))
                                          (reply-to-html . (utf-8 html)))))
   (add-hook! 'org-msg-mode-hook #'my/org-msg-set-default-alternatives))
+(add-hook 'message-sent-hook (lambda () (setq buffer-undo-list nil)))
 #+end_src
 
 ** Colorization
