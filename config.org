@@ -972,7 +972,8 @@ Prevent hordes of dired buffers from piling up over time
    org-hide-emphasis-markers t
    org-startup-folded 'show2levels
    org-ellipsis ".."
-   org-default-priority 68
+   org-default-priority 67
+   org-lowest-priority 67
    org-image-actual-width 600
    org-attach-auto-tag nil
    org-log-into-drawer "LOGBOOK"
@@ -1089,7 +1090,7 @@ With prefix arg C-u, copy region instad of killing it."
 
 #+begin_src emacs-lisp
 (after! org-fancy-priorities
-  (setq org-fancy-priorities-list '( "⚠" "‼" "❗" )))
+  (setq org-fancy-priorities-list '( "🔥" "❗" "💤" )))
 #+end_src
 
 *** Custom todo-keywords
@@ -1541,7 +1542,7 @@ should be continued."
                         ;;  'org-agenda-skip-if-scheduled-earlier)
                         ))
             ;; all priority todos
-            (tags-todo "+PRIORITY=\"A\"|+PRIORITY=\"B\"|+PRIORITY=\"C\""  ((org-agenda-overriding-header "✅ TODO")))
+            (tags-todo "+PRIORITY=\"A\"|+PRIORITY=\"B\""  ((org-agenda-overriding-header "✅ TODO")))
             (agenda "" ((org-agenda-span 9)
                         (org-agenda-overriding-header "")
                         (org-agenda-start-day "+1d")
