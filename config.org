@@ -248,8 +248,7 @@
       :n "t" #'djs-capture-msg-to-agenda
       :n "z t" #'evil-scroll-line-to-top
       :n "C-/" #'evil-ex-search-forward
-      ;; TODO rebind to "S"
-      :n "C-s" #'mu4e-headers-mark-for-spam)
+      :n "S" #'mu4e-headers-mark-for-spam)
 (map! :map #'org-agenda-mode-map
       :g "C-=" #'text-scale-increase
       :g "C--" #'text-scale-decrease)
