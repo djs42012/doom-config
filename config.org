@@ -14,11 +14,11 @@
 *** Theme and Fonts
 
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-bisqwit
+(setq doom-theme 'modus-vivendi
       doom-font (font-spec :family "PragmataPro Mono Liga" :size 14 :weight 'light)
       doom-variable-pitch-font (font-spec :family "Montserrat" :size 14 :weight 'light)
       +doom-dashboard-banner-dir "~/Sync/Pics/emacs"
-      +doom-dashboard-banner-file "gnu-color-bisqwit.png")
+      +doom-dashboard-banner-file "gnu-color-modus.png")
 #+end_src
 
 *** Window Borders
